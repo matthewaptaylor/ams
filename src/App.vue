@@ -5,6 +5,9 @@
 </template>
 
 <style>
+html {
+  overflow: auto !important;
+}
 #app {
   min-height: 100vh;
   font-family: "Futura PT", Futura, "Trebuchet MS", Arial, sans-serif;
