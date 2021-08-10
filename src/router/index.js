@@ -1,15 +1,31 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Home from "../views/Home.vue";
+import SignInRoot from "../views/SignInRoot.vue";
+import SignIn from "../views/SignIn.vue";
+import AppRoot from "../views/AppRoot.vue";
+import Dashboard from "../views/Dashboard.vue";
+import Activity from "../views/Activity.vue";
+import NotFound from "../views/NotFound.vue";
 
 Vue.use(VueRouter);
 
 const routes = [
   {
     path: "/",
-    name: "Home",
-    component: Home,
+    name: "AppRoot",
+    component: AppRoot,
+    children: [
+      { path: "", name: "Dashboard", component: Dashboard },
+      { path: "activity", name: "Activity", component: Activity },
+    ],
   },
+  {
+    path: "/",
+    name: "SignInRoot",
+    component: SignInRoot,
+    children: [{ path: "signin", name: "SignIn", component: SignIn }],
+  },
+  { path: "*", component: NotFound },
 ];
 
 const router = new VueRouter({

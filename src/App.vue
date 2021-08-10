@@ -1,7 +1,7 @@
 <template>
-  <div id="app">
-    <router-view />
-  </div>
+  <v-app id="app">
+    <router-view></router-view>
+  </v-app>
 </template>
 
 <style>
@@ -9,14 +9,9 @@ html {
   overflow: auto !important;
 }
 #app {
-  min-height: 100vh;
   font-family: "Futura PT", Futura, "Trebuchet MS", Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-image: url(./assets/images/purple-background.svg);
-  background-color: var(--v-primary-base);
-  background-size: cover;
-  background-position: center;
 }
 
 @font-face {
