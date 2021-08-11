@@ -14,7 +14,12 @@
       </v-sheet>
       <v-sheet elevation="2" rounded class="pa-4">
         <h1>Sign up</h1>
-        <v-form v-model="valid" :disabled="loading" ref="form">
+        <v-form
+          v-model="valid"
+          :disabled="loading"
+          ref="form"
+          @submit.prevent="signUp"
+        >
           <v-text-field
             v-model="email"
             :rules="emailRules"
@@ -42,6 +47,7 @@
             :prepend-icon="lockIcon"
             required
           ></v-text-field>
+          <v-alert type="error" class="mt-4" v-if="error">{{ error }}</v-alert>
           <v-btn
             block
             color="primary"
@@ -49,7 +55,6 @@
             class="mt-4"
             :disabled="!valid || loading"
             :loading="loading"
-            @click="loading = true"
           >
             <v-icon left dark>{{ accountPlusIcon }}</v-icon>
             Sign up
@@ -65,6 +70,7 @@
 import { mdiEmail } from "@mdi/js";
 import { mdiLock } from "@mdi/js";
 import { mdiAccountPlus } from "@mdi/js";
+import firebase from "firebase/app";
 
 export default {
   data() {
@@ -74,6 +80,7 @@ export default {
       accountPlusIcon: mdiAccountPlus,
       loading: false,
       valid: false,
+      error: null,
       email: "",
       emailRules: [
         (v) => !!v || "E-mail is required",
@@ -95,6 +102,24 @@ export default {
     password() {
       // Manually revalidate confirm password field when password changes
       this.$refs.form.validate();
+    },
+  },
+  methods: {
+    signUp() {
+      this.loading = true;
+
+      firebase
+        .auth()
+        .createUserWithEmailAndPassword(this.email, this.password)
+        .then(() => {
+          // Signed in
+          this.loading = false;
+          this.error = null;
+        })
+        .catch((error) => {
+          this.loading = false;
+          this.error = error.message;
+        });
     },
   },
 };
