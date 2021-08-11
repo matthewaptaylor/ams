@@ -6,14 +6,6 @@ import firebase from "firebase/app";
 import "firebase/analytics";
 import "firebase/auth";
 
-Vue.config.productionTip = false;
-
-new Vue({
-  router,
-  vuetify,
-  render: (h) => h(App),
-}).$mount("#app");
-
 const firebaseConfig = {
   apiKey: "AIzaSyCEP-66lWUOILlpK2QWLj196GJWezQPM7E",
   authDomain: "ams-scouts-aotearoa.firebaseapp.com",
@@ -23,8 +15,27 @@ const firebaseConfig = {
   appId: "1:1009744879723:web:ffb8b54902f5d3ae54912e",
   measurementId: "G-8K0GRKGLY6",
 };
-firebase.initializeApp(firebaseConfig);
 
+let retrievedAuthState = false;
+firebase.initializeApp(firebaseConfig);
 firebase.auth().onAuthStateChanged((user) => {
-  console.log(user);
+  if (retrievedAuthState) {
+    // Triggered by genuine auth state change
+    if (user) {
+      router.push("/");
+    } else {
+      router.push("/signin");
+    }
+  } else {
+    // Auth state change due to page loading
+    retrievedAuthState = true;
+  }
 });
+
+Vue.config.productionTip = false;
+
+new Vue({
+  router,
+  vuetify,
+  render: (h) => h(App),
+}).$mount("#app");
