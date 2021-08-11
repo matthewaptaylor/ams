@@ -14,6 +14,48 @@
       </v-sheet>
       <v-sheet elevation="2" rounded class="pa-4">
         <h1>Sign in</h1>
+        <v-btn block color="blue" dark class="mt-4" @click="signInWithGoogle">
+          <v-icon left dark>{{ googleIcon }}</v-icon>
+          Sign in with Google
+        </v-btn>
+        <v-alert type="error" class="mt-4" v-if="googleError">{{
+          googleError
+        }}</v-alert>
+        <div
+          style="
+            position: relative;
+            margin-top: 1rem;
+            height: 1rem;
+            text-align: center;
+            font-weight: 500;
+          "
+        >
+          <v-divider
+            style="
+              position: absolute;
+              margin: calc(0.5rem - 1px) 0 0.5rem;
+              width: 100%;
+            "
+          />
+          <div
+            style="
+              position: absolute;
+              width: 100%;
+              line-height: 1rem;
+              text-align: center;
+            "
+          >
+            <span
+              style="
+                display: inline-block;
+                padding: 0 0.5rem;
+                background-color: #ffffff;
+              "
+            >
+              OR
+            </span>
+          </div>
+        </div>
         <v-form v-model="valid" :disabled="loading" @submit.prevent="signIn">
           <v-text-field
             v-model="email"
@@ -59,6 +101,7 @@
 </template>
 <style scoped></style>
 <script>
+import { mdiGoogle } from "@mdi/js";
 import { mdiEmail } from "@mdi/js";
 import { mdiLock } from "@mdi/js";
 import { mdiLogin } from "@mdi/js";
@@ -67,6 +110,7 @@ import firebase from "firebase/app";
 export default {
   data() {
     return {
+      googleIcon: mdiGoogle,
       emailIcon: mdiEmail,
       lockIcon: mdiLock,
       loginIcon: mdiLogin,
@@ -83,9 +127,22 @@ export default {
         (v) => !!v || "Password is required",
         (v) => v.length >= 6 || "Password must be at least 6 characters",
       ],
+      googleError: null,
     };
   },
   methods: {
+    signInWithGoogle() {
+      firebase
+        .auth()
+        .signInWithPopup(new firebase.auth.GoogleAuthProvider())
+        .then((result) => {
+          // Signed in
+          console.log(result);
+        })
+        .catch((error) => {
+          this.googleError = error.message;
+        });
+    },
     signIn() {
       this.loading = true;
 

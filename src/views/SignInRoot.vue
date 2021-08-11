@@ -10,6 +10,7 @@
 #sign-in-root {
   min-height: 100vh;
   background-image: url("../assets/images/purple-background.svg");
+  background-color: var(--v-primary-base);
   background-size: cover;
   background-position: center;
 }
