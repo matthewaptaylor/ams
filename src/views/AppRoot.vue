@@ -15,7 +15,7 @@
       <v-menu offset-y bottom left>
         <template v-slot:activator="{ on, attrs }">
           <v-btn dark icon v-bind="attrs" v-on="on">
-            <v-icon>{{ account }}</v-icon>
+            <v-icon>{{ accountIcon }}</v-icon>
           </v-btn>
         </template>
         <v-list>
@@ -24,13 +24,13 @@
           </v-list-item>
           <v-list-item>
             <v-list-item-icon>
-              <v-icon>{{ account }}</v-icon>
+              <v-icon>{{ accountIcon }}</v-icon>
             </v-list-item-icon>
             <v-list-item-title>My account</v-list-item-title>
           </v-list-item>
           <v-list-item>
             <v-list-item-icon>
-              <v-icon>{{ logout }}</v-icon>
+              <v-icon>{{ logoutIcon }}</v-icon>
             </v-list-item-icon>
             <v-list-item-title>Sign out</v-list-item-title>
           </v-list-item>
@@ -38,14 +38,12 @@
       </v-menu>
     </v-app-bar>
     <v-main>
-      <v-container fluid>
-        <v-breadcrumbs :items="breadcrumbItems" class="pt-0 pb-3">
-          <template v-slot:divider>
-            <v-icon>{{ chevronRight }}</v-icon>
-          </template>
-        </v-breadcrumbs>
-        <router-view></router-view>
-      </v-container>
+      <v-breadcrumbs :items="breadcrumbItems" class="pt-0 pb-3">
+        <template v-slot:divider>
+          <v-icon>{{ chevronRightIcon }}</v-icon>
+        </template>
+      </v-breadcrumbs>
+      <router-view></router-view>
     </v-main>
   </div>
 </template>
@@ -67,9 +65,9 @@ import { mdiLogout } from "@mdi/js";
 export default {
   data() {
     return {
-      chevronRight: mdiChevronRight,
-      account: mdiAccount,
-      logout: mdiLogout,
+      chevronRightIcon: mdiChevronRight,
+      accountIcon: mdiAccount,
+      logoutIcon: mdiLogout,
       breadcrumbItems: [
         {
           text: "Dashboard",

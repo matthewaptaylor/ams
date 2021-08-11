@@ -1,9 +1,7 @@
 <template>
   <div id="sign-in-root">
-    <v-main>
-      <v-container>
-        <router-view></router-view>
-      </v-container>
+    <v-main class="fill-height">
+      <router-view></router-view>
     </v-main>
   </div>
 </template>
