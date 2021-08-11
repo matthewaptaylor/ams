@@ -2,6 +2,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import SignInRoot from "../views/SignInRoot.vue";
 import SignIn from "../views/SignIn.vue";
+import SignUp from "../views/SignUp.vue";
 import AppRoot from "../views/AppRoot.vue";
 import Dashboard from "../views/Dashboard.vue";
 import Activity from "../views/Activity.vue";
@@ -23,7 +24,10 @@ const routes = [
     path: "/",
     name: "SignInRoot",
     component: SignInRoot,
-    children: [{ path: "signin", name: "SignIn", component: SignIn }],
+    children: [
+      { path: "signin", name: "SignIn", component: SignIn },
+      { path: "signup", name: "SignUp", component: SignUp },
+    ],
   },
   { path: "*", component: NotFound },
 ];

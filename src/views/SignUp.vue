@@ -13,8 +13,8 @@
         </div>
       </v-sheet>
       <v-sheet elevation="2" rounded class="pa-4">
-        <h1>Sign in</h1>
-        <v-form v-model="valid" :disabled="loading">
+        <h1>Sign up</h1>
+        <v-form v-model="valid" :disabled="loading" ref="form">
           <v-text-field
             v-model="email"
             :rules="emailRules"
@@ -27,9 +27,18 @@
           <v-text-field
             v-model="password"
             :rules="passwordRules"
-            autocomplete="current-password"
+            autocomplete="new-password"
             type="password"
             label="Password"
+            :prepend-icon="lockIcon"
+            required
+          ></v-text-field>
+          <v-text-field
+            v-model="confirmPassword"
+            :rules="confirmPasswordRules"
+            autocomplete="new-password"
+            type="password"
+            label="Confirm password"
             :prepend-icon="lockIcon"
             required
           ></v-text-field>
@@ -43,10 +52,10 @@
             @click="loading = true"
           >
             <v-icon left dark>{{ loginIcon }}</v-icon>
-            Sign in
+            Sign up
           </v-btn>
           <div class="d-flex justify-end flex-wrap mt-4" style="gap: 1rem">
-            <v-btn plain to="signup">Or sign up...</v-btn>
+            <v-btn plain to="signin">Or sign in...</v-btn>
           </div>
         </v-form>
       </v-sheet>
@@ -77,7 +86,18 @@ export default {
         (v) => !!v || "Password is required",
         (v) => v.length >= 6 || "Password must be at least 6 characters",
       ],
+      confirmPassword: "",
+      confirmPasswordRules: [
+        (v) => !!v || "Password confirmation is required",
+        (v) => v === this.password || "Passwords do not match",
+      ],
     };
+  },
+  watch: {
+    password() {
+      // Manually revalidate confirm password field when password changes
+      this.$refs.form.validate();
+    },
   },
 };
 </script>
