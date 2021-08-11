@@ -22,13 +22,7 @@
           <v-list-item>
             <v-list-item-title>Hello, John Doe</v-list-item-title>
           </v-list-item>
-          <v-list-item>
-            <v-list-item-icon>
-              <v-icon>{{ accountIcon }}</v-icon>
-            </v-list-item-icon>
-            <v-list-item-title>My account</v-list-item-title>
-          </v-list-item>
-          <v-list-item>
+          <v-list-item @click="signOut">
             <v-list-item-icon>
               <v-icon>{{ logoutIcon }}</v-icon>
             </v-list-item-icon>
@@ -61,6 +55,7 @@
 import { mdiChevronRight } from "@mdi/js";
 import { mdiAccount } from "@mdi/js";
 import { mdiLogout } from "@mdi/js";
+import firebase from "firebase/app";
 
 export default {
   data() {
@@ -86,6 +81,11 @@ export default {
         },
       ],
     };
+  },
+  methods: {
+    signOut() {
+      firebase.auth().signOut();
+    },
   },
 };
 </script>

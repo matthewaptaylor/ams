@@ -135,10 +135,6 @@ export default {
       firebase
         .auth()
         .signInWithPopup(new firebase.auth.GoogleAuthProvider())
-        .then((result) => {
-          // Signed in
-          console.log(result);
-        })
         .catch((error) => {
           this.googleError = error.message;
         });
