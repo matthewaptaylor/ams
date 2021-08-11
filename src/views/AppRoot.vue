@@ -20,7 +20,7 @@
         </template>
         <v-list>
           <v-list-item>
-            <v-list-item-title>Hello, John Doe</v-list-item-title>
+            <v-list-item-title>Kia ora!</v-list-item-title>
           </v-list-item>
           <v-list-item @click="signOut">
             <v-list-item-icon>
@@ -32,11 +32,6 @@
       </v-menu>
     </v-app-bar>
     <v-main>
-      <v-breadcrumbs :items="breadcrumbItems" class="pt-0 pb-3">
-        <template v-slot:divider>
-          <v-icon>{{ chevronRightIcon }}</v-icon>
-        </template>
-      </v-breadcrumbs>
       <router-view></router-view>
     </v-main>
   </div>
@@ -52,7 +47,6 @@
 </style>
 
 <script>
-import { mdiChevronRight } from "@mdi/js";
 import { mdiAccount } from "@mdi/js";
 import { mdiLogout } from "@mdi/js";
 import firebase from "firebase/app";
@@ -60,26 +54,8 @@ import firebase from "firebase/app";
 export default {
   data() {
     return {
-      chevronRightIcon: mdiChevronRight,
       accountIcon: mdiAccount,
       logoutIcon: mdiLogout,
-      breadcrumbItems: [
-        {
-          text: "Dashboard",
-          disabled: false,
-          href: "breadcrumbs_dashboard",
-        },
-        {
-          text: "Link 1",
-          disabled: false,
-          href: "breadcrumbs_link_1",
-        },
-        {
-          text: "Link 2",
-          disabled: true,
-          href: "breadcrumbs_link_2",
-        },
-      ],
     };
   },
   methods: {
