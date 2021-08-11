@@ -44,8 +44,7 @@
 </template>
 <style scoped></style>
 <script>
-import { mdiEmail } from "@mdi/js";
-import { mdiEmailSend } from "@mdi/js";
+import { mdiEmail, mdiEmailSend } from "@mdi/js";
 
 export default {
   data() {

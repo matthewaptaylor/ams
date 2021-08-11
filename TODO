@@ -5,3 +5,7 @@ Add logo and customise google login screen
 Disable scroll on body when loading screen is activated
 ARIA/a11y
 Run lighthouse
+Add 404 page
+Implement document title changing
+Disable user select on loading screen, logo, other elements?
+Make login logo scout purple

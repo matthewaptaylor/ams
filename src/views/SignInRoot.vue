@@ -15,7 +15,3 @@
   background-position: center;
 }
 </style>
-
-<script>
-export default {};
-</script>

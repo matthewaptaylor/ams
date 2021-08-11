@@ -101,10 +101,7 @@
 </template>
 <style scoped></style>
 <script>
-import { mdiGoogle } from "@mdi/js";
-import { mdiEmail } from "@mdi/js";
-import { mdiLock } from "@mdi/js";
-import { mdiLogin } from "@mdi/js";
+import { mdiGoogle, mdiEmail, mdiLock, mdiLogin } from "@mdi/js";
 import firebase from "firebase/app";
 
 export default {

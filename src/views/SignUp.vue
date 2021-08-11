@@ -67,9 +67,7 @@
 </template>
 <style scoped></style>
 <script>
-import { mdiEmail } from "@mdi/js";
-import { mdiLock } from "@mdi/js";
-import { mdiAccountPlus } from "@mdi/js";
+import { mdiEmail, mdiLock, mdiAccountPlus } from "@mdi/js";
 import firebase from "firebase/app";
 
 export default {
