@@ -7,6 +7,7 @@ import SignUp from "../views/SignUp.vue";
 import ForgotPassword from "../views/ForgotPassword.vue";
 import AppRoot from "../views/AppRoot.vue";
 import Dashboard from "../views/Dashboard.vue";
+import ActivityCreate from "../views/ActivityCreate.vue";
 import Activity from "../views/Activity.vue";
 import NotFound from "../views/NotFound.vue";
 
@@ -19,10 +20,20 @@ const routes = [
     component: AppRoot,
     meta: {
       requiresAuth: true,
+      noAuth: false,
     },
     children: [
       { path: "", name: "Dashboard", component: Dashboard },
-      { path: "activity", name: "Activity", component: Activity },
+      {
+        path: "activity",
+        redirect: { name: "Dashboard" },
+      },
+      {
+        path: "activity/create",
+        name: "ActivityCreate",
+        component: ActivityCreate,
+      },
+      { path: "activity/:activityId", name: "Activity", component: Activity },
     ],
   },
   {
@@ -31,6 +42,7 @@ const routes = [
     component: SignInRoot,
     meta: {
       requiresAuth: false,
+      noAuth: true,
     },
     children: [
       { path: "signin", name: "SignIn", component: SignIn },
@@ -63,13 +75,13 @@ function getCurrentUser() {
 }
 router.beforeEach(async (to, from, next) => {
   const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
+  const noAuth = to.matched.some((record) => record.meta.noAuth);
   const signedIn = await getCurrentUser();
 
   // Remove loader in index.html
   if (!vueLoaded) {
     // This is the first navigation of the page
     document.querySelector("#loader").remove();
-
     vueLoaded = true;
   }
 
@@ -77,7 +89,7 @@ router.beforeEach(async (to, from, next) => {
   if (requiresAuth && !signedIn) {
     // Only signed in users, redirect
     next("/signin");
-  } else if (!requiresAuth && signedIn) {
+  } else if (noAuth && signedIn) {
     // Only non signed in users, redirect
     next("/");
   } else {

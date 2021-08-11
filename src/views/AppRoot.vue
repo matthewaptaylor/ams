@@ -2,7 +2,7 @@
   <div id="app-root">
     <v-app-bar color="primary" dark app>
       <img
-        alt="Vue logo"
+        alt="Scouts Aotearoa logo"
         src="@/assets/images/toolbar-logo.svg"
         class="d-none d-md-block me-4 py-2"
         style="height: 100%"
@@ -47,8 +47,7 @@
 </style>
 
 <script>
-import { mdiAccount } from "@mdi/js";
-import { mdiLogout } from "@mdi/js";
+import { mdiAccount, mdiLogout } from "@mdi/js";
 import firebase from "firebase/app";
 
 export default {

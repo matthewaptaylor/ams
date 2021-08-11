@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <Breadcrumbs :items="breadcrumbItems" />
-    <v-sheet elevation="2" rounded class="pa-4">Activity view</v-sheet>
+    <v-sheet elevation="2" rounded class="pa-4">Activity create</v-sheet>
   </v-container>
 </template>
 <style scoped></style>
@@ -26,7 +26,7 @@ export default {
           to: "/activity",
         },
         {
-          text: "Test Activity",
+          text: "Create activity",
           disabled: true,
         },
       ],

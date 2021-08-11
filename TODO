@@ -2,3 +2,6 @@ Implement password reset feature using firebase admin
 Preload fonts and images
 100vh forces scroll on chrome mobile, address bar takes up space
 Add logo and customise google login screen
+Disable scroll on body when loading screen is activated
+ARIA/a11y
+Run lighthouse
