@@ -52,6 +52,7 @@ const router = new VueRouter({
 });
 
 // Authenticate users
+let vueLoaded = false;
 function getCurrentUser() {
   return new Promise((resolve, reject) => {
     const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
@@ -63,6 +64,16 @@ function getCurrentUser() {
 router.beforeEach(async (to, from, next) => {
   const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
   const signedIn = await getCurrentUser();
+
+  // Remove loader in index.html
+  if (!vueLoaded) {
+    // This is the first navigation of the page
+    document.querySelector("#loader").remove();
+
+    vueLoaded = true;
+  }
+
+  // Redirect to correct path
   if (requiresAuth && !signedIn) {
     // Only signed in users, redirect
     next("/signin");
