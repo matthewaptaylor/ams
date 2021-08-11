@@ -14,7 +14,7 @@
       </v-sheet>
       <v-sheet elevation="2" rounded class="pa-4">
         <h1>Sign in</h1>
-        <v-form v-model="valid" :disabled="loading">
+        <v-form v-model="valid" :disabled="loading" @submit.prevent="signIn">
           <v-text-field
             v-model="email"
             :rules="emailRules"
@@ -33,6 +33,7 @@
             :prepend-icon="lockIcon"
             required
           ></v-text-field>
+          <v-alert type="error" class="mt-4" v-if="error">{{ error }}</v-alert>
           <v-btn
             block
             color="primary"
@@ -40,7 +41,6 @@
             class="mt-4"
             :disabled="!valid || loading"
             :loading="loading"
-            @click="loading = true"
           >
             <v-icon left dark>{{ loginIcon }}</v-icon>
             Sign in
@@ -62,6 +62,7 @@
 import { mdiEmail } from "@mdi/js";
 import { mdiLock } from "@mdi/js";
 import { mdiLogin } from "@mdi/js";
+import firebase from "firebase/app";
 
 export default {
   data() {
@@ -71,6 +72,7 @@ export default {
       loginIcon: mdiLogin,
       loading: false,
       valid: false,
+      error: null,
       email: "",
       emailRules: [
         (v) => !!v || "E-mail is required",
@@ -82,6 +84,24 @@ export default {
         (v) => v.length >= 6 || "Password must be at least 6 characters",
       ],
     };
+  },
+  methods: {
+    signIn() {
+      this.loading = true;
+
+      firebase
+        .auth()
+        .signInWithEmailAndPassword(this.email, this.password)
+        .then(() => {
+          // Signed in
+          this.loading = false;
+          this.error = null;
+        })
+        .catch((error) => {
+          this.loading = false;
+          this.error = error.message;
+        });
+    },
   },
 };
 </script>
