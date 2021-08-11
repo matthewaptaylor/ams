@@ -3,7 +3,7 @@
     <div style="width: 100%; max-width: 25rem">
       <v-sheet elevation="2" rounded class="pa-4 mb-4">
         <img
-          src="@/assets/images/purple-on-transparent-logo.svg"
+          src="@/assets/images/sign-in-logo.svg"
           alt="Scouts Aotearoa logo"
           class="d-block mx-auto"
           style="max-height: 5rem"
