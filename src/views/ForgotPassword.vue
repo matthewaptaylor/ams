@@ -13,7 +13,7 @@
         </div>
       </v-sheet>
       <v-sheet elevation="2" rounded class="pa-4">
-        <h1>Sign in</h1>
+        <h1>Forgot password?</h1>
         <v-form v-model="valid" :disabled="loading">
           <v-text-field
             v-model="email"
@@ -22,15 +22,6 @@
             type="email"
             label="E-mail"
             :prepend-icon="emailIcon"
-            required
-          ></v-text-field>
-          <v-text-field
-            v-model="password"
-            :rules="passwordRules"
-            autocomplete="current-password"
-            type="password"
-            label="Password"
-            :prepend-icon="lockIcon"
             required
           ></v-text-field>
           <v-btn
@@ -42,16 +33,10 @@
             :loading="loading"
             @click="loading = true"
           >
-            <v-icon left dark>{{ loginIcon }}</v-icon>
-            Sign in
+            <v-icon left dark>{{ emailSendIcon }}</v-icon>
+            Send reset email
           </v-btn>
-          <div
-            class="d-flex justify-space-between flex-wrap mt-4"
-            style="gap: 1rem"
-          >
-            <v-btn plain to="forgotpassword">Forgot password?</v-btn>
-            <v-btn plain to="signup">Or sign up...</v-btn>
-          </div>
+          <v-btn plain to="signin" class="mt-4">Or sign in...</v-btn>
         </v-form>
       </v-sheet>
     </div>
@@ -60,26 +45,19 @@
 <style scoped></style>
 <script>
 import { mdiEmail } from "@mdi/js";
-import { mdiLock } from "@mdi/js";
-import { mdiLogin } from "@mdi/js";
+import { mdiEmailSend } from "@mdi/js";
 
 export default {
   data() {
     return {
       emailIcon: mdiEmail,
-      lockIcon: mdiLock,
-      loginIcon: mdiLogin,
+      emailSendIcon: mdiEmailSend,
       loading: false,
       valid: false,
       email: "",
       emailRules: [
         (v) => !!v || "E-mail is required",
         (v) => /.+@.+/.test(v) || "E-mail must be valid",
-      ],
-      password: "",
-      passwordRules: [
-        (v) => !!v || "Password is required",
-        (v) => v.length >= 6 || "Password must be at least 6 characters",
       ],
     };
   },

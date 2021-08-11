@@ -51,12 +51,10 @@
             :loading="loading"
             @click="loading = true"
           >
-            <v-icon left dark>{{ loginIcon }}</v-icon>
+            <v-icon left dark>{{ accountPlusIcon }}</v-icon>
             Sign up
           </v-btn>
-          <div class="d-flex justify-end flex-wrap mt-4" style="gap: 1rem">
-            <v-btn plain to="signin">Or sign in...</v-btn>
-          </div>
+          <v-btn plain to="signin" class="mt-4">Or sign in...</v-btn>
         </v-form>
       </v-sheet>
     </div>
@@ -66,14 +64,14 @@
 <script>
 import { mdiEmail } from "@mdi/js";
 import { mdiLock } from "@mdi/js";
-import { mdiLogin } from "@mdi/js";
+import { mdiAccountPlus } from "@mdi/js";
 
 export default {
   data() {
     return {
       emailIcon: mdiEmail,
       lockIcon: mdiLock,
-      loginIcon: mdiLogin,
+      accountPlusIcon: mdiAccountPlus,
       loading: false,
       valid: false,
       email: "",
