@@ -7,6 +7,7 @@
 <style>
 html {
   overflow: auto !important;
+  font-size: 18px !important;
 }
 #app {
   font-family: "Futura PT", Futura, "Trebuchet MS", Arial, sans-serif;
