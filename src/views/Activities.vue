@@ -47,8 +47,6 @@ export default {
       breadcrumbItems: [
         {
           text: "Activities",
-          disabled: true,
-          href: "/activities",
         },
       ],
       activityCategories: [

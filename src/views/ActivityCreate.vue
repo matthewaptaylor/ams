@@ -17,12 +17,10 @@ export default {
       breadcrumbItems: [
         {
           text: "Activities",
-          disabled: false,
           to: { name: "Activities" },
         },
         {
           text: "Create activity",
-          disabled: true,
         },
       ],
     };
