@@ -6,7 +6,7 @@ import SignIn from "../views/SignIn.vue";
 import SignUp from "../views/SignUp.vue";
 import ForgotPassword from "../views/ForgotPassword.vue";
 import AppRoot from "../views/AppRoot.vue";
-import Dashboard from "../views/Dashboard.vue";
+import Activities from "../views/Activities.vue";
 import ActivityCreate from "../views/ActivityCreate.vue";
 import Activity from "../views/Activity.vue";
 import NotFound from "../views/NotFound.vue";
@@ -23,17 +23,14 @@ const routes = [
       noAuth: false,
     },
     children: [
-      { path: "", name: "Dashboard", component: Dashboard },
+      { path: "", redirect: { name: "Activities" } },
+      { path: "activities", name: "Activities", component: Activities },
       {
-        path: "activity",
-        redirect: { name: "Dashboard" },
-      },
-      {
-        path: "activity/create",
+        path: "activities/create",
         name: "ActivityCreate",
         component: ActivityCreate,
       },
-      { path: "activity/:activityId", name: "Activity", component: Activity },
+      { path: "activities/:activityId", name: "Activity", component: Activity },
     ],
   },
   {

@@ -2,7 +2,7 @@
   <v-container>
     <Breadcrumbs :items="breadcrumbItems" />
     <v-sheet elevation="2" rounded class="pa-4">
-      <h1>Dashboard</h1>
+      <h1>Activities</h1>
       <v-list two-line>
         <template v-for="(category, categoryIndex) in activityCategories">
           <v-divider v-if="categoryIndex !== 0" :key="category.categoryIndex" />
@@ -13,7 +13,7 @@
           </v-subheader>
 
           <template v-for="activity in category.activities">
-            <v-list-item :to="`activity/${activity.id}`" :key="activity.id">
+            <v-list-item :to="`activities/${activity.id}`" :key="activity.id">
               <v-list-item-content>
                 <v-list-item-title v-html="activity.name"></v-list-item-title>
                 <v-list-item-subtitle>
@@ -46,9 +46,9 @@ export default {
     return {
       breadcrumbItems: [
         {
-          text: "Dashboard",
+          text: "Activities",
           disabled: true,
-          href: "/",
+          href: "/activities",
         },
       ],
       activityCategories: [

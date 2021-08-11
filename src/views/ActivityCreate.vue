@@ -16,14 +16,9 @@ export default {
     return {
       breadcrumbItems: [
         {
-          text: "Dashboard",
+          text: "Activities",
           disabled: false,
-          to: "/",
-        },
-        {
-          text: "Activity",
-          disabled: false,
-          to: "/activity",
+          to: { name: "Activities" },
         },
         {
           text: "Create activity",
