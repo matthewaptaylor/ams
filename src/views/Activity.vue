@@ -29,19 +29,21 @@
           <v-divider />
 
           <v-list dense nav>
-            <v-list-item
-              v-for="item in navItems"
-              :to="item.to"
-              :key="item.title"
-              link
-            >
-              <v-list-item-icon>
-                <v-icon>{{ item.icon }}</v-icon>
-              </v-list-item-icon>
-              <v-list-item-content>
-                <v-list-item-title>{{ item.title }}</v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
+            <v-list-item-group color="primary">
+              <v-list-item
+                v-for="item in navItems"
+                :to="item.to"
+                :key="item.title"
+                link
+              >
+                <v-list-item-icon>
+                  <v-icon>{{ item.icon }}</v-icon>
+                </v-list-item-icon>
+                <v-list-item-content>
+                  <v-list-item-title>{{ item.title }}</v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+            </v-list-item-group>
           </v-list>
         </v-navigation-drawer>
       </v-sheet>
@@ -52,7 +54,15 @@
 <style scoped></style>
 <script>
 import Breadcrumbs from "../components/Breadcrumbs.vue";
-import { mdiInformation } from "@mdi/js";
+import {
+  mdiInformation,
+  mdiClipboardList,
+  mdiAlert,
+  mdiCreditCard,
+  mdiCart,
+  mdiBagPersonal,
+  mdiFormSelect,
+} from "@mdi/js";
 
 export default {
   components: {
@@ -68,24 +78,24 @@ export default {
           to: { name: "ActivityOverview" },
           icon: mdiInformation,
         },
-        { title: "Plan", to: { name: "ActivityPlan" }, icon: mdiInformation },
-        { title: "RAMS", to: { name: "ActivityRAMS" }, icon: mdiInformation },
+        { title: "Plan", to: { name: "ActivityPlan" }, icon: mdiClipboardList },
+        { title: "RAMS", to: { name: "ActivityRAMS" }, icon: mdiAlert },
         {
           title: "Budget",
           to: { name: "ActivityBudget" },
-          icon: mdiInformation,
+          icon: mdiCreditCard,
         },
         {
           title: "Shopping List",
           to: { name: "ActivityShoppingList" },
-          icon: mdiInformation,
+          icon: mdiCart,
         },
         {
           title: "Gear List",
           to: { name: "ActivityGearList" },
-          icon: mdiInformation,
+          icon: mdiBagPersonal,
         },
-        { title: "AIF", to: { name: "ActivityAIF" }, icon: mdiInformation },
+        { title: "AIF", to: { name: "ActivityAIF" }, icon: mdiFormSelect },
       ],
       breadcrumbItems: [
         {
@@ -93,7 +103,7 @@ export default {
           to: { name: "Activities" },
         },
         {
-          text: "Sample activity",
+          text: "Wellington trip",
         },
       ],
     };

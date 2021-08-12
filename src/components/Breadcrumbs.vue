@@ -15,7 +15,15 @@
 
     <v-breadcrumbs :items="computedItems" class="pa-0">
       <template v-slot:divider>
-        <v-icon>{{ chevronRightIcon }}</v-icon>
+        <v-icon class="mx-n2">{{ chevronRightIcon }}</v-icon>
+      </template>
+      <template v-slot:item="{ item }">
+        <v-breadcrumbs-item
+          v-bind="item"
+          class="px-2"
+          style="background: rgb(255 255 255 / 75%); border-radius: 1rem"
+          >{{ item.text }}</v-breadcrumbs-item
+        >
       </template>
     </v-breadcrumbs>
   </div>
