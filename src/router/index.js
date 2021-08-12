@@ -9,6 +9,13 @@ import AppRoot from "../views/AppRoot.vue";
 import Activities from "../views/Activities.vue";
 import ActivityCreate from "../views/ActivityCreate.vue";
 import Activity from "../views/Activity.vue";
+import ActivityOverview from "../views/ActivityOverview.vue";
+import ActivityPlan from "../views/ActivityPlan.vue";
+import ActivityRAMS from "../views/ActivityRAMS.vue";
+import ActivityBudget from "../views/ActivityBudget.vue";
+import ActivityShoppingList from "../views/ActivityShoppingList.vue";
+import ActivityGearList from "../views/ActivityGearList.vue";
+import ActivityAIF from "../views/ActivityAIF.vue";
 import NotFound from "../views/NotFound.vue";
 
 Vue.use(VueRouter);
@@ -16,7 +23,6 @@ Vue.use(VueRouter);
 const routes = [
   {
     path: "/",
-    name: "AppRoot",
     component: AppRoot,
     meta: {
       requiresAuth: true,
@@ -30,12 +36,52 @@ const routes = [
         name: "ActivityCreate",
         component: ActivityCreate,
       },
-      { path: "activities/:activityId", name: "Activity", component: Activity },
+      {
+        path: "activities/:activityId",
+        component: Activity,
+        children: [
+          { path: "", redirect: { name: "ActivityOverview" } },
+          {
+            path: "overview",
+            name: "ActivityOverview",
+            component: ActivityOverview,
+          },
+          {
+            path: "plan",
+            name: "ActivityPlan",
+            component: ActivityPlan,
+          },
+          {
+            path: "rams",
+            name: "ActivityRAMS",
+            component: ActivityRAMS,
+          },
+          {
+            path: "budget",
+            name: "ActivityBudget",
+            component: ActivityBudget,
+          },
+          {
+            path: "shoppinglist",
+            name: "ActivityShoppingList",
+            component: ActivityShoppingList,
+          },
+          {
+            path: "gearlist",
+            name: "ActivityGearList",
+            component: ActivityGearList,
+          },
+          {
+            path: "aif",
+            name: "ActivityAIF",
+            component: ActivityAIF,
+          },
+        ],
+      },
     ],
   },
   {
     path: "/",
-    name: "SignInRoot",
     component: SignInRoot,
     meta: {
       requiresAuth: false,
