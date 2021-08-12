@@ -7,7 +7,6 @@ import SignUp from "../views/signin/SignUp.vue";
 import ForgotPassword from "../views/signin/ForgotPassword.vue";
 import AppRoot from "../views/app/AppRoot.vue";
 import Activities from "../views/app/Activities.vue";
-import ActivityCreate from "../views/app/ActivityCreate.vue";
 import Activity from "../views/app/Activity.vue";
 import ActivityOverview from "../views/app/ActivityOverview.vue";
 import ActivityPlan from "../views/app/ActivityPlan.vue";
@@ -31,11 +30,6 @@ const routes = [
     children: [
       { path: "", redirect: { name: "Activities" } },
       { path: "activities", name: "Activities", component: Activities },
-      {
-        path: "activities/create",
-        name: "ActivityCreate",
-        component: ActivityCreate,
-      },
       {
         path: "activities/:activityId",
         component: Activity,

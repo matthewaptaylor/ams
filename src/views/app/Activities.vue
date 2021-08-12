@@ -2,7 +2,13 @@
   <v-container>
     <Breadcrumbs :items="breadcrumbItems" />
     <v-sheet elevation="2" rounded class="pa-4">
-      <h1>Activities</h1>
+      <div
+        class="d-flex justify-space-between align-center flex-wrap"
+        style="column-gap: 1rem; row-gap: 0.5rem"
+      >
+        <h1>Activities</h1>
+        <ActivityCreate />
+      </div>
       <v-list two-line>
         <template v-for="(category, categoryIndex) in activityCategories">
           <v-divider v-if="categoryIndex !== 0" :key="category.categoryIndex" />
@@ -13,7 +19,10 @@
           </v-subheader>
 
           <template v-for="activity in category.activities">
-            <v-list-item :to="`activities/${activity.id}`" :key="activity.id">
+            <v-list-item
+              :to="{ name: 'ActivityOverview', params: { activityId: 1 } }"
+              :key="activity.id"
+            >
               <v-list-item-content>
                 <v-list-item-title v-html="activity.name"></v-list-item-title>
                 <v-list-item-subtitle>
@@ -37,10 +46,12 @@
 <script>
 import { mdiAccount, mdiAccountSupervisor, mdiEye } from "@mdi/js";
 import Breadcrumbs from "../../components/app/Breadcrumbs.vue";
+import ActivityCreate from "../../components/app/ActivityCreate.vue";
 
 export default {
   components: {
     Breadcrumbs,
+    ActivityCreate,
   },
   data() {
     return {
