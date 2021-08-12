@@ -36,7 +36,7 @@
 <style scoped></style>
 <script>
 import { mdiAccount, mdiAccountSupervisor, mdiEye } from "@mdi/js";
-import Breadcrumbs from "../components/Breadcrumbs.vue";
+import Breadcrumbs from "../../components/app/Breadcrumbs.vue";
 
 export default {
   components: {

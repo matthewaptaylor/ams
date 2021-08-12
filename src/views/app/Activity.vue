@@ -9,7 +9,7 @@
         </v-chip>
       </v-chip-group>
     </v-sheet>
-    <div class="d-flex flex-wrap" style="gap: 1rem">
+    <div class="d-flex flex-wrap align-start" style="gap: 1rem">
       <v-sheet
         elevation="2"
         rounded
@@ -53,7 +53,7 @@
 </template>
 <style scoped></style>
 <script>
-import Breadcrumbs from "../components/Breadcrumbs.vue";
+import Breadcrumbs from "../../components/app/Breadcrumbs.vue";
 import {
   mdiInformation,
   mdiClipboardList,
