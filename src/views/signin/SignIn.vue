@@ -62,7 +62,7 @@
             :rules="emailRules"
             autocomplete="username"
             type="email"
-            label="E-mail"
+            label="Email"
             :prepend-icon="emailIcon"
             required
           ></v-text-field>
@@ -116,7 +116,7 @@ export default {
       error: null,
       email: "",
       emailRules: [
-        (v) => !!v || "E-mail is required",
+        (v) => !!v || "Email is required",
         (v) => /.+@.+/.test(v) || "E-mail must be valid",
       ],
       password: "",
