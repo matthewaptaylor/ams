@@ -31,7 +31,7 @@
         </v-list>
       </v-menu>
     </v-app-bar>
-    <v-main>
+    <v-main class="mx-auto" style="max-width: 1185px">
       <router-view></router-view>
     </v-main>
   </div>
