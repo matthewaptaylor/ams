@@ -8,7 +8,7 @@
 
 <style scoped>
 #sign-in-root {
-  min-height: 100vh;
+  min-height: 100%;
   background-image: url("../../assets/images/purple-background.svg");
   background-color: var(--v-primary-base);
   background-size: cover;

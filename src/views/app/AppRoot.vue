@@ -31,7 +31,7 @@
         </v-list>
       </v-menu>
     </v-app-bar>
-    <v-main class="mx-auto" style="max-width: 1185px">
+    <v-main class="mx-auto">
       <router-view></router-view>
     </v-main>
   </div>
@@ -39,7 +39,7 @@
 
 <style scoped>
 #app-root {
-  min-height: 100vh;
+  min-height: 100%;
   background-image: url("../../assets/images/white-background.svg");
   background-size: cover;
   background-position: center;
