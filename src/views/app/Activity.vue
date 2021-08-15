@@ -2,7 +2,7 @@
   <v-container>
     <Breadcrumbs :items="breadcrumbItems" />
     <NavMobile :title="activityName" :items="navItems" />
-    <div class="d-flex flex-wrap align-start" style="gap: 1rem">
+    <div class="d-flex align-start" style="gap: 1rem">
       <NavDesktop
         :title="activityName"
         :subtitle="activityDates"
