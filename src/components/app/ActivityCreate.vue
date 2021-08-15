@@ -26,11 +26,11 @@
             required
           ></v-text-field>
 
-          <div class="d-flex justify-end flex-wrap mt-4">
+          <div class="d-flex justify-space-between flex-wrap mt-4">
+            <v-btn plain @click="dialog = false"> Cancel </v-btn>
             <v-btn
               color="primary"
               type="submit"
-              class="ms-auto mt-4"
               :disabled="!valid || loading"
               :loading="loading"
             >
