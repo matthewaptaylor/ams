@@ -4,7 +4,7 @@
     <v-form
       v-model="valid"
       :disabled="loading"
-      @submit.prevent="submit"
+      @submit.prevent="save"
       class="mt-3"
     >
       <v-row>
@@ -18,11 +18,13 @@
           ></v-text-field>
         </v-col>
       </v-row>
+
       <v-row>
         <v-col cols="12" sm="6" md="8" lg="6" class="py-0">
           <v-text-field label="Location" value="" type="text"></v-text-field>
         </v-col>
       </v-row>
+
       <v-row>
         <v-col cols="6" sm="3" md="4" lg="3" class="py-0">
           <v-dialog
@@ -46,9 +48,11 @@
             </template>
             <v-date-picker v-model="startDate" scrollable>
               <v-spacer></v-spacer>
+
               <v-btn text color="primary" @click="startDateModal = false">
                 Cancel
               </v-btn>
+
               <v-btn
                 text
                 color="primary"
@@ -59,6 +63,7 @@
             </v-date-picker>
           </v-dialog>
         </v-col>
+
         <v-col cols="6" sm="3" md="4" lg="3" class="py-0">
           <v-dialog
             ref="startTimeDialog"
@@ -77,11 +82,14 @@
                 v-on="on"
               ></v-text-field>
             </template>
+
             <v-time-picker format="24hr" v-model="startTime" full-width>
               <v-spacer></v-spacer>
+
               <v-btn text color="primary" @click="startTimeModal = false">
                 Cancel
               </v-btn>
+
               <v-btn
                 text
                 color="primary"
@@ -93,6 +101,7 @@
           </v-dialog>
         </v-col>
       </v-row>
+
       <v-row>
         <v-col cols="6" sm="3" md="4" lg="3" class="py-0">
           <v-dialog
@@ -116,9 +125,11 @@
             </template>
             <v-date-picker v-model="endDate" scrollable>
               <v-spacer></v-spacer>
+
               <v-btn text color="primary" @click="endDateModal = false">
                 Cancel
               </v-btn>
+
               <v-btn
                 text
                 color="primary"
@@ -129,6 +140,7 @@
             </v-date-picker>
           </v-dialog>
         </v-col>
+
         <v-col cols="6" sm="3" md="4" lg="3" class="py-0">
           <v-dialog
             ref="endTimeDialog"
@@ -149,9 +161,11 @@
             </template>
             <v-time-picker format="24hr" v-model="endTime" full-width>
               <v-spacer></v-spacer>
+
               <v-btn text color="primary" @click="endTimeModal = false">
                 Cancel
               </v-btn>
+
               <v-btn
                 text
                 color="primary"
@@ -163,6 +177,7 @@
           </v-dialog>
         </v-col>
       </v-row>
+
       <v-btn
         color="primary"
         type="submit"
@@ -198,7 +213,7 @@ export default {
     };
   },
   methods: {
-    submit() {},
+    save() {},
   },
 };
 </script>

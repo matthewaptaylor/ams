@@ -14,3 +14,5 @@ Test on other browsers
 v-autocomplete for searching emails to change activity leader 
 Check unneccesay auth, network requests
 Use v-if, not display none, fow switching between mobile/desktop nav
+Do something about h1 styles
+Address security vulnerabilities
