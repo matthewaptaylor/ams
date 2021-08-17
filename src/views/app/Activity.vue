@@ -1,12 +1,17 @@
 <template>
   <v-container>
     <Breadcrumbs :items="breadcrumbItems" />
-    <NavMobile :title="activityName" :items="navItems" />
+    <NavMobile
+      :title="activityName"
+      :items="navItems"
+      v-if="$vuetify.breakpoint.mobile"
+    />
     <div class="d-flex align-start" style="gap: 1rem">
       <NavDesktop
         :title="activityName"
         :subtitle="activityDates"
         :items="navItems"
+        v-if="!$vuetify.breakpoint.mobile"
       />
       <router-view></router-view>
     </div>

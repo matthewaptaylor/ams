@@ -9,7 +9,7 @@
         draggable="false"
       />
 
-      <v-app-bar-title class="d-none d-md-block">
+      <v-app-bar-title v-if="!$vuetify.breakpoint.mobile">
         Activity Management System
       </v-app-bar-title>
 

@@ -1,5 +1,5 @@
 <template>
-  <v-sheet elevation="2" rounded class="d-none d-md-block" style="width: 14rem">
+  <v-sheet elevation="2" rounded style="width: 14rem">
     <v-navigation-drawer floating permanent class="rounded">
       <v-list-item>
         <v-list-item-content>

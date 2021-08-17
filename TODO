@@ -1,15 +1,11 @@
 Implement password reset feature using firebase admin
 Preload fonts and images
-100vh forces scroll on chrome mobile, address bar takes up space
 Add logo and customise google login screen
 ARIA/a11y
 Run lighthouse
-Add 404 page
 Implement document title changing
-Disable user select on loading screen, logo, other elements?
 Test on other browsers
 v-autocomplete for searching emails to change activity leader 
 Check unneccesay auth, network requests
-Use v-if, not display none, fow switching between mobile/desktop nav
 Address security vulnerabilities
 Implement reload page/get data from server again (refresh icon button that appears in sidebar item? What about desktop nav?)

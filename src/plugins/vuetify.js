@@ -27,4 +27,7 @@ export default new Vuetify({
   icons: {
     iconfont: "mdiSvg",
   },
+  breakpoint: {
+    mobileBreakpoint: "sm",
+  },
 });
