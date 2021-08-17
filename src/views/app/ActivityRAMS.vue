@@ -24,7 +24,7 @@
             <th>Risk Level</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody class="can-select">
           <tr v-for="risk in risks" :key="risk.id" class="pt-4">
             <td>{{ risk.category }}</td>
             <td>

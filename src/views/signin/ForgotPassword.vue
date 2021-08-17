@@ -7,6 +7,7 @@
           alt="Scouts Aotearoa logo"
           class="d-block mx-auto pa-2"
           style="height: 4rem; max-width: 100%"
+          draggable="false"
         />
         <div class="pa-2 text-center" style="font-size: 1.25rem">
           Activity Management System

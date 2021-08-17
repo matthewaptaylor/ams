@@ -6,6 +6,7 @@
         src="@/assets/images/app-logo.svg"
         class="d-none d-md-block me-4 py-2"
         style="height: 100%"
+        draggable="false"
       />
 
       <v-app-bar-title>Activity Management System</v-app-bar-title>
