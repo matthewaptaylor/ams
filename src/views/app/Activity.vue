@@ -64,8 +64,8 @@ export default {
       ],
       breadcrumbItems: [
         {
-          text: "Activities",
-          to: { name: "Activities" },
+          text: "Activity Planner",
+          to: { name: "ActivityPlanner" },
         },
         {
           text: "Wellington trip",

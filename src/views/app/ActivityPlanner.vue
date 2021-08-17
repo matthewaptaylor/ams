@@ -57,7 +57,7 @@ export default {
     return {
       breadcrumbItems: [
         {
-          text: "Activities",
+          text: "Activity Planner",
         },
       ],
       activityCategories: [

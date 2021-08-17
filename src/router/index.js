@@ -6,7 +6,7 @@ import SignIn from "../views/signin/SignIn.vue";
 import SignUp from "../views/signin/SignUp.vue";
 import ForgotPassword from "../views/signin/ForgotPassword.vue";
 import AppRoot from "../views/app/AppRoot.vue";
-import Activities from "../views/app/Activities.vue";
+import ActivityPlanner from "../views/app/ActivityPlanner.vue";
 import Activity from "../views/app/Activity.vue";
 import ActivityOverview from "../views/app/ActivityOverview.vue";
 import ActivityPlan from "../views/app/ActivityPlan.vue";
@@ -29,9 +29,13 @@ const routes = [
     },
     children: [
       { path: "", redirect: { name: "Activities" } },
-      { path: "activities", name: "Activities", component: Activities },
       {
-        path: "activities/:activityId",
+        path: "activityplanner",
+        name: "ActivityPlanner",
+        component: ActivityPlanner,
+      },
+      {
+        path: "activityplanner/:activityId",
         component: Activity,
         children: [
           { path: "", redirect: { name: "ActivityOverview" } },
