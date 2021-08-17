@@ -1,6 +1,6 @@
 <template>
   <v-sheet elevation="2" rounded class="flex-grow-1 pa-4">
-    <h1>Overview</h1>
+    <h1 class="display-1">Overview</h1>
     <v-form
       v-model="valid"
       :disabled="loading"

@@ -13,7 +13,7 @@
         </div>
       </v-sheet>
       <v-sheet elevation="2" rounded class="pa-4">
-        <h1>Forgot password?</h1>
+        <h1 class="display-1">Forgot password?</h1>
         <v-form v-model="valid" :disabled="loading">
           <v-text-field
             v-model="email"

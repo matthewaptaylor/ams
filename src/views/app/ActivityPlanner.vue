@@ -6,7 +6,7 @@
         class="d-flex justify-space-between align-center flex-wrap"
         style="column-gap: 1rem; row-gap: 0.5rem"
       >
-        <h1>Activity Planner</h1>
+        <h1 class="display-1">Activity Planner</h1>
         <ActivityCreate />
       </div>
       <v-list two-line>

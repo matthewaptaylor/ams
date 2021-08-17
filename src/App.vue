@@ -7,10 +7,8 @@
 <style>
 html {
   overflow: auto !important;
-  font-size: 18px !important;
 }
 #app {
-  font-family: "Futura PT", Futura, "Trebuchet MS", Arial, sans-serif;
   line-height: 1.15;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

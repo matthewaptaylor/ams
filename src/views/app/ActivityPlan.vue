@@ -1,6 +1,6 @@
 <template>
   <v-sheet elevation="2" rounded class="flex-grow-1 pa-4">
-    <h1>Plan</h1>
+    <h1 class="display-1">Plan</h1>
     <Editor class="mt-4" />
 
     <v-btn

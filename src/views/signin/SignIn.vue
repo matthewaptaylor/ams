@@ -13,7 +13,7 @@
         </div>
       </v-sheet>
       <v-sheet elevation="2" rounded class="pa-4">
-        <h1>Sign in</h1>
+        <h1 class="display-1">Sign in</h1>
         <v-btn block color="blue" dark class="mt-4" @click="signInWithGoogle">
           <v-icon left dark>{{ googleIcon }}</v-icon>
           Sign in with Google

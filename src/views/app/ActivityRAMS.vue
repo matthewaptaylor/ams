@@ -9,7 +9,7 @@
       class="d-flex justify-space-between align-center flex-wrap"
       style="column-gap: 1rem; row-gap: 0.5rem"
     >
-      <h1>RAMS</h1>
+      <h1 class="display-1">RAMS</h1>
 
       <ActivityRAMSRisk />
     </div>
