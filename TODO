@@ -16,3 +16,5 @@ Check unneccesay auth, network requests
 Use v-if, not display none, fow switching between mobile/desktop nav
 Do something about h1 styles
 Address security vulnerabilities
+Make background position attached/stay static when scrolling
+Implement reload page/get data from server again (refresh icon button that appears in sidebar item? What about desktop nav?)

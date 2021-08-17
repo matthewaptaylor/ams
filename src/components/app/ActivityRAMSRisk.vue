@@ -194,7 +194,7 @@ export default {
 
         if (levelNumber < 6) {
           return "low";
-        } else if (levelNumber < 16) {
+        } else if (levelNumber < 12) {
           return "medium";
         } else {
           return "high";
