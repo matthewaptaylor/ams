@@ -28,7 +28,7 @@ const routes = [
       noAuth: false,
     },
     children: [
-      { path: "", redirect: { name: "Activities" } },
+      { path: "", redirect: { name: "ActivityPlanner" } },
       {
         path: "activityplanner",
         name: "ActivityPlanner",

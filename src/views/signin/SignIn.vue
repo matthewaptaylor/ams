@@ -1,14 +1,14 @@
 <template>
   <v-container class="fill-height align-content-center justify-center">
     <div style="width: 100%; max-width: 25rem">
-      <v-sheet elevation="2" rounded class="pa-4 mb-4">
+      <v-sheet elevation="2" rounded class="pa-2 mb-4">
         <img
           src="@/assets/images/sign-in-logo.svg"
           alt="Scouts Aotearoa logo"
-          class="d-block mx-auto"
-          style="max-height: 5rem"
+          class="d-block mx-auto pa-2"
+          style="height: 4rem; max-width: 100%"
         />
-        <div class="text-center" style="font-size: 1.25rem">
+        <div class="pa-2 text-center" style="font-size: 1.25rem">
           Activity Management System
         </div>
       </v-sheet>
