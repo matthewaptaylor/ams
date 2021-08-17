@@ -122,7 +122,8 @@ router.beforeEach(async (to, from, next) => {
   // Remove loader in index.html
   if (!vueLoaded) {
     // This is the first navigation of the page
-    document.querySelector("#loader").remove();
+    document.querySelector("#loaderOverlay").remove();
+    document.documentElement.style.overflow = "";
     vueLoaded = true;
   }
 

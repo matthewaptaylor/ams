@@ -2,14 +2,11 @@ Implement password reset feature using firebase admin
 Preload fonts and images
 100vh forces scroll on chrome mobile, address bar takes up space
 Add logo and customise google login screen
-Disable scroll on body when loading screen is activated
 ARIA/a11y
 Run lighthouse
 Add 404 page
 Implement document title changing
 Disable user select on loading screen, logo, other elements?
-Make login logo scout purple
-Optimise svg files
 Test on other browsers
 v-autocomplete for searching emails to change activity leader 
 Check unneccesay auth, network requests
