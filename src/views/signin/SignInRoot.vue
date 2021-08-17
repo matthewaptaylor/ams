@@ -13,5 +13,6 @@
   background-color: var(--v-primary-base);
   background-size: cover;
   background-position: center;
+  background-attachment: fixed;
 }
 </style>

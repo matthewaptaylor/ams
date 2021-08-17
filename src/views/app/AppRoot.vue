@@ -43,6 +43,7 @@
   background-image: url("../../assets/images/white-background.svg");
   background-size: cover;
   background-position: center;
+  background-attachment: fixed;
 }
 </style>
 
