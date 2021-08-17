@@ -1,10 +1,11 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import firebase from "firebase/app";
-import SignInRoot from "../views/signin/SignInRoot.vue";
-import SignIn from "../views/signin/SignIn.vue";
-import SignUp from "../views/signin/SignUp.vue";
-import ForgotPassword from "../views/signin/ForgotPassword.vue";
+import GeneralRoot from "../views/general/GeneralRoot.vue";
+import GeneralSignIn from "../views/general/GeneralSignIn.vue";
+import GeneralSignUp from "../views/general/GeneralSignUp.vue";
+import GeneralForgotPassword from "../views/general/GeneralForgotPassword.vue";
+import GeneralNotFound from "../views/general/GeneralNotFound.vue";
 import AppRoot from "../views/app/AppRoot.vue";
 import ActivityPlanner from "../views/app/ActivityPlanner.vue";
 import Activity from "../views/app/Activity.vue";
@@ -15,7 +16,6 @@ import ActivityBudget from "../views/app/ActivityBudget.vue";
 import ActivityShoppingList from "../views/app/ActivityShoppingList.vue";
 import ActivityGearList from "../views/app/ActivityGearList.vue";
 import ActivityAIF from "../views/app/ActivityAIF.vue";
-import NotFound from "../views/NotFound.vue";
 
 Vue.use(VueRouter);
 
@@ -80,22 +80,22 @@ const routes = [
   },
   {
     path: "/",
-    component: SignInRoot,
+    component: GeneralRoot,
     meta: {
       requiresAuth: false,
       noAuth: true,
     },
     children: [
-      { path: "signin", name: "SignIn", component: SignIn },
-      { path: "signup", name: "SignUp", component: SignUp },
+      { path: "signin", name: "SignIn", component: GeneralSignIn },
+      { path: "signup", name: "SignUp", component: GeneralSignUp },
       {
         path: "forgotpassword",
         name: "ForgotPassword",
-        component: ForgotPassword,
+        component: GeneralForgotPassword,
       },
+      { path: "*", name: "GeneralNotFound", component: GeneralNotFound },
     ],
   },
-  { path: "*", component: NotFound },
 ];
 
 const router = new VueRouter({

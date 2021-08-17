@@ -4,12 +4,14 @@
       <img
         alt="Scouts Aotearoa logo"
         src="@/assets/images/app-logo.svg"
-        class="d-none d-md-block me-4 py-2"
+        class="me-4 py-2"
         style="height: 100%"
         draggable="false"
       />
 
-      <v-app-bar-title>Activity Management System</v-app-bar-title>
+      <v-app-bar-title class="d-none d-md-block">
+        Activity Management System
+      </v-app-bar-title>
 
       <v-spacer></v-spacer>
 
