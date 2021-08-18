@@ -10,3 +10,5 @@ Address security vulnerabilities
 Implement reload page/get data from server again (refresh icon button that appears in sidebar item? What about desktop nav?)
 COnvert firestore/everything else to production mode
 Make sure database rules are set correctly and are secure
+Customise firebase emails
+Customise login/forgot/signup error messages

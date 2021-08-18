@@ -65,7 +65,7 @@ td {
 
 <script>
 import { mdiInformationOutline } from "@mdi/js";
-import ActivityRAMSRisk from "../../components/app/ActivityRAMSRisk.vue";
+import ActivityRAMSRisk from "../../../components/app/ActivityRAMSRisk.vue";
 
 export default {
   components: { ActivityRAMSRisk },

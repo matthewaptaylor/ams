@@ -28,9 +28,9 @@ import {
   mdiBagPersonal,
   mdiFormSelect,
 } from "@mdi/js";
-import Breadcrumbs from "../../components/app/Breadcrumbs.vue";
-import NavMobile from "../../components/app/NavMobile.vue";
-import NavDesktop from "../../components/app/NavDesktop.vue";
+import Breadcrumbs from "../../../components/app/Breadcrumbs.vue";
+import NavMobile from "../../../components/app/NavMobile.vue";
+import NavDesktop from "../../../components/app/NavDesktop.vue";
 
 export default {
   components: {

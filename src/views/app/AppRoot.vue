@@ -25,6 +25,12 @@
           <v-list-item>
             <v-list-item-title>Kia ora!</v-list-item-title>
           </v-list-item>
+          <v-list-item :to="{ name: 'Account' }">
+            <v-list-item-icon>
+              <v-icon>{{ accountIcon }}</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>My account</v-list-item-title>
+          </v-list-item>
           <v-list-item @click="signOut">
             <v-list-item-icon>
               <v-icon>{{ logoutIcon }}</v-icon>

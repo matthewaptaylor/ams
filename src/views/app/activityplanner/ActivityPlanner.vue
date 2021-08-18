@@ -45,8 +45,8 @@
 <style scoped></style>
 <script>
 import { mdiAccount, mdiAccountSupervisor, mdiEye } from "@mdi/js";
-import Breadcrumbs from "../../components/app/Breadcrumbs.vue";
-import ActivityCreate from "../../components/app/ActivityCreate.vue";
+import Breadcrumbs from "../../../components/app/Breadcrumbs.vue";
+import ActivityCreate from "../../../components/app/ActivityCreate.vue";
 
 export default {
   components: {

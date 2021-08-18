@@ -8,15 +8,15 @@ import GeneralForgotPassword from "../views/general/GeneralForgotPassword.vue";
 import GeneralResetPassword from "../views/general/GeneralResetPassword.vue";
 import GeneralNotFound from "../views/general/GeneralNotFound.vue";
 import AppRoot from "../views/app/AppRoot.vue";
-import ActivityPlanner from "../views/app/ActivityPlanner.vue";
-import Activity from "../views/app/Activity.vue";
-import ActivityOverview from "../views/app/ActivityOverview.vue";
-import ActivityPlan from "../views/app/ActivityPlan.vue";
-import ActivityRAMS from "../views/app/ActivityRAMS.vue";
-import ActivityBudget from "../views/app/ActivityBudget.vue";
-import ActivityShoppingList from "../views/app/ActivityShoppingList.vue";
-import ActivityGearList from "../views/app/ActivityGearList.vue";
-import ActivityAIF from "../views/app/ActivityAIF.vue";
+import ActivityPlanner from "../views/app/activityplanner/ActivityPlanner.vue";
+import Activity from "../views/app/activityplanner/Activity.vue";
+import ActivityOverview from "../views/app/activityplanner/ActivityOverview.vue";
+import ActivityPlan from "../views/app/activityplanner/ActivityPlan.vue";
+import ActivityRAMS from "../views/app/activityplanner/ActivityRAMS.vue";
+import ActivityBudget from "../views/app/activityplanner/ActivityBudget.vue";
+import ActivityShoppingList from "../views/app/activityplanner/ActivityShoppingList.vue";
+import ActivityGearList from "../views/app/activityplanner/ActivityGearList.vue";
+import ActivityAIF from "../views/app/activityplanner/ActivityAIF.vue";
 
 Vue.use(VueRouter);
 
