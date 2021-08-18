@@ -19,7 +19,6 @@
 <style scoped></style>
 <script>
 import { mdiAccount, mdiAccountKey, mdiKey, mdiDelete } from "@mdi/js";
-import firebase from "firebase/app";
 import Breadcrumbs from "../../../components/app/Breadcrumbs.vue";
 import NavMobile from "../../../components/app/NavMobile.vue";
 import NavDesktop from "../../../components/app/NavDesktop.vue";
@@ -60,9 +59,6 @@ export default {
         },
       ],
     };
-  },
-  mounted() {
-    console.log(firebase.auth().currentUser);
   },
 };
 </script>

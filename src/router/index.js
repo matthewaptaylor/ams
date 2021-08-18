@@ -202,7 +202,6 @@ router.beforeEach(async (to, from, next) => {
     vueLoaded = true;
   }
 
-  console.log(requiresAuth, signedIn);
   // Redirect to correct pathsignedIn
   if (requiresAuth && !signedIn) {
     // Only signed in users, redirect
