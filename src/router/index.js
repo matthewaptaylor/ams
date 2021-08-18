@@ -5,6 +5,7 @@ import GeneralRoot from "../views/general/GeneralRoot.vue";
 import GeneralSignIn from "../views/general/GeneralSignIn.vue";
 import GeneralSignUp from "../views/general/GeneralSignUp.vue";
 import GeneralForgotPassword from "../views/general/GeneralForgotPassword.vue";
+import GeneralResetPassword from "../views/general/GeneralResetPassword.vue";
 import GeneralNotFound from "../views/general/GeneralNotFound.vue";
 import AppRoot from "../views/app/AppRoot.vue";
 import ActivityPlanner from "../views/app/ActivityPlanner.vue";
@@ -86,12 +87,27 @@ const routes = [
       noAuth: true,
     },
     children: [
-      { path: "signin", name: "SignIn", component: GeneralSignIn },
-      { path: "signup", name: "SignUp", component: GeneralSignUp },
+      { path: "signin", name: "GeneralSignIn", component: GeneralSignIn },
+      { path: "signup", name: "GeneralSignUp", component: GeneralSignUp },
       {
         path: "forgotpassword",
-        name: "ForgotPassword",
+        name: "GeneralForgotPassword",
         component: GeneralForgotPassword,
+      },
+    ],
+  },
+  {
+    path: "/",
+    component: GeneralRoot,
+    meta: {
+      requiresAuth: false,
+      noAuth: false,
+    },
+    children: [
+      {
+        path: "resetpassword",
+        name: "GeneralResetPassword",
+        component: GeneralResetPassword,
       },
       { path: "*", name: "GeneralNotFound", component: GeneralNotFound },
     ],
@@ -127,7 +143,8 @@ router.beforeEach(async (to, from, next) => {
     vueLoaded = true;
   }
 
-  // Redirect to correct path
+  console.log(requiresAuth, signedIn);
+  // Redirect to correct pathsignedIn
   if (requiresAuth && !signedIn) {
     // Only signed in users, redirect
     next("/signin");
