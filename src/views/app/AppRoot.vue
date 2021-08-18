@@ -25,7 +25,7 @@
           <v-list-item>
             <v-list-item-title>Kia ora!</v-list-item-title>
           </v-list-item>
-          <v-list-item :to="{ name: 'Account' }">
+          <v-list-item :to="{ name: 'AccountProfile' }">
             <v-list-item-icon>
               <v-icon>{{ accountIcon }}</v-icon>
             </v-list-item-icon>

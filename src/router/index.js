@@ -9,6 +9,10 @@ import GeneralResetPassword from "../views/general/GeneralResetPassword.vue";
 import GeneralNotFound from "../views/general/GeneralNotFound.vue";
 import AppRoot from "../views/app/AppRoot.vue";
 import Account from "../views/app/account/Account.vue";
+import AccountProfile from "../views/app/account/AccountProfile.vue";
+import AccountLoginMethods from "../views/app/account/AccountLoginMethods.vue";
+import AccountResetPassword from "../views/app/account/AccountResetPassword.vue";
+import AccountDeleteAccount from "../views/app/account/AccountDeleteAccount.vue";
 import ActivityPlanner from "../views/app/activityplanner/ActivityPlanner.vue";
 import Activity from "../views/app/activityplanner/Activity.vue";
 import ActivityOverview from "../views/app/activityplanner/ActivityOverview.vue";
@@ -80,8 +84,30 @@ const routes = [
       },
       {
         path: "account",
-        name: "Account",
         component: Account,
+        children: [
+          { path: "", redirect: { name: "AccountProfile" } },
+          {
+            path: "profile",
+            name: "AccountProfile",
+            component: AccountProfile,
+          },
+          {
+            path: "loginmethods",
+            name: "AccountLoginMethods",
+            component: AccountLoginMethods,
+          },
+          {
+            path: "resetpassword",
+            name: "AccountResetPassword",
+            component: AccountResetPassword,
+          },
+          {
+            path: "delete",
+            name: "AccountDeleteAccount",
+            component: AccountDeleteAccount,
+          },
+        ],
       },
     ],
   },

@@ -12,3 +12,4 @@ COnvert firestore/everything else to production mode
 Make sure database rules are set correctly and are secure
 Customise firebase emails
 Customise login/forgot/signup error messages
+Sign in/up show/hide password feature

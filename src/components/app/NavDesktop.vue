@@ -6,7 +6,9 @@
           <v-list-item-title class="text-h6">
             {{ title }}
           </v-list-item-title>
-          <v-list-item-subtitle>{{ subtitle }}</v-list-item-subtitle>
+          <v-list-item-subtitle v-if="subtitle">
+            {{ subtitle }}
+          </v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
 
