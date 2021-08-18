@@ -8,6 +8,7 @@ import GeneralForgotPassword from "../views/general/GeneralForgotPassword.vue";
 import GeneralResetPassword from "../views/general/GeneralResetPassword.vue";
 import GeneralNotFound from "../views/general/GeneralNotFound.vue";
 import AppRoot from "../views/app/AppRoot.vue";
+import Account from "../views/app/account/Account.vue";
 import ActivityPlanner from "../views/app/activityplanner/ActivityPlanner.vue";
 import Activity from "../views/app/activityplanner/Activity.vue";
 import ActivityOverview from "../views/app/activityplanner/ActivityOverview.vue";
@@ -77,39 +78,71 @@ const routes = [
           },
         ],
       },
+      {
+        path: "account",
+        name: "Account",
+        component: Account,
+      },
     ],
   },
   {
     path: "/",
     component: GeneralRoot,
-    meta: {
-      requiresAuth: false,
-      noAuth: true,
-    },
     children: [
-      { path: "signin", name: "GeneralSignIn", component: GeneralSignIn },
-      { path: "signup", name: "GeneralSignUp", component: GeneralSignUp },
+      {
+        path: "signin",
+        name: "GeneralSignIn",
+        component: GeneralSignIn,
+        meta: {
+          requiresAuth: false,
+          noAuth: true,
+        },
+      },
+      {
+        path: "signup",
+        name: "GeneralSignUp",
+        component: GeneralSignUp,
+        meta: {
+          requiresAuth: false,
+          noAuth: true,
+        },
+      },
       {
         path: "forgotpassword",
         name: "GeneralForgotPassword",
         component: GeneralForgotPassword,
+        meta: {
+          requiresAuth: false,
+          noAuth: true,
+        },
       },
-    ],
-  },
-  {
-    path: "/",
-    component: GeneralRoot,
-    meta: {
-      requiresAuth: false,
-      noAuth: false,
-    },
-    children: [
       {
         path: "resetpassword",
         name: "GeneralResetPassword",
         component: GeneralResetPassword,
+        meta: {
+          requiresAuth: false,
+          noAuth: false,
+        },
       },
-      { path: "*", name: "GeneralNotFound", component: GeneralNotFound },
+      {
+        path: "reauthenticate",
+        name: "GeneralReauthenticate",
+        component: GeneralSignIn,
+        meta: {
+          requiresAuth: true,
+          noAuth: false,
+        },
+      },
+      {
+        path: "*",
+        name: "GeneralNotFound",
+        component: GeneralNotFound,
+        meta: {
+          requiresAuth: false,
+          noAuth: false,
+        },
+      },
     ],
   },
 ];

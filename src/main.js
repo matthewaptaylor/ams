@@ -35,13 +35,13 @@ firebase.auth().onAuthStateChanged((user) => {
 });
 
 // Setup firebase functions
-firebase.functions().useEmulator("localhost", 5001);
-var addMessage = firebase.functions().httpsCallable("addMessage");
-addMessage({ text: "messageText" }).then((result) => {
-  // Read result of the Cloud Function.
-  var sanitizedMessage = result;
-  console.log(sanitizedMessage);
-});
+// firebase.functions().useEmulator("localhost", 5001);
+// var addMessage = firebase.functions().httpsCallable("addMessage");
+// addMessage({ text: "messageText" }).then((result) => {
+//   // Read result of the Cloud Function.
+//   var sanitizedMessage = result;
+//   console.log(sanitizedMessage);
+// });
 
 Vue.config.productionTip = false;
 
