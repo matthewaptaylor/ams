@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 class="display-1">Sign in</h1>
+    <h1 class="display-1">Sign In</h1>
     <v-btn block color="blue" dark class="mt-4" @click="signInWithGoogle">
       <v-icon left dark>{{ googleIcon }}</v-icon>
       Sign in with Google

@@ -29,13 +29,13 @@
             <v-list-item-icon>
               <v-icon>{{ accountIcon }}</v-icon>
             </v-list-item-icon>
-            <v-list-item-title>My account</v-list-item-title>
+            <v-list-item-title>My Account</v-list-item-title>
           </v-list-item>
           <v-list-item @click="signOut">
             <v-list-item-icon>
               <v-icon>{{ logoutIcon }}</v-icon>
             </v-list-item-icon>
-            <v-list-item-title>Sign out</v-list-item-title>
+            <v-list-item-title>Sign Out</v-list-item-title>
           </v-list-item>
         </v-list>
       </v-menu>

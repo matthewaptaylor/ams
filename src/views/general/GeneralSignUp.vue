@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 class="display-1">Sign up</h1>
+    <h1 class="display-1">Sign Up</h1>
     <v-form
       v-model="valid"
       :disabled="loading"

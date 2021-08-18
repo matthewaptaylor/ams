@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 class="display-1">Reset password</h1>
+    <h1 class="display-1">Reset Password</h1>
 
     <v-form
       v-model="valid"
