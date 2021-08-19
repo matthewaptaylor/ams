@@ -27,7 +27,7 @@
 <style scoped>
 #sign-in-root {
   min-height: 100%;
-  background-image: url("../../assets/images/purple-background.svg");
+  background-image: url("../../assets/images/background.svg");
   background-color: var(--v-primary-base);
   background-size: cover;
   background-position: center;

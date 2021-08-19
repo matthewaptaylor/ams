@@ -49,7 +49,7 @@
 <style scoped>
 #app-root {
   min-height: 100%;
-  background-image: url("../../assets/images/white-background.svg");
+  background-image: url("../../assets/images/background.svg");
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
