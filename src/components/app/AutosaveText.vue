@@ -47,26 +47,23 @@
       </template>
     </v-text-field>
 
-    <v-alert
+    <Alert
       type="error"
-      class="mt-2"
-      v-model="showError"
-      v-if="showError"
-      close-text="Close Alert"
-      dismissible
-    >
-      <div>{{ error.message }}</div>
-      <v-btn outlined v-if="error.link" class="mt-2" :to="error.link">{{
-        error.linkText
-      }}</v-btn>
-    </v-alert>
+      :message="error.message"
+      :link="error.link ? { text: error.linkText, link: error.link } : null"
+      class="mt-4"
+      v-if="error"
+    />
   </div>
 </template>
 
 <script>
 import { mdiContentSave, mdiCheckCircle } from "@mdi/js";
+import Alert from "./Alert.vue";
 
 export default {
+  components: { Alert },
+
   data() {
     return {
       contentSaveIcon: mdiContentSave,
@@ -76,9 +73,9 @@ export default {
       currentlySaving: false,
       showSuccess: false,
       successTimeout: null,
-      showError: false,
     };
   },
+
   props: {
     label: String,
     type: String,
@@ -88,6 +85,7 @@ export default {
     required: Boolean,
     error: Object,
   },
+
   watch: {
     value(val, oldVal) {
       // Reset once a new value is given
@@ -103,19 +101,19 @@ export default {
         }, 5000);
       }
     },
+
     currentValue(val) {
       this.showButton = val !== this.value; // Show save button if content has been changed
       this.showSuccess = false;
       clearTimeout(this.successTimeout);
     },
-    error(val) {
+
+    error() {
       // Error occurred while saving
       this.currentlySaving = false;
-
-      // Show error modal if there is a new error
-      this.showError = !!val;
     },
   },
+
   methods: {
     save() {
       if (this.value !== this.currentValue && !this.currentlySaving) {

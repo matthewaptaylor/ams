@@ -125,8 +125,9 @@ export default {
           this.loading = false;
 
           // Reset password fields
-          this.$refs.form.reset();
-          this.email = this.user.email;
+          this.password = "";
+          this.confirmPassword = "";
+          this.$refs.form.resetValidation();
 
           this.success = "Password updated successfully.";
         })
