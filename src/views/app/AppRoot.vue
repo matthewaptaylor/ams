@@ -18,17 +18,27 @@
       <v-menu offset-y bottom left>
         <template v-slot:activator="{ on, attrs }">
           <v-btn dark icon v-bind="attrs" v-on="on">
-            <v-icon>{{ accountIcon }}</v-icon>
+            <img
+              :src="photoURL"
+              alt="User picture"
+              v-if="photoURL"
+              style="width: 36px; border-radius: 50%"
+            />
+            <avatar
+              :username="displayName"
+              :size="36"
+              backgroundColor="#00000020"
+              color="#ffffff"
+              v-if="!photoURL"
+            ></avatar>
           </v-btn>
         </template>
         <v-list>
           <v-list-item>
-            <v-list-item-title
-              >Kia ora,
-              {{
-                user.displayName ? user.displayName : user.email
-              }}!</v-list-item-title
-            >
+            <v-list-item-title>
+              Kia ora,
+              {{ displayName }}!
+            </v-list-item-title>
           </v-list-item>
           <v-list-item :to="{ name: 'AccountProfile' }">
             <v-list-item-icon>
@@ -64,19 +74,28 @@
 <script>
 import { mdiAccount, mdiLogout } from "@mdi/js";
 import firebase from "firebase/app";
+import Avatar from "vue-avatar";
 
 export default {
+  components: { Avatar },
+
   data() {
     return {
       accountIcon: mdiAccount,
       logoutIcon: mdiLogout,
 
       user: null,
+      displayName: "",
+      photoURL: false,
     };
   },
 
   mounted() {
     this.user = firebase.auth().currentUser;
+
+    // Choose personal details to display for user
+    this.displayName = this.user.displayName ?? this.user.email;
+    this.photoURL = this.user.photoURL ?? false;
   },
 
   methods: {
