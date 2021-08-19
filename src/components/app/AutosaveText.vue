@@ -82,7 +82,8 @@ export default {
       this.showButton = false;
       this.currentlySaving = false;
 
-      if (oldVal !== null) {
+      if (oldVal !== null && val === this.currentValue) {
+        // New value is what we set it to be
         this.showSuccess = true;
         this.successTimeout = setTimeout(() => {
           this.showSuccess = false;

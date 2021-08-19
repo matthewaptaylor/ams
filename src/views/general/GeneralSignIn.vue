@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 class="display-1">{{ action }}</h1>
+    <h1 class="text-h4">{{ action }}</h1>
 
     <p v-if="this.action === 'Reauthenticate'">
       To continue, we need you need to confirm your identity.

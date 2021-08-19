@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 class="display-1">Forgot Password?</h1>
+    <h1 class="text-h4">Forgot Password?</h1>
 
     <v-form v-model="valid" :disabled="loading" @submit.prevent="submit">
       <v-text-field

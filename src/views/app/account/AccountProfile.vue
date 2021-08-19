@@ -1,6 +1,6 @@
 <template>
   <v-sheet elevation="2" rounded class="flex-grow-1 pa-4">
-    <h1 class="display-1">Profile</h1>
+    <h1 class="text-h4">Profile</h1>
 
     <v-container fluid class="px-0">
       <v-row dense>
