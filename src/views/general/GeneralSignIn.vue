@@ -187,7 +187,7 @@ export default {
             this.googleError = null;
 
             // Redirect back to the account page
-            this.$router.push({ name: "Account" });
+            this.$router.go(-1);
           })
           .catch((error) => {
             this.googleLoading = false;
@@ -227,7 +227,7 @@ export default {
             this.error = null;
 
             // Redirect back to the account page
-            this.$router.push({ name: "Account" });
+            this.$router.go(-1);
           })
           .catch((error) => {
             this.loading = false;

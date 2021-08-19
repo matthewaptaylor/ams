@@ -35,7 +35,6 @@
 </template>
 
 <script>
-import { mdiContentSave } from "@mdi/js";
 import firebase from "firebase/app";
 import AutosaveText from "../../../components/app/AutosaveText.vue";
 
@@ -43,9 +42,6 @@ export default {
   components: { AutosaveText },
   data() {
     return {
-      contentSaveIcon: mdiContentSave,
-      loading: false,
-      valid: false,
       user: null,
       displayName: null,
       displayNameError: null,
@@ -68,7 +64,7 @@ export default {
           this.displayNameError = null;
         })
         .catch((error) => {
-          this.displayNameError = error.message;
+          this.displayNameError = error;
         });
     },
   },

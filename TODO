@@ -15,3 +15,5 @@ Customise login/forgot/signup error messages
 Sign in/up show/hide password feature
 XSS vulnerabilities in date stored in firestore and other firebase auth things like displayname
 Document everything
+Rename login methods to sign in methods
+Add sign in with email link functionality

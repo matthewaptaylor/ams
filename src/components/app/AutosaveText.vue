@@ -47,7 +47,19 @@
       </template>
     </v-text-field>
 
-    <v-alert type="error" class="mt-2" v-if="error">{{ error }}</v-alert>
+    <v-alert
+      type="error"
+      class="mt-2"
+      v-model="showError"
+      v-if="showError"
+      close-text="Close Alert"
+      dismissible
+    >
+      <div>{{ error.message }}</div>
+      <v-btn outlined v-if="error.link" class="mt-2" :to="error.link">{{
+        error.linkText
+      }}</v-btn>
+    </v-alert>
   </div>
 </template>
 
@@ -64,6 +76,7 @@ export default {
       currentlySaving: false,
       showSuccess: false,
       successTimeout: null,
+      showError: false,
     };
   },
   props: {
@@ -73,7 +86,7 @@ export default {
     autocomplete: String,
     rules: Array,
     required: Boolean,
-    error: String,
+    error: Object,
   },
   watch: {
     value(val, oldVal) {
@@ -95,9 +108,12 @@ export default {
       this.showSuccess = false;
       clearTimeout(this.successTimeout);
     },
-    error() {
+    error(val) {
       // Error occurred while saving
       this.currentlySaving = false;
+
+      // Show error modal if there is a new error
+      this.showError = !!val;
     },
   },
   methods: {
