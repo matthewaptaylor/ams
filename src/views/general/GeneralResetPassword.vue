@@ -73,6 +73,7 @@ export default {
       valid: false,
       error: null,
       success: false,
+
       email: null,
       password: "",
       passwordRules: [
@@ -84,6 +85,7 @@ export default {
         (v) => !!v || "Password confirmation is required",
         (v) => v === this.password || "Passwords do not match",
       ],
+
       actionCode: new URL(window.location.href).searchParams.get("oobCode"),
     };
   },

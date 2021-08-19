@@ -1,9 +1,154 @@
 <template>
   <v-sheet elevation="2" rounded class="flex-grow-1 pa-4">
-    Account password
+    <h1 class="text-h4">Reset Password</h1>
+
+    <v-container fluid class="px-0">
+      <v-row dense>
+        <v-col cols="12" sm="6" md="8" lg="6">
+          <v-form
+            v-model="valid"
+            :disabled="loading"
+            ref="form"
+            @submit.prevent="resetPassword"
+          >
+            <v-text-field
+              :value="email"
+              label="Email"
+              type="email"
+              autocomplete="username"
+              :prepend-icon="emailIcon"
+              disabled
+            ></v-text-field>
+
+            <v-text-field
+              v-model="password"
+              :rules="passwordRules"
+              autocomplete="new-password"
+              type="password"
+              label="Password"
+              :prepend-icon="lockIcon"
+              required
+            ></v-text-field>
+
+            <v-text-field
+              v-model="confirmPassword"
+              :rules="confirmPasswordRules"
+              autocomplete="new-password"
+              type="password"
+              label="Confirm password"
+              :prepend-icon="lockIcon"
+              required
+            ></v-text-field>
+
+            <Alert type="success" :message="success" class="mt-4" />
+
+            <Alert
+              type="error"
+              :message="error"
+              :link="errorLink"
+              class="mt-4"
+            />
+
+            <v-btn
+              color="primary"
+              type="submit"
+              class="mt-4"
+              :disabled="!valid || loading"
+              :loading="loading"
+            >
+              <v-icon left dark>{{ lockResetIcon }}</v-icon>
+              Reset password
+            </v-btn>
+          </v-form>
+        </v-col>
+      </v-row>
+    </v-container>
   </v-sheet>
 </template>
 
 <script>
-export default {};
+import { mdiEmail, mdiLock, mdiLockReset } from "@mdi/js";
+import firebase from "firebase/app";
+import Alert from "../../../components/app/Alert.vue";
+
+export default {
+  components: { Alert },
+
+  data() {
+    return {
+      // Icons
+      emailIcon: mdiEmail,
+      lockIcon: mdiLock,
+      lockResetIcon: mdiLockReset,
+
+      // Firebase user
+      user: null,
+
+      // Form status
+      loading: false,
+      valid: false,
+      success: null,
+      error: null,
+      errorLink: null,
+
+      // Form values
+      email: null,
+      password: "",
+      passwordRules: [
+        (v) => !!v || "Password is required",
+        (v) => v.length >= 6 || "Password must be at least 6 characters",
+      ],
+      confirmPassword: "",
+      confirmPasswordRules: [
+        (v) => !!v || "Password confirmation is required",
+        (v) => v === this.password || "Passwords do not match",
+      ],
+    };
+  },
+
+  mounted() {
+    this.user = firebase.auth().currentUser;
+    this.email = this.user.email;
+  },
+
+  methods: {
+    resetPassword() {
+      this.loading = true;
+      this.success = null;
+      this.error = null;
+      this.errorLink = null;
+
+      this.user
+        .updatePassword(this.password)
+        .then(() => {
+          // Update successful
+          this.loading = false;
+
+          // Reset password fields
+          this.$refs.form.reset();
+          this.email = this.user.email;
+
+          this.success = "Password updated successfully.";
+        })
+        .catch((error) => {
+          // An error ocurred
+          this.loading = false;
+
+          if (error.code === "auth/requires-recent-login") {
+            // User needs to reauthenticate
+
+            this.error =
+              "We need to confirm your identity before you do this. Please reauthenticate and try again.";
+            this.errorLink = {
+              text: "Reauthenticate",
+              link: { name: "GeneralReauthenticate" },
+            };
+          } else {
+            // Show error message as normal
+            this.error = error.message;
+          }
+        });
+    },
+  },
+};
 </script>

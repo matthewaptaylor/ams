@@ -64,7 +64,7 @@
 
         <v-col cols="12" dense v-if="googleProvider">
           <p>
-            You're linked with the account
+            You're linked with the Google account
             {{ googleProvider.email }}.
           </p>
 
@@ -80,7 +80,7 @@
         </v-col>
 
         <v-col cols="12" sm="6" md="8" lg="6" dense>
-          <Error :message="googleError" />
+          <Alert type="error" :message="googleError" />
         </v-col>
       </v-row>
     </v-container>
@@ -91,10 +91,10 @@
 import { mdiGoogle, mdiLock } from "@mdi/js";
 import firebase from "firebase/app";
 import AutosaveText from "../../../components/app/AutosaveText.vue";
-import Error from "../../../components/app/Error.vue";
+import Alert from "../../../components/app/Alert.vue";
 
 export default {
-  components: { AutosaveText, Error },
+  components: { AutosaveText, Alert },
 
   data() {
     return {

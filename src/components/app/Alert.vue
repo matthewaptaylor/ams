@@ -1,12 +1,15 @@
 <template>
   <v-alert
-    type="error"
+    :type="type"
     v-model="showAlert"
     v-if="showAlert"
     close-text="Close Alert"
     dismissible
   >
-    {{ message }}
+    <div>{{ message }}</div>
+    <v-btn outlined v-if="link" class="mt-2" :to="link.link">{{
+      link.text
+    }}</v-btn>
   </v-alert>
 </template>
 
@@ -19,7 +22,9 @@ export default {
   },
 
   props: {
+    type: String,
     message: String,
+    link: Object,
   },
 
   watch: {

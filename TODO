@@ -17,3 +17,4 @@ XSS vulnerabilities in date stored in firestore and other firebase auth things l
 Document everything
 Rename login methods to sign in methods
 Add sign in with email link functionality
+Make every error use error component
