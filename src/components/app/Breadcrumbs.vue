@@ -39,17 +39,18 @@ export default {
       chevronRightIcon: mdiChevronRight,
     };
   },
+
   props: {
     items: Array,
   },
+
   computed: {
     computedItems() {
       let items = this.items.map((item) => ({
         ...item,
         exact: true,
-        disabled: false,
       }));
-      items[items.length - 1].disabled = true;
+
       return items;
     },
   },

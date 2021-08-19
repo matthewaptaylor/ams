@@ -45,8 +45,8 @@
 <style scoped></style>
 <script>
 import { mdiAccount, mdiAccountSupervisor, mdiEye } from "@mdi/js";
-import Breadcrumbs from "../../../components/app/Breadcrumbs.vue";
-import ActivityCreate from "../../../components/app/ActivityCreate.vue";
+import Breadcrumbs from "../../components/app/Breadcrumbs.vue";
+import ActivityCreate from "../../components/app/ActivityCreate.vue";
 
 export default {
   components: {
@@ -58,6 +58,7 @@ export default {
       breadcrumbItems: [
         {
           text: "Activity Planner",
+          disabled: true,
         },
       ],
       activityCategories: [
@@ -103,6 +104,7 @@ export default {
       ],
     };
   },
+
   methods: {
     dateToString(date) {
       return `${date.getDay()}/${date.getMonth()}/${date.getFullYear()}`;

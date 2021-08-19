@@ -1,11 +1,13 @@
 <template>
   <v-container>
     <Breadcrumbs :items="breadcrumbItems" />
+
     <NavMobile
       :title="activityName"
       :items="navItems"
       v-if="$vuetify.breakpoint.mobile"
     />
+
     <div class="d-flex align-start" style="gap: 1rem">
       <NavDesktop
         :title="activityName"
@@ -13,7 +15,10 @@
         :items="navItems"
         v-if="!$vuetify.breakpoint.mobile"
       />
-      <router-view></router-view>
+
+      <v-sheet elevation="2" rounded class="flex-grow-1">
+        <router-view></router-view>
+      </v-sheet>
     </div>
   </v-container>
 </template>
@@ -74,6 +79,7 @@ export default {
         },
         {
           text: "Wellington trip",
+          disabled: true,
         },
       ],
     };

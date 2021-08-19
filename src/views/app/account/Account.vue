@@ -1,18 +1,23 @@
 <template>
   <v-container>
     <Breadcrumbs :items="breadcrumbItems" />
+
     <NavMobile
       title="My Account"
       :items="navItems"
       v-if="$vuetify.breakpoint.mobile"
     />
+
     <div class="d-flex align-start" style="gap: 1rem">
       <NavDesktop
         title="My Account"
         :items="navItems"
         v-if="!$vuetify.breakpoint.mobile"
       />
-      <router-view></router-view>
+
+      <v-sheet elevation="2" rounded class="flex-grow-1">
+        <router-view></router-view>
+      </v-sheet>
     </div>
   </v-container>
 </template>
@@ -33,7 +38,12 @@ export default {
     return {
       breadcrumbItems: [
         {
-          text: "My Account",
+          text: "Activity Planner",
+          to: { name: "ActivityPlanner" },
+        },
+        {
+          text: "Account",
+          disabled: true,
         },
       ],
       navItems: [

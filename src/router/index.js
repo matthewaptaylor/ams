@@ -13,15 +13,15 @@ import AccountProfile from "../views/app/account/AccountProfile.vue";
 import AccountLoginMethods from "../views/app/account/AccountLoginMethods.vue";
 import AccountResetPassword from "../views/app/account/AccountResetPassword.vue";
 import AccountDeleteAccount from "../views/app/account/AccountDeleteAccount.vue";
-import ActivityPlanner from "../views/app/activityplanner/ActivityPlanner.vue";
-import Activity from "../views/app/activityplanner/Activity.vue";
-import ActivityOverview from "../views/app/activityplanner/ActivityOverview.vue";
-import ActivityPlan from "../views/app/activityplanner/ActivityPlan.vue";
-import ActivityRAMS from "../views/app/activityplanner/ActivityRAMS.vue";
-import ActivityBudget from "../views/app/activityplanner/ActivityBudget.vue";
-import ActivityShoppingList from "../views/app/activityplanner/ActivityShoppingList.vue";
-import ActivityGearList from "../views/app/activityplanner/ActivityGearList.vue";
-import ActivityAIF from "../views/app/activityplanner/ActivityAIF.vue";
+import ActivityPlanner from "../views/app/ActivityPlanner.vue";
+import Activity from "../views/app/activity/Activity.vue";
+import ActivityOverview from "../views/app/activity/ActivityOverview.vue";
+import ActivityPlan from "../views/app/activity/ActivityPlan.vue";
+import ActivityRAMS from "../views/app/activity/ActivityRAMS.vue";
+import ActivityBudget from "../views/app/activity/ActivityBudget.vue";
+import ActivityShoppingList from "../views/app/activity/ActivityShoppingList.vue";
+import ActivityGearList from "../views/app/activity/ActivityGearList.vue";
+import ActivityAIF from "../views/app/activity/ActivityAIF.vue";
 
 Vue.use(VueRouter);
 
@@ -34,14 +34,14 @@ const routes = [
       noAuth: false,
     },
     children: [
-      { path: "", redirect: { name: "ActivityPlanner" } },
       {
-        path: "activityplanner",
+        path: "",
         name: "ActivityPlanner",
         component: ActivityPlanner,
       },
+      { path: "activity", redirect: { name: "ActivityPlanner" } },
       {
-        path: "activityplanner/:activityId",
+        path: "activity/:activityId",
         component: Activity,
         children: [
           { path: "", redirect: { name: "ActivityOverview" } },

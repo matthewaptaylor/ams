@@ -1,14 +1,19 @@
 <template>
-  <v-sheet elevation="2" rounded class="flex-grow-1 pa-4">
-    <h1 class="text-h4">Overview</h1>
+  <v-container fluid class="pa-4">
+    <v-row dense>
+      <v-col cols="12">
+        <h1 class="text-h4">Overview</h1>
+      </v-col>
+    </v-row>
+
     <v-form
       v-model="valid"
       :disabled="loading"
       @submit.prevent="save"
       class="mt-3"
     >
-      <v-row>
-        <v-col cols="12" sm="6" md="8" lg="6" class="py-0">
+      <v-row dense>
+        <v-col cols="12" sm="6" md="8" lg="6">
           <v-text-field
             label="Activity name"
             value=""
@@ -19,14 +24,14 @@
         </v-col>
       </v-row>
 
-      <v-row>
-        <v-col cols="12" sm="6" md="8" lg="6" class="py-0">
+      <v-row dense>
+        <v-col cols="12" sm="6" md="8" lg="6">
           <v-text-field label="Location" value="" type="text"></v-text-field>
         </v-col>
       </v-row>
 
-      <v-row>
-        <v-col cols="6" sm="3" md="4" lg="3" class="py-0">
+      <v-row dense>
+        <v-col cols="6" sm="3" md="4" lg="3">
           <v-dialog
             ref="startDateDialog"
             v-model="startDateModal"
@@ -64,7 +69,7 @@
           </v-dialog>
         </v-col>
 
-        <v-col cols="6" sm="3" md="4" lg="3" class="py-0">
+        <v-col cols="6" sm="3" md="4" lg="3">
           <v-dialog
             ref="startTimeDialog"
             v-model="startTimeModal"
@@ -102,8 +107,8 @@
         </v-col>
       </v-row>
 
-      <v-row>
-        <v-col cols="6" sm="3" md="4" lg="3" class="py-0">
+      <v-row dense>
+        <v-col cols="6" sm="3" md="4" lg="3">
           <v-dialog
             ref="endDateDialog"
             v-model="endDateModal"
@@ -141,7 +146,7 @@
           </v-dialog>
         </v-col>
 
-        <v-col cols="6" sm="3" md="4" lg="3" class="py-0">
+        <v-col cols="6" sm="3" md="4" lg="3">
           <v-dialog
             ref="endTimeDialog"
             v-model="endTimeModal"
@@ -178,18 +183,21 @@
         </v-col>
       </v-row>
 
-      <v-btn
-        color="primary"
-        type="submit"
-        :disabled="!valid || loading"
-        :loading="loading"
-        class="d-flex mt-7"
-      >
-        <v-icon left dark>{{ contentSaveIcon }}</v-icon>
-        Save
-      </v-btn>
+      <v-row dense>
+        <v-col cols="12">
+          <v-btn
+            color="primary"
+            type="submit"
+            :disabled="!valid || loading"
+            :loading="loading"
+          >
+            <v-icon left dark>{{ contentSaveIcon }}</v-icon>
+            Save
+          </v-btn>
+        </v-col>
+      </v-row>
     </v-form>
-  </v-sheet>
+  </v-container>
 </template>
 
 <script>

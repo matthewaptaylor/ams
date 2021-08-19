@@ -1,63 +1,61 @@
 <template>
-  <v-sheet elevation="2" rounded class="flex-grow-1">
-    <v-container fluid class="pa-4">
-      <v-row dense>
-        <v-col cols="12">
-          <h1 class="text-h4">Delete Account</h1>
-        </v-col>
-      </v-row>
+  <v-container fluid class="pa-4">
+    <v-row dense>
+      <v-col cols="12">
+        <h1 class="text-h4">Delete Account</h1>
+      </v-col>
+    </v-row>
 
-      <v-row dense>
-        <v-col cols="12" sm="6" md="8" lg="6">
-          <p>
-            If you no longer use AMS, you may delete your account. If you are
-            only deleting because you have gotten a new email address, please
-            note that you can change your email address in Login Methods.
-          </p>
-          <v-dialog v-model="dialog" width="25rem">
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn color="error" dark v-bind="attrs" v-on="on">
-                <v-icon left dark>{{ deleteIcon }}</v-icon>
-                Delete account
-              </v-btn>
-            </template>
+    <v-row dense>
+      <v-col cols="12" sm="6" md="8" lg="6">
+        <p>
+          If you no longer use AMS, you may delete your account. If you are only
+          deleting because you have gotten a new email address, please note that
+          you can change your email address in Login Methods.
+        </p>
+        <v-dialog v-model="dialog" width="25rem">
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn color="error" dark v-bind="attrs" v-on="on">
+              <v-icon left dark>{{ deleteIcon }}</v-icon>
+              Delete account
+            </v-btn>
+          </template>
 
-            <v-sheet elevation="2" rounded>
-              <v-toolbar dark color="error">
-                <v-toolbar-title>Delete account</v-toolbar-title>
-              </v-toolbar>
-              <div class="pa-4">
-                <p>
-                  This action can't be undone! Are you sure that you want to
-                  continue?
-                </p>
+          <v-sheet elevation="2" rounded>
+            <v-toolbar dark color="error">
+              <v-toolbar-title>Delete account</v-toolbar-title>
+            </v-toolbar>
+            <div class="pa-4">
+              <p>
+                This action can't be undone! Are you sure that you want to
+                continue?
+              </p>
 
-                <Alert
-                  type="error"
-                  :message="error"
-                  :link="errorLink"
-                  class="mt-4"
-                />
+              <Alert
+                type="error"
+                :message="error"
+                :link="errorLink"
+                class="mt-4"
+              />
 
-                <div class="d-flex justify-space-between flex-wrap mt-4">
-                  <v-btn plain @click="dialog = false"> Cancel </v-btn>
-                  <v-btn
-                    color="error"
-                    type="submit"
-                    :loading="loading"
-                    @click="deleteAccount"
-                  >
-                    <v-icon left dark>{{ deleteIcon }}</v-icon>
-                    Delete account
-                  </v-btn>
-                </div>
+              <div class="d-flex justify-space-between flex-wrap mt-4">
+                <v-btn plain @click="dialog = false"> Cancel </v-btn>
+                <v-btn
+                  color="error"
+                  type="submit"
+                  :loading="loading"
+                  @click="deleteAccount"
+                >
+                  <v-icon left dark>{{ deleteIcon }}</v-icon>
+                  Delete account
+                </v-btn>
               </div>
-            </v-sheet>
-          </v-dialog>
-        </v-col>
-      </v-row>
-    </v-container>
-  </v-sheet>
+            </div>
+          </v-sheet>
+        </v-dialog>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>

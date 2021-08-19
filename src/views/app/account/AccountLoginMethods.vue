@@ -1,90 +1,92 @@
 <template>
-  <v-sheet elevation="2" rounded class="flex-grow-1 pa-4">
-    <h1 class="text-h4">Login Methods</h1>
+  <v-container fluid class="pa-4">
+    <v-row dense>
+      <v-col cols="12">
+        <h1 class="text-h4">Login Methods</h1>
+      </v-col>
+    </v-row>
 
-    <v-container fluid class="px-0">
-      <v-row dense>
-        <v-col cols="12">
-          <h2 class="text-h5">Email and Password</h2>
-        </v-col>
+    <v-row dense>
+      <v-col cols="12">
+        <h2 class="text-h5">Email and Password</h2>
+      </v-col>
 
-        <v-col cols="12" sm="6" md="8" lg="6" dense>
-          <AutosaveText
-            label="Email"
-            type="email"
-            :value="email"
-            autocomplete="username"
-            :rules="[(v) => !!v || 'Email is required']"
-            :required="true"
-            :error="emailError"
-            @save="saveEmail"
-          />
-        </v-col>
+      <v-col cols="12" sm="6" md="8" lg="6" dense>
+        <AutosaveText
+          label="Email"
+          type="email"
+          :value="email"
+          autocomplete="username"
+          :rules="[(v) => !!v || 'Email is required']"
+          :required="true"
+          :error="emailError"
+          @save="saveEmail"
+        />
+      </v-col>
 
-        <v-col cols="12" dense v-if="!passwordProvider">
-          <p>
-            You currently can't login to this account with a password.
+      <v-col cols="12" dense v-if="!passwordProvider">
+        <p>
+          You currently can't login to this account with a password.
 
-            <router-link :to="{ name: 'AccountResetPassword' }">
-              Reset password </router-link
-            >.
-          </p>
-        </v-col>
+          <router-link :to="{ name: 'AccountResetPassword' }">
+            Reset password </router-link
+          >.
+        </p>
+      </v-col>
 
-        <v-col cols="12" sm="6" md="8" lg="6" dense v-if="passwordProvider">
-          <v-text-field
-            value="        "
-            label="Password"
-            type="password"
-            hint="You can change this in Reset Password"
-            persistent-hint
-            disabled
-          ></v-text-field>
-        </v-col>
-      </v-row>
+      <v-col cols="12" sm="6" md="8" lg="6" dense v-if="passwordProvider">
+        <v-text-field
+          value="        "
+          label="Password"
+          type="password"
+          hint="You can change this in Reset Password"
+          persistent-hint
+          disabled
+        ></v-text-field>
+      </v-col>
+    </v-row>
 
-      <v-row dense>
-        <v-col cols="12">
-          <h2 class="text-h5">Google</h2>
-        </v-col>
+    <v-row dense>
+      <v-col cols="12">
+        <h2 class="text-h5">Google</h2>
+      </v-col>
 
-        <v-col cols="12" dense v-if="!googleProvider">
-          <p>You're not linked with a Google account.</p>
+      <v-col cols="12" dense v-if="!googleProvider">
+        <p>You're not linked with a Google account.</p>
 
-          <v-btn
-            color="blue"
-            dark
-            :loading="linkGoogleLoading"
-            @click="linkGoogle"
-          >
-            <v-icon left dark>{{ googleIcon }}</v-icon>
-            Link Google account
-          </v-btn>
-        </v-col>
+        <v-btn
+          color="blue"
+          dark
+          :loading="linkGoogleLoading"
+          @click="linkGoogle"
+        >
+          <v-icon left dark>{{ googleIcon }}</v-icon>
+          Link Google account
+        </v-btn>
+      </v-col>
 
-        <v-col cols="12" dense v-if="googleProvider">
-          <p>
-            You're linked with the Google account
-            {{ googleProvider.email }}.
-          </p>
+      <v-col cols="12" dense v-if="googleProvider">
+        <p>
+          You're linked with the Google account
+          {{ googleProvider.email }}.
+        </p>
 
-          <v-btn
-            color="error"
-            dark
-            :loading="unlinkGoogleLoading"
-            @click="unlinkGoogle"
-          >
-            <v-icon left dark>{{ googleIcon }}</v-icon>
-            Unlink Google account
-          </v-btn>
-        </v-col>
+        <v-btn
+          color="error"
+          dark
+          :loading="unlinkGoogleLoading"
+          @click="unlinkGoogle"
+        >
+          <v-icon left dark>{{ googleIcon }}</v-icon>
+          Unlink Google account
+        </v-btn>
+      </v-col>
 
-        <v-col cols="12" sm="6" md="8" lg="6" dense>
-          <Alert type="error" :message="googleError" />
-        </v-col>
-      </v-row>
-    </v-container>
-  </v-sheet>
+      <v-col cols="12" sm="6" md="8" lg="6" dense>
+        <Alert type="error" :message="googleError" />
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>

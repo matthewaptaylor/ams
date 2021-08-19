@@ -23,7 +23,12 @@
         </template>
         <v-list>
           <v-list-item>
-            <v-list-item-title>Kia ora!</v-list-item-title>
+            <v-list-item-title
+              >Kia ora,
+              {{
+                user.displayName ? user.displayName : user.email
+              }}!</v-list-item-title
+            >
           </v-list-item>
           <v-list-item :to="{ name: 'AccountProfile' }">
             <v-list-item-icon>
@@ -65,8 +70,15 @@ export default {
     return {
       accountIcon: mdiAccount,
       logoutIcon: mdiLogout,
+
+      user: null,
     };
   },
+
+  mounted() {
+    this.user = firebase.auth().currentUser;
+  },
+
   methods: {
     signOut() {
       firebase.auth().signOut();
