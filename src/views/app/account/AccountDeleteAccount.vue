@@ -35,7 +35,7 @@
                 type="error"
                 :message="error"
                 :link="errorLink"
-                class="mt-4"
+                class="mt-5"
               />
 
               <div class="d-flex justify-space-between flex-wrap mt-4">

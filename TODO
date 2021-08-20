@@ -26,3 +26,4 @@ Date picker/time picker cursor: pointer, center time
 Make sure nothing uses alert but alery component, search code
 Are all buttons disabled when loading? Decide on consistent behaviour.
 Make sure errors have v-if on parents that have padding, stop taking up blank space
+Test email action handlers

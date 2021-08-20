@@ -43,9 +43,9 @@
             required
           ></v-text-field>
 
-          <Alert type="success" :message="success" class="mt-4" />
+          <Alert type="success" :message="success" class="mt-5" />
 
-          <Alert type="error" :message="error" :link="errorLink" class="mt-4" />
+          <Alert type="error" :message="error" :link="errorLink" class="mt-5" />
 
           <v-btn
             color="primary"
