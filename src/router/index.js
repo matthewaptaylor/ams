@@ -1,6 +1,5 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import firebase from "firebase/app";
 import GeneralRoot from "../views/general/GeneralRoot.vue";
 import GeneralSignIn from "../views/general/GeneralSignIn.vue";
 import GeneralSignUp from "../views/general/GeneralSignUp.vue";
@@ -179,30 +178,24 @@ const router = new VueRouter({
   routes,
 });
 
-// Authenticate users
-let vueLoaded = false;
-function getCurrentUser() {
-  return new Promise((resolve, reject) => {
-    const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
-      unsubscribe();
-      resolve(user);
-    }, reject);
-  });
-}
+// Ensure only authenticated users can get into certain pages
+let showingLoadingScreen = true;
 router.beforeEach(async (to, from, next) => {
-  const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
-  const noAuth = to.matched.some((record) => record.meta.noAuth);
-  const signedIn = await getCurrentUser();
-
-  // Remove loader in index.html
-  if (!vueLoaded) {
+  // Remove loading screen in index.html
+  if (showingLoadingScreen) {
     // This is the first navigation of the page
     document.querySelector("#loaderOverlay").remove();
     document.documentElement.style.overflow = "";
-    vueLoaded = true;
+
+    showingLoadingScreen = false;
   }
 
-  // Redirect to correct pathsignedIn
+  // Retermine the authentication status of the page and user
+  const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
+  const noAuth = to.matched.some((record) => record.meta.noAuth);
+  const signedIn = Vue.prototype.$currentUser;
+
+  // Redirect to correct path signed In
   if (requiresAuth && !signedIn) {
     // Only signed in users, redirect
     next("/signin");

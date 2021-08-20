@@ -49,10 +49,11 @@
 
     <Alert
       type="error"
-      :message="error.message"
-      :link="error.link ? { text: error.linkText, link: error.link } : null"
+      :message="error && error.message ? error.message : null"
+      :link="
+        error && error.link ? { text: error.linkText, link: error.link } : null
+      "
       class="mt-4"
-      v-if="error"
     />
   </div>
 </template>

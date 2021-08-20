@@ -24,7 +24,7 @@
     <v-row dense>
       <v-col cols="12" sm="6" md="8" lg="6">
         <v-text-field
-          :value="email"
+          :value="$currentUser.email"
           label="Email"
           type="email"
           hint="You can change this in Login Methods"
@@ -37,33 +37,30 @@
 </template>
 
 <script>
-import firebase from "firebase/app";
 import AutosaveText from "../../../components/app/AutosaveText.vue";
 
 export default {
   components: { AutosaveText },
   data() {
     return {
-      user: null,
       displayName: null,
       displayNameError: null,
-      email: null,
     };
   },
   mounted() {
-    this.user = firebase.auth().currentUser;
-    this.displayName = this.user.displayName;
-    this.email = this.user.email;
+    this.displayName = this.$currentUser.displayName;
   },
   methods: {
     saveDisplayName(newDisplayName) {
-      this.user
+      this.$currentUser
         .updateProfile({
           displayName: newDisplayName,
         })
         .then(() => {
           this.displayName = newDisplayName;
           this.displayNameError = null;
+
+          this.$updateUser(); // Update the global user object to match
         })
         .catch((error) => {
           this.displayNameError = error;

@@ -18,19 +18,40 @@ const firebaseConfig = {
 };
 
 // Setup firebase authentication
-let retrievedAuthState = false;
+let vueLoaded = false;
 firebase.initializeApp(firebaseConfig);
 firebase.auth().onAuthStateChanged((user) => {
-  if (retrievedAuthState) {
+  if (vueLoaded) {
     // Triggered by genuine auth state change
+    Vue.prototype.$updateUser(); // Set new user status
+
     if (user) {
       router.push("/");
     } else {
       router.push("/signin");
     }
   } else {
-    // Auth state change due to page loading
-    retrievedAuthState = true;
+    // Initialise Vue
+    Vue.config.productionTip = false;
+    Vue.prototype.$currentUserChanged = new Event("currentUserChanged");
+    Vue.prototype.$updateUser = () => {
+      // Store user status in global variable
+      Vue.prototype.$currentUser = firebase.auth().currentUser;
+
+      // Vue fails to watch the $currentUser variable, so trigger an event when it is changed
+      document
+        .querySelector("#app")
+        .dispatchEvent(Vue.prototype.$currentUserChanged);
+    };
+    Vue.prototype.$updateUser(); // Set new user status
+
+    new Vue({
+      router,
+      vuetify,
+      render: (h) => h(App),
+    }).$mount("#app");
+
+    vueLoaded = true;
   }
 });
 
@@ -42,11 +63,3 @@ firebase.auth().onAuthStateChanged((user) => {
 //   var sanitizedMessage = result;
 //   console.log(sanitizedMessage);
 // });
-
-Vue.config.productionTip = false;
-
-new Vue({
-  router,
-  vuetify,
-  render: (h) => h(App),
-}).$mount("#app");

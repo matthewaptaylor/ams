@@ -60,7 +60,6 @@
 
 <script>
 import { mdiDelete } from "@mdi/js";
-import firebase from "firebase/app";
 import Alert from "../../../components/app/Alert.vue";
 
 export default {
@@ -75,21 +74,15 @@ export default {
       dialog: false,
       loading: false,
       error: null,
-
-      // Firebase user
-      user: null,
+      errorLink: null,
     };
-  },
-
-  mounted() {
-    this.user = firebase.auth().currentUser;
   },
 
   methods: {
     deleteAccount() {
       this.loading = true;
 
-      this.user
+      this.$currentUser
         .delete()
         .then(() => {
           // User deleted

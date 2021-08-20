@@ -84,23 +84,31 @@ export default {
       accountIcon: mdiAccount,
       logoutIcon: mdiLogout,
 
-      user: null,
       displayName: "",
       photoURL: false,
     };
   },
 
   mounted() {
-    this.user = firebase.auth().currentUser;
+    this.updateDetails();
 
-    // Choose personal details to display for user
-    this.displayName = this.user.displayName ?? this.user.email;
-    this.photoURL = this.user.photoURL ?? false;
+    // Add event listener for when the global user object changes
+    document
+      .querySelector("#app")
+      .addEventListener("currentUserChanged", () => {
+        this.updateDetails();
+      });
   },
 
   methods: {
     signOut() {
       firebase.auth().signOut();
+    },
+    updateDetails() {
+      // Choose personal details to display for user
+      this.displayName =
+        this.$currentUser.displayName ?? this.$currentUser.email;
+      this.photoURL = this.$currentUser.photoURL ?? false;
     },
   },
 };

@@ -15,7 +15,7 @@
           @submit.prevent="resetPassword"
         >
           <v-text-field
-            :value="email"
+            :value="$currentUser.email"
             label="Email"
             type="email"
             autocomplete="username"
@@ -65,7 +65,6 @@
 
 <script>
 import { mdiEmail, mdiLock, mdiLockReset } from "@mdi/js";
-import firebase from "firebase/app";
 import Alert from "../../../components/app/Alert.vue";
 
 export default {
@@ -77,9 +76,6 @@ export default {
       emailIcon: mdiEmail,
       lockIcon: mdiLock,
       lockResetIcon: mdiLockReset,
-
-      // Firebase user
-      user: null,
 
       // Form status
       loading: false,
@@ -104,8 +100,7 @@ export default {
   },
 
   mounted() {
-    this.user = firebase.auth().currentUser;
-    this.email = this.user.email;
+    this.email = this.$currentUser.email;
   },
 
   methods: {
@@ -115,7 +110,7 @@ export default {
       this.error = null;
       this.errorLink = null;
 
-      this.user
+      this.$currentUser
         .updatePassword(this.password)
         .then(() => {
           // Update successful

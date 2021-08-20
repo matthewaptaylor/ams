@@ -26,7 +26,7 @@
 
       <v-col cols="12" dense v-if="!passwordProvider">
         <p>
-          You currently can't login to this account with a password.
+          You currently can't sign in to this account with a password.
 
           <router-link :to="{ name: 'AccountResetPassword' }">
             Reset password </router-link
@@ -103,7 +103,6 @@ export default {
       googleIcon: mdiGoogle,
       lockResetIcon: mdiLock,
 
-      user: null,
       signInMethods: null,
 
       passwordProvider: null,
@@ -120,16 +119,13 @@ export default {
   mounted() {
     // Get details from firebase
     this.updateUser();
-    this.email = this.user.email;
+    this.email = this.$currentUser.email;
   },
 
   methods: {
     updateUser() {
-      // Update variables based on user when user updates, as computed properties don't seem to work
-      this.user = firebase.auth().currentUser;
-
       // Get all the providers the user is linked with
-      this.signInMethods = this.user?.providerData;
+      this.signInMethods = this.$currentUser?.providerData;
 
       // Gets the details of the user's google account. Returns undefined if there isn't one linked.
       this.passwordProvider = this.signInMethods?.find(
@@ -144,11 +140,13 @@ export default {
 
     saveEmail(newEmail) {
       // Save a new email address to firebase auth
-      this.user
+      this.$currentUser
         .updateEmail(newEmail)
         .then(() => {
           this.email = newEmail;
           this.emailError = null;
+
+          this.$updateUser(); // Update the global user object to match
         })
         .catch((error) => {
           if (error.code === "auth/requires-recent-login") {
@@ -170,15 +168,15 @@ export default {
       this.googleError = null;
       this.linkGoogleLoading = true;
 
-      firebase
-        .auth()
-        .currentUser.linkWithPopup(new firebase.auth.GoogleAuthProvider())
+      this.$currentUser
+        .linkWithPopup(new firebase.auth.GoogleAuthProvider())
         .then(() => {
           // Accounts successfully linked
 
           this.linkGoogleLoading = false;
 
           this.updateUser(); // Update user details
+          this.$updateUser(); // Update the global user object to match
         })
         .catch((error) => {
           // Error in unlinking
@@ -204,7 +202,7 @@ export default {
 
         this.unlinkGoogleLoading = true;
 
-        this.user
+        this.$currentUser
           .unlink("google.com")
           .then(() => {
             // Accounts successfully unlinked
@@ -212,6 +210,7 @@ export default {
             this.unlinkGoogleLoading = false;
 
             this.updateUser(); // Update user details
+            this.$updateUser(); // Update the global user object to match
           })
           .catch((error) => {
             // Error in unlinking
