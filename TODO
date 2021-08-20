@@ -13,17 +13,14 @@ COnvert firestore/everything else to production mode
 Make sure database rules are set correctly and are secure
 Customise firebase emails
 Customise login/forgot/signup error messages
-Sign in/up show/hide password feature
+Sign in/up/reset password show/hide password feature
 XSS vulnerabilities in date stored in firestore and other firebase auth things like displayname
 Document everything
 Rename login methods to sign in methods
 Add sign in with email link functionality
 Make every error use error component
-Ensure users have verifies their emails
-Update reset password firebase email link to work for changing email back etc
+Ensure users have verifies their emails, dialog appears
 Test noscript
 Date picker/time picker cursor: pointer, center time
-Make sure nothing uses alert but alery component, search code
-Are all buttons disabled when loading? Decide on consistent behaviour.
-Make sure errors have v-if on parents that have padding, stop taking up blank space
+Make sure nothing uses alert but alert component, search code
 Test email action handlers

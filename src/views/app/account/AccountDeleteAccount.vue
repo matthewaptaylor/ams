@@ -44,6 +44,7 @@
                   color="error"
                   type="submit"
                   :loading="loading"
+                  :disabled="loading"
                   @click="deleteAccount"
                 >
                   <v-icon left dark>{{ deleteIcon }}</v-icon>

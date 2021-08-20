@@ -14,49 +14,65 @@
           ref="form"
           @submit.prevent="resetPassword"
         >
-          <v-text-field
-            :value="$currentUser.email"
-            label="Email"
-            type="email"
-            autocomplete="username"
-            :prepend-icon="emailIcon"
-            disabled
-          ></v-text-field>
+          <v-row dense>
+            <v-col cols="12">
+              <v-text-field
+                :value="$currentUser.email"
+                label="Email"
+                type="email"
+                autocomplete="username"
+                :prepend-icon="emailIcon"
+                disabled
+              ></v-text-field>
+            </v-col>
+          </v-row>
 
-          <v-text-field
-            v-model="password"
-            :rules="passwordRules"
-            autocomplete="new-password"
-            type="password"
-            label="Password"
-            :prepend-icon="lockIcon"
-            required
-          ></v-text-field>
+          <v-row dense>
+            <v-col cols="12">
+              <v-text-field
+                v-model="password"
+                :rules="passwordRules"
+                autocomplete="new-password"
+                type="password"
+                label="Password"
+                :prepend-icon="lockIcon"
+                required
+              ></v-text-field>
+            </v-col>
+          </v-row>
 
-          <v-text-field
-            v-model="confirmPassword"
-            :rules="confirmPasswordRules"
-            autocomplete="new-password"
-            type="password"
-            label="Confirm password"
-            :prepend-icon="lockIcon"
-            required
-          ></v-text-field>
+          <v-row dense>
+            <v-col cols="12">
+              <v-text-field
+                v-model="confirmPassword"
+                :rules="confirmPasswordRules"
+                autocomplete="new-password"
+                type="password"
+                label="Confirm password"
+                :prepend-icon="lockIcon"
+                required
+              ></v-text-field>
+            </v-col>
+          </v-row>
 
           <Alert type="success" :message="success" class="mt-5" />
 
           <Alert type="error" :message="error" :link="errorLink" class="mt-5" />
 
-          <v-btn
-            color="primary"
-            type="submit"
-            class="mt-4"
-            :disabled="!valid || loading"
-            :loading="loading"
-          >
-            <v-icon left dark>{{ lockResetIcon }}</v-icon>
-            Reset password
-          </v-btn>
+          <v-row dense>
+            <v-col cols="12">
+              <v-btn
+                color="primary"
+                type="submit"
+                class="mt-4"
+                :disabled="!valid || loading"
+                :loading="loading"
+              >
+                <v-icon left dark>{{ lockResetIcon }}</v-icon>
+                Reset password
+              </v-btn>
+            </v-col>
+          </v-row>
         </v-form>
       </v-col>
     </v-row>

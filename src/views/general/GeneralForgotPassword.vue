@@ -23,19 +23,11 @@
             </v-col>
           </v-row>
 
-          <v-row dense>
-            <v-col cols="12">
-              <v-alert type="success" v-if="success">
-                Check your inbox for a confirmation email.
-              </v-alert>
-            </v-col>
-          </v-row>
+          <v-alert type="success" v-if="success" class="mt-5">
+            Check your inbox for a confirmation email.
+          </v-alert>
 
-          <v-row dense>
-            <v-col cols="12">
-              <v-alert type="error" v-if="error">{{ error }}</v-alert>
-            </v-col>
-          </v-row>
+          <v-alert type="error" v-if="error" class="mt-5">{{ error }}</v-alert>
 
           <v-row dense>
             <v-col cols="12">

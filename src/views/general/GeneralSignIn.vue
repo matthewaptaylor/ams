@@ -6,11 +6,9 @@
       </v-col>
     </v-row>
 
-    <v-row dense>
+    <v-row dense v-if="this.action === 'Reauthenticate'">
       <v-col cols="12">
-        <p v-if="this.action === 'Reauthenticate'">
-          To continue, we need you need to confirm your identity.
-        </p>
+        <p>To continue, we need you need to confirm your identity.</p>
       </v-col>
     </v-row>
 
@@ -19,9 +17,9 @@
         <v-btn
           block
           color="blue"
-          dark
-          class="mt-4"
+          class="mt-4 white--text"
           :loading="googleLoading"
+          :disabled="googleLoading"
           @click="signInWithGoogle"
         >
           <v-icon left dark>{{ googleIcon }}</v-icon>
