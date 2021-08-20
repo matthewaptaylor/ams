@@ -18,3 +18,9 @@ Document everything
 Rename login methods to sign in methods
 Add sign in with email link functionality
 Make every error use error component
+Ensure users have verifies their emails
+Update reset password firebase email link to work for changing email back etc
+Mobile nav first item text purple if not on first item. Set v-model?
+Update menu photourl/displayname when its changed. Global firebase.auth.currentuser var?
+Get rid of window.innerheight. Too buggy.
+Test noscript

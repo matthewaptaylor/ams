@@ -26,7 +26,7 @@ html {
   -moz-osx-font-smoothing: grayscale;
 }
 .v-application--wrap {
-  min-height: calc(var(--vh, 1vh) * 100) !important;
+  min-height: 100vh !important;
 }
 
 @font-face {
@@ -102,24 +102,3 @@ html {
     url("./assets/fonts/FuturaPTHeavyOblique.otf") format("opentype");
 }
 </style>
-
-<script>
-export default {
-  mounted() {
-    this.setVH();
-    window.addEventListener("resize", this.setVH);
-  },
-  methods: {
-    setVH() {
-      // Sets VH to be equal to the actual inner height of the window
-      let vh = window.innerHeight * 0.01;
-      document.documentElement.style.setProperty("--vh", `${vh}px`);
-    },
-  },
-
-  beforeDestroy() {
-    // Unregister the event listener before destroying this Vue instance
-    window.removeEventListener("resize", this.setVH);
-  },
-};
-</script>
