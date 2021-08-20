@@ -60,6 +60,14 @@
                   <p class="mb-0">
                     <strong>Risk level:</strong> {{ risk.level }}
                   </p>
+
+                  <p class="mb-0">
+                    This risk is:<strong>
+                      {{
+                        risk.acceptable ? "acceptable" : "not acceptable"
+                      }}</strong
+                    >.
+                  </p>
                 </td>
               </tr>
             </tbody>
@@ -101,6 +109,7 @@ export default {
           likelihood: "Almost certain",
           consequence: "Negligible",
           level: "Medium",
+          acceptable: true,
         },
         {
           id: 1,
@@ -112,6 +121,7 @@ export default {
           likelihood: "Almost certain",
           consequence: "Negligible",
           level: "Medium",
+          acceptable: true,
         },
         {
           id: 2,
@@ -123,6 +133,7 @@ export default {
           likelihood: "Almost certain",
           consequence: "Negligible",
           level: "Medium",
+          acceptable: true,
         },
       ],
     };

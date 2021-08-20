@@ -4,7 +4,10 @@ import GeneralRoot from "../views/general/GeneralRoot.vue";
 import GeneralSignIn from "../views/general/GeneralSignIn.vue";
 import GeneralSignUp from "../views/general/GeneralSignUp.vue";
 import GeneralForgotPassword from "../views/general/GeneralForgotPassword.vue";
+import GeneralEmailAction from "../views/general/GeneralEmailAction.vue";
 import GeneralResetPassword from "../views/general/GeneralResetPassword.vue";
+import GeneralRecoverEmail from "../views/general/GeneralRecoverEmail.vue";
+import GeneralVerifyEmail from "../views/general/GeneralVerifyEmail.vue";
 import GeneralNotFound from "../views/general/GeneralNotFound.vue";
 import AppRoot from "../views/app/AppRoot.vue";
 import Account from "../views/app/account/Account.vue";
@@ -142,7 +145,65 @@ const routes = [
         },
       },
       {
-        path: "resetpassword",
+        path: "reauthenticate",
+        name: "GeneralReauthenticate",
+        component: GeneralSignIn,
+        meta: {
+          requiresAuth: true,
+          noAuth: false,
+        },
+      },
+      {
+        // Redirects email links sent by firebase to the correct route, or keeps on this route if there is an error
+        path: "emailaction",
+        name: "GeneralEmailAction",
+        component: GeneralEmailAction,
+        alias: ["resetpassword", "recoveremail", "verifyemail"],
+        meta: {
+          requiresAuth: false,
+          noAuth: false,
+        },
+        beforeEnter: (to, from, next) => {
+          // Get action mode from page URL
+          const URLParams = new URL(window.location.href).searchParams;
+          const mode = URLParams.get("mode");
+          const oobCode = URLParams.get("oobCode");
+
+          // Navigate to the correct view based on the URL mode
+          if (oobCode) {
+            // Only redirect if the code has been provided
+
+            switch (mode) {
+              case "resetPassword":
+                next({
+                  name: "GeneralResetPassword",
+                  params: { oobCode: oobCode },
+                });
+                break;
+              case "recoverEmail":
+                next({
+                  name: "GeneralRecoverEmail",
+                  params: { oobCode: oobCode },
+                });
+                break;
+              case "verifyEmail":
+                next({
+                  name: "GeneralVerifyEmail",
+                  params: { oobCode: oobCode },
+                });
+                break;
+              default:
+                next();
+            }
+          } else {
+            // No code has been provided, keep on this route to show error message
+
+            next();
+          }
+        },
+      },
+      {
+        path: "resetpassword/:oobCode",
         name: "GeneralResetPassword",
         component: GeneralResetPassword,
         meta: {
@@ -151,11 +212,20 @@ const routes = [
         },
       },
       {
-        path: "reauthenticate",
-        name: "GeneralReauthenticate",
-        component: GeneralSignIn,
+        path: "recoveremail/:oobCode",
+        name: "GeneralRecoverEmail",
+        component: GeneralRecoverEmail,
         meta: {
-          requiresAuth: true,
+          requiresAuth: false,
+          noAuth: false,
+        },
+      },
+      {
+        path: "verifyemail/:oobCode",
+        name: "GeneralVerifyEmail",
+        component: GeneralVerifyEmail,
+        meta: {
+          requiresAuth: false,
           noAuth: false,
         },
       },

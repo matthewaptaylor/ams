@@ -1,39 +1,66 @@
 <template>
-  <div>
-    <h1 class="text-h4">Forgot Password?</h1>
+  <v-container fluid class="pa-4">
+    <v-row dense>
+      <v-col cols="12">
+        <h1 class="text-h4">Forgot Password?</h1>
+      </v-col>
+    </v-row>
 
-    <v-form v-model="valid" :disabled="loading" @submit.prevent="submit">
-      <v-text-field
-        v-model="email"
-        :rules="emailRules"
-        autocomplete="username"
-        type="email"
-        label="Email"
-        :prepend-icon="emailIcon"
-        required
-      ></v-text-field>
+    <v-row dense>
+      <v-col cols="12">
+        <v-form v-model="valid" :disabled="loading" @submit.prevent="submit">
+          <v-row dense>
+            <v-col cols="12">
+              <v-text-field
+                v-model="email"
+                :rules="emailRules"
+                autocomplete="username"
+                type="email"
+                label="Email"
+                :prepend-icon="emailIcon"
+                required
+              ></v-text-field>
+            </v-col>
+          </v-row>
 
-      <v-alert type="success" class="mt-4" v-if="success">
-        Check your inbox for a confirmation email.
-      </v-alert>
+          <v-row dense>
+            <v-col cols="12">
+              <v-alert type="success" v-if="success">
+                Check your inbox for a confirmation email.
+              </v-alert>
+            </v-col>
+          </v-row>
 
-      <v-alert type="error" class="mt-4" v-if="error">{{ error }}</v-alert>
+          <v-row dense>
+            <v-col cols="12">
+              <v-alert type="error" v-if="error">{{ error }}</v-alert>
+            </v-col>
+          </v-row>
 
-      <v-btn
-        block
-        color="primary"
-        type="submit"
-        class="mt-4"
-        :disabled="!valid || loading"
-        :loading="loading"
-      >
-        <v-icon left dark>{{ emailSendIcon }}</v-icon>
-        Send reset email
-      </v-btn>
+          <v-row dense>
+            <v-col cols="12">
+              <v-btn
+                block
+                color="primary"
+                type="submit"
+                :disabled="!valid || loading"
+                :loading="loading"
+              >
+                <v-icon left dark>{{ emailSendIcon }}</v-icon>
+                Send reset email
+              </v-btn>
+            </v-col>
+          </v-row>
+        </v-form>
+      </v-col>
+    </v-row>
 
-      <v-btn plain to="signin" class="mt-4">Or sign in...</v-btn>
-    </v-form>
-  </div>
+    <v-row dense>
+      <v-col cols="12">
+        <v-btn plain to="signin">Or sign in...</v-btn>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>

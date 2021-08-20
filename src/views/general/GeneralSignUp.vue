@@ -1,54 +1,91 @@
 <template>
-  <div>
-    <h1 class="text-h4">Sign Up</h1>
-    <v-form
-      v-model="valid"
-      :disabled="loading"
-      ref="form"
-      @submit.prevent="signUp"
-    >
-      <v-text-field
-        v-model="email"
-        :rules="emailRules"
-        autocomplete="username"
-        type="email"
-        label="Email"
-        :prepend-icon="emailIcon"
-        required
-      ></v-text-field>
-      <v-text-field
-        v-model="password"
-        :rules="passwordRules"
-        autocomplete="new-password"
-        type="password"
-        label="Password"
-        :prepend-icon="lockIcon"
-        required
-      ></v-text-field>
-      <v-text-field
-        v-model="confirmPassword"
-        :rules="confirmPasswordRules"
-        autocomplete="new-password"
-        type="password"
-        label="Confirm password"
-        :prepend-icon="lockIcon"
-        required
-      ></v-text-field>
-      <v-alert type="error" class="mt-4" v-if="error">{{ error }}</v-alert>
-      <v-btn
-        block
-        color="primary"
-        type="submit"
-        class="mt-4"
-        :disabled="!valid || loading"
-        :loading="loading"
-      >
-        <v-icon left dark>{{ accountPlusIcon }}</v-icon>
-        Sign up
-      </v-btn>
-      <v-btn plain to="signin" class="mt-4">Or sign in...</v-btn>
-    </v-form>
-  </div>
+  <v-container fluid class="pa-4">
+    <v-row dense>
+      <v-col cols="12">
+        <h1 class="text-h4">Sign Up</h1>
+      </v-col>
+    </v-row>
+
+    <v-row dense>
+      <v-col cols="12">
+        <v-form
+          v-model="valid"
+          :disabled="loading"
+          ref="form"
+          @submit.prevent="signUp"
+        >
+          <v-row dense>
+            <v-col cols="12">
+              <v-text-field
+                v-model="email"
+                :rules="emailRules"
+                autocomplete="username"
+                type="email"
+                label="Email"
+                :prepend-icon="emailIcon"
+                required
+              ></v-text-field>
+            </v-col>
+          </v-row>
+
+          <v-row dense>
+            <v-col cols="12">
+              <v-text-field
+                v-model="password"
+                :rules="passwordRules"
+                autocomplete="new-password"
+                type="password"
+                label="Password"
+                :prepend-icon="lockIcon"
+                required
+              ></v-text-field>
+            </v-col>
+          </v-row>
+
+          <v-row dense>
+            <v-col cols="12">
+              <v-text-field
+                v-model="confirmPassword"
+                :rules="confirmPasswordRules"
+                autocomplete="new-password"
+                type="password"
+                label="Confirm password"
+                :prepend-icon="lockIcon"
+                required
+              ></v-text-field>
+            </v-col>
+          </v-row>
+
+          <v-row dense>
+            <v-col cols="12">
+              <v-alert type="error" v-if="error">{{ error }}</v-alert>
+            </v-col>
+          </v-row>
+
+          <v-row dense>
+            <v-col cols="12">
+              <v-btn
+                block
+                color="primary"
+                type="submit"
+                :disabled="!valid || loading"
+                :loading="loading"
+              >
+                <v-icon left dark>{{ accountPlusIcon }}</v-icon>
+                Sign up
+              </v-btn>
+            </v-col>
+          </v-row>
+        </v-form>
+      </v-col>
+    </v-row>
+
+    <v-row dense>
+      <v-col cols="12">
+        <v-btn plain to="signin">Or sign in...</v-btn>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 <style scoped></style>
 <script>

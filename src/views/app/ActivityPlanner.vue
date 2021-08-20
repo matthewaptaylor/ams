@@ -89,7 +89,7 @@ export default {
           ],
         },
         {
-          header: "Activities you can ciew",
+          header: "Activities you can view",
           icon: mdiEye,
           activities: [
             {

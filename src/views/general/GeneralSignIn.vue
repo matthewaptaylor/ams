@@ -1,117 +1,153 @@
 <template>
-  <div>
-    <h1 class="text-h4">{{ action }}</h1>
+  <v-container fluid class="pa-4">
+    <v-row dense>
+      <v-col cols="12">
+        <h1 class="text-h4">{{ action }}</h1>
+      </v-col>
+    </v-row>
 
-    <p v-if="this.action === 'Reauthenticate'">
-      To continue, we need you need to confirm your identity.
-    </p>
+    <v-row dense>
+      <v-col cols="12">
+        <p v-if="this.action === 'Reauthenticate'">
+          To continue, we need you need to confirm your identity.
+        </p>
+      </v-col>
+    </v-row>
 
-    <template v-if="providers.includes('google.com')">
-      <v-btn
-        block
-        color="blue"
-        dark
-        class="mt-4"
-        :loading="googleLoading"
-        @click="signInWithGoogle"
-      >
-        <v-icon left dark>{{ googleIcon }}</v-icon>
-        {{ action }} with Google
-      </v-btn>
+    <v-row dense v-if="providers.includes('google.com')">
+      <v-col cols="12">
+        <v-btn
+          block
+          color="blue"
+          dark
+          class="mt-4"
+          :loading="googleLoading"
+          @click="signInWithGoogle"
+        >
+          <v-icon left dark>{{ googleIcon }}</v-icon>
+          {{ action }} with Google
+        </v-btn>
 
-      <v-alert type="error" class="mt-4" v-if="googleError">
-        {{ googleError }}
-      </v-alert>
-    </template>
+        <v-alert type="error" class="mt-4" v-if="googleError">
+          {{ googleError }}
+        </v-alert>
+      </v-col>
+    </v-row>
 
-    <div
-      style="
-        position: relative;
-        margin-top: 1rem;
-        height: 1rem;
-        text-align: center;
-        font-weight: 500;
-      "
-      v-if="providers.length === 2"
-    >
-      <v-divider
-        style="
-          position: absolute;
-          margin: calc(0.5rem - 1px) 0 0.5rem;
-          width: 100%;
-        "
-      />
-      <div
-        style="
-          position: absolute;
-          width: 100%;
-          line-height: 1rem;
-          text-align: center;
-        "
-      >
-        <span
+    <v-row dense v-if="providers.length === 2">
+      <v-col cols="12">
+        <div
           style="
-            display: inline-block;
-            padding: 0 0.5rem;
-            background-color: #ffffff;
+            position: relative;
+            margin-top: 1rem;
+            height: 1rem;
+            text-align: center;
+            font-weight: 500;
           "
         >
-          OR
-        </span>
-      </div>
-    </div>
+          <v-divider
+            style="
+              position: absolute;
+              margin: calc(0.5rem - 1px) 0 0.5rem;
+              width: 100%;
+            "
+          />
+          <div
+            style="
+              position: absolute;
+              width: 100%;
+              line-height: 1rem;
+              text-align: center;
+            "
+          >
+            <span
+              style="
+                display: inline-block;
+                padding: 0 0.5rem;
+                background-color: #ffffff;
+              "
+            >
+              OR
+            </span>
+          </div>
+        </div>
+      </v-col>
+    </v-row>
 
-    <v-form
-      v-model="valid"
-      :disabled="loading"
-      @submit.prevent="signIn"
-      v-if="providers.includes('password')"
-    >
-      <v-text-field
-        v-model="email"
-        :rules="emailRules"
-        autocomplete="username"
-        type="email"
-        label="Email"
-        :prepend-icon="emailIcon"
-        required
-      ></v-text-field>
+    <v-row dense>
+      <v-col cols="12">
+        <v-form
+          v-model="valid"
+          :disabled="loading"
+          @submit.prevent="signIn"
+          v-if="providers.includes('password')"
+        >
+          <v-row dense>
+            <v-col cols="12">
+              <v-text-field
+                v-model="email"
+                :rules="emailRules"
+                autocomplete="username"
+                type="email"
+                label="Email"
+                :prepend-icon="emailIcon"
+                required
+              ></v-text-field>
+            </v-col>
+          </v-row>
 
-      <v-text-field
-        v-model="password"
-        :rules="passwordRules"
-        autocomplete="current-password"
-        type="password"
-        label="Password"
-        :prepend-icon="lockIcon"
-        required
-      ></v-text-field>
+          <v-row dense>
+            <v-col cols="12">
+              <v-text-field
+                v-model="password"
+                :rules="passwordRules"
+                autocomplete="current-password"
+                type="password"
+                label="Password"
+                :prepend-icon="lockIcon"
+                required
+              ></v-text-field>
+            </v-col>
+          </v-row>
 
-      <v-alert type="error" class="mt-4" v-if="error">{{ error }}</v-alert>
+          <v-row dense>
+            <v-col cols="12">
+              <v-alert type="error" v-if="error">{{ error }}</v-alert>
+            </v-col>
+          </v-row>
 
-      <v-btn
-        block
-        color="primary"
-        type="submit"
-        class="mt-4"
-        :disabled="!valid || loading"
-        :loading="loading"
-      >
-        <v-icon left dark>{{ loginIcon }}</v-icon>
-        {{ action }}
-      </v-btn>
+          <v-row dense>
+            <v-col cols="12">
+              <v-btn
+                block
+                color="primary"
+                type="submit"
+                :disabled="!valid || loading"
+                :loading="loading"
+              >
+                <v-icon left dark>{{ loginIcon }}</v-icon>
+                {{ action }}
+              </v-btn>
+            </v-col>
+          </v-row>
+        </v-form>
+      </v-col>
+    </v-row>
 
-      <div
-        class="d-flex justify-space-between flex-wrap mt-4"
-        style="gap: 1rem"
-        v-if="this.action === 'Sign In'"
-      >
-        <v-btn plain to="forgotpassword">Forgot password?</v-btn>
+    <v-row dense>
+      <v-col cols="12">
+        <div
+          class="d-flex justify-space-between flex-wrap"
+          style="gap: 1rem"
+          v-if="this.action === 'Sign In'"
+        >
+          <v-btn plain to="forgotpassword">Forgot password?</v-btn>
 
-        <v-btn plain to="signup">Or sign up...</v-btn>
-      </div>
-    </v-form>
-  </div>
+          <v-btn plain to="signup">Or sign up...</v-btn>
+        </div>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 <style scoped></style>
 <script>

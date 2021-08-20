@@ -1,4 +1,5 @@
 Preload fonts and images
+Chunk vendors to only load needed views initially
 Add logo and customise google login screen
 ARIA/a11y
 Run lighthouse
@@ -20,6 +21,8 @@ Add sign in with email link functionality
 Make every error use error component
 Ensure users have verifies their emails
 Update reset password firebase email link to work for changing email back etc
-Mobile nav first item text purple if not on first item. Set v-model?
-Update menu photourl/displayname when its changed. Global firebase.auth.currentuser var?
 Test noscript
+Date picker/time picker cursor: pointer, center time
+Make sure nothing uses alert but alery component, search code
+Are all buttons disabled when loading? Decide on consistent behaviour.
+Make sure errors have v-if on parents that have padding, stop taking up blank space

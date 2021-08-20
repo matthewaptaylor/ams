@@ -16,7 +16,12 @@
         v-if="!$vuetify.breakpoint.mobile"
       />
 
-      <v-sheet elevation="2" rounded class="flex-grow-1">
+      <v-sheet
+        elevation="2"
+        rounded
+        class="flex-grow-1"
+        style="max-width: 100%"
+      >
         <router-view></router-view>
       </v-sheet>
     </div>

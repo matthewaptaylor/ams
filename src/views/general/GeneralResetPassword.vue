@@ -1,62 +1,93 @@
 <template>
-  <div>
-    <h1 class="text-h4">Reset Password</h1>
+  <v-container fluid class="pa-4">
+    <v-row dense>
+      <v-col cols="12">
+        <h1 class="text-h4">Reset Password</h1>
+      </v-col>
+    </v-row>
 
-    <v-form
-      v-model="valid"
-      :disabled="loading"
-      ref="form"
-      @submit.prevent="resetPassword"
-    >
-      <v-text-field
-        v-model="email"
-        autocomplete="username"
-        type="email"
-        label="Email"
-        :prepend-icon="emailIcon"
-        disabled
-      ></v-text-field>
+    <v-row dense>
+      <v-col cols="12">
+        <v-form
+          v-model="valid"
+          :disabled="loading"
+          ref="form"
+          @submit.prevent="resetPassword"
+        >
+          <v-row dense>
+            <v-col cols="12">
+              <v-text-field
+                v-model="email"
+                autocomplete="username"
+                type="email"
+                label="Email"
+                :prepend-icon="emailIcon"
+                disabled
+              ></v-text-field>
+            </v-col>
+          </v-row>
 
-      <v-text-field
-        v-model="password"
-        :rules="passwordRules"
-        autocomplete="new-password"
-        type="password"
-        label="Password"
-        :prepend-icon="lockIcon"
-        required
-      ></v-text-field>
+          <v-row dense>
+            <v-col cols="12">
+              <v-text-field
+                v-model="password"
+                :rules="passwordRules"
+                autocomplete="new-password"
+                type="password"
+                label="Password"
+                :prepend-icon="lockIcon"
+                required
+              ></v-text-field>
+            </v-col>
+          </v-row>
 
-      <v-text-field
-        v-model="confirmPassword"
-        :rules="confirmPasswordRules"
-        autocomplete="new-password"
-        type="password"
-        label="Confirm password"
-        :prepend-icon="lockIcon"
-        required
-      ></v-text-field>
+          <v-row dense>
+            <v-col cols="12">
+              <v-text-field
+                v-model="confirmPassword"
+                :rules="confirmPasswordRules"
+                autocomplete="new-password"
+                type="password"
+                label="Confirm password"
+                :prepend-icon="lockIcon"
+                required
+              ></v-text-field>
+            </v-col>
+          </v-row>
 
-      <v-alert type="success" class="mt-4" v-if="success">
-        Password reset successfully.
-        <router-link to="/">Sign in.</router-link>.
-      </v-alert>
+          <v-row dense>
+            <v-col cols="12">
+              <v-alert type="success" v-if="success">
+                Password reset successfully.
+                <router-link to="/">Sign in.</router-link>.
+              </v-alert>
+            </v-col>
+          </v-row>
 
-      <v-alert type="error" class="mt-4" v-if="error">{{ error }}</v-alert>
+          <v-row dense>
+            <v-col cols="12">
+              <v-alert type="error" v-if="error">{{ error }}</v-alert>
+            </v-col>
+          </v-row>
 
-      <v-btn
-        block
-        color="primary"
-        type="submit"
-        class="mt-4"
-        :disabled="!valid || loading"
-        :loading="loading"
-      >
-        <v-icon left dark>{{ lockResetIcon }}</v-icon>
-        Reset password
-      </v-btn>
-    </v-form>
-  </div>
+          <v-row dense>
+            <v-col cols="12">
+              <v-btn
+                block
+                color="primary"
+                type="submit"
+                :disabled="!valid || loading"
+                :loading="loading"
+              >
+                <v-icon left dark>{{ lockResetIcon }}</v-icon>
+                Reset password
+              </v-btn>
+            </v-col>
+          </v-row>
+        </v-form>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
@@ -86,7 +117,7 @@ export default {
         (v) => v === this.password || "Passwords do not match",
       ],
 
-      actionCode: new URL(window.location.href).searchParams.get("oobCode"),
+      oobCode: this.$route.params.oobCode,
     };
   },
   watch: {
@@ -96,28 +127,23 @@ export default {
     },
   },
   mounted() {
-    if (this.actionCode === null) {
-      this.error =
-        "You must have a valid code to reset your password. If you pasted a link to get here, please make sure you pasted the full link.";
-    } else {
-      firebase
-        .auth()
-        .verifyPasswordResetCode(this.actionCode)
-        .then((email) => {
-          this.email = email;
-        })
-        .catch((error) => {
-          this.error = error.message;
-          this.success = false;
-        });
-    }
+    firebase
+      .auth()
+      .verifyPasswordResetCode(this.oobCode)
+      .then((email) => {
+        this.email = email;
+      })
+      .catch((error) => {
+        this.error = error.message;
+        this.success = false;
+      });
   },
   methods: {
     resetPassword() {
       this.loading = true;
       firebase
         .auth()
-        .confirmPasswordReset(this.actionCode, this.password)
+        .confirmPasswordReset(this.oobCode, this.password)
         .then(() => {
           this.loading = false;
           this.error = null;

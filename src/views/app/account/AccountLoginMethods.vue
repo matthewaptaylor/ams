@@ -11,6 +11,24 @@
         <h2 class="text-h5">Email and Password</h2>
       </v-col>
 
+      <v-col cols="12" v-if="!this.$currentUser.emailVerified">
+        <p>Your email address hasn't been verified.</p>
+
+        <v-btn
+          color="primary"
+          :loading="verifyEmailLoading"
+          :disabled="verifyEmailLoading"
+          @click="verifyEmail"
+        >
+          <v-icon left dark>{{ emailSendIcon }}</v-icon>
+          Verify email
+        </v-btn>
+
+        <Alert type="success" :message="verifyEmailSuccess" class="mt-5" />
+
+        <Alert type="error" :message="verifyEmailError" class="mt-5" />
+      </v-col>
+
       <v-col cols="12" sm="6" md="8" lg="6" dense>
         <AutosaveText
           label="Email"
@@ -51,46 +69,48 @@
         <h2 class="text-h5">Google</h2>
       </v-col>
 
-      <v-col cols="12" dense v-if="!googleProvider">
-        <p>You're not linked with a Google account.</p>
+      <v-col cols="12" dense>
+        <div v-if="!googleProvider">
+          <p>You're not linked with a Google account.</p>
 
-        <v-btn
-          color="blue"
-          dark
-          :loading="linkGoogleLoading"
-          @click="linkGoogle"
-        >
-          <v-icon left dark>{{ googleIcon }}</v-icon>
-          Link Google account
-        </v-btn>
-      </v-col>
+          <v-btn
+            color="blue"
+            :loading="linkGoogleLoading"
+            :disabled="linkGoogleLoading"
+            @click="linkGoogle"
+            class="white--text"
+          >
+            <v-icon left dark>{{ googleIcon }}</v-icon>
+            Link Google account
+          </v-btn>
+        </div>
 
-      <v-col cols="12" dense v-if="googleProvider">
-        <p>
-          You're linked with the Google account
-          {{ googleProvider.email }}.
-        </p>
+        <div v-if="googleProvider">
+          <p>
+            You're linked with the Google account
+            {{ googleProvider.email }}.
+          </p>
 
-        <v-btn
-          color="error"
-          dark
-          :loading="unlinkGoogleLoading"
-          @click="unlinkGoogle"
-        >
-          <v-icon left dark>{{ googleIcon }}</v-icon>
-          Unlink Google account
-        </v-btn>
-      </v-col>
+          <v-btn
+            color="error"
+            dark
+            :loading="unlinkGoogleLoading"
+            :disabled="unlinkGoogleLoading"
+            @click="unlinkGoogle"
+          >
+            <v-icon left dark>{{ googleIcon }}</v-icon>
+            Unlink Google account
+          </v-btn>
+        </div>
 
-      <v-col cols="12" sm="6" md="8" lg="6" dense>
-        <Alert type="error" :message="googleError" />
+        <Alert type="error" :message="googleError" class="mt-5" />
       </v-col>
     </v-row>
   </v-container>
 </template>
 
 <script>
-import { mdiGoogle, mdiLock } from "@mdi/js";
+import { mdiEmailSend, mdiGoogle, mdiLock } from "@mdi/js";
 import firebase from "firebase/app";
 import AutosaveText from "../../../components/app/AutosaveText.vue";
 import Alert from "../../../components/app/Alert.vue";
@@ -100,13 +120,18 @@ export default {
 
   data() {
     return {
+      emailSendIcon: mdiEmailSend,
       googleIcon: mdiGoogle,
       lockResetIcon: mdiLock,
 
       signInMethods: null,
 
+      verifyEmailLoading: false,
+      verifyEmailSuccess: null,
+      verifyEmailError: null,
+
       passwordProvider: null,
-      email: null,
+      email: this.$currentUser.email,
       emailError: null,
 
       googleProvider: null,
@@ -119,7 +144,6 @@ export default {
   mounted() {
     // Get details from firebase
     this.updateUser();
-    this.email = this.$currentUser.email;
   },
 
   methods: {
@@ -136,6 +160,28 @@ export default {
       this.googleProvider = this.signInMethods?.find(
         (provider) => provider.providerId === "google.com"
       );
+    },
+
+    verifyEmail() {
+      // Send a verification email
+      this.verifyEmailLoading = true;
+      this.verifyEmailSuccess = null;
+      this.verifyEmailError = null;
+
+      this.$currentUser
+        .sendEmailVerification()
+        .then(() => {
+          // Email verification sent
+          this.verifyEmailLoading = false;
+
+          this.verifyEmailSuccess = "A verification email has been sent.";
+        })
+        .catch((error) => {
+          // An error ocurred
+          this.verifyEmailLoading = false;
+
+          this.verifyEmailError = error.message;
+        });
     },
 
     saveEmail(newEmail) {
