@@ -13,6 +13,7 @@ html {
   -o-user-select: none;
   user-select: none;
 }
+
 .can-select {
   -webkit-user-select: text;
   -khtml-user-select: text;
@@ -20,11 +21,13 @@ html {
   -o-user-select: text;
   user-select: text;
 }
+
 #app {
   line-height: 1.15;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
 .v-application--wrap {
   min-height: 100vh !important;
 }
@@ -100,5 +103,9 @@ html {
   src: url("./assets/fonts/FuturaPTHeavyOblique.woff2") format("woff2"),
     url("./assets/fonts/FuturaPTHeavyOblique.woff") format("woff"),
     url("./assets/fonts/FuturaPTHeavyOblique.otf") format("opentype");
+}
+
+.v-time-picker-title {
+  justify-content: center !important;
 }
 </style>

@@ -75,7 +75,7 @@
 
     <v-row dense>
       <v-col cols="12">
-        <v-btn plain block to="signin">Sign in</v-btn>
+        <v-btn plain block :to="{ name: 'GeneralSignIn' }">Sign in</v-btn>
       </v-col>
     </v-row>
   </v-container>
@@ -120,12 +120,14 @@ export default {
       ],
     };
   },
+
   watch: {
     password() {
       // Manually revalidate confirm password field when password changes
       this.$refs.form.validate();
     },
   },
+
   methods: {
     signUp() {
       this.loading = true;
@@ -134,9 +136,11 @@ export default {
       firebase
         .auth()
         .createUserWithEmailAndPassword(this.email, this.password)
-        .then(() => {
+        .then((resp) => {
           // Signed in
           this.loading = false;
+
+          resp.user.sendEmailVerification(); // Attempt to send a verification email
         })
         .catch((error) => {
           this.loading = false;

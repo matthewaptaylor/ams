@@ -47,7 +47,7 @@
 
     <v-row dense>
       <v-col cols="12">
-        <v-btn plain block to="signin">Or sign in...</v-btn>
+        <v-btn plain block :to="{ name: 'GeneralSignIn' }">Or sign in...</v-btn>
       </v-col>
     </v-row>
   </v-container>

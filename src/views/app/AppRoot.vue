@@ -119,12 +119,15 @@ export default {
     signOut() {
       firebase.auth().signOut();
     },
+
     updateDetails() {
       // Choose personal details to display for user
-      this.displayName =
-        this.$currentUser.displayName ?? this.$currentUser.email;
-      this.photoURL = this.$currentUser.photoURL ?? false;
-      this.emailVerified = this.$currentUser.emailVerified;
+      if (this.$currentUser) {
+        this.displayName =
+          this.$currentUser.displayName ?? this.$currentUser.email;
+        this.photoURL = this.$currentUser.photoURL ?? false;
+        this.emailVerified = this.$currentUser?.emailVerified;
+      }
     },
   },
 };

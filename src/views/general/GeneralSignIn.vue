@@ -34,13 +34,8 @@
     <v-row dense v-if="providers.length === 2">
       <v-col cols="12">
         <div
-          style="
-            position: relative;
-            margin-top: 1rem;
-            height: 1rem;
-            text-align: center;
-            font-weight: 500;
-          "
+          class="text--secondary text-center"
+          style="position: relative; margin-top: 1rem; height: 1rem"
         >
           <v-divider
             style="
@@ -57,15 +52,7 @@
               text-align: center;
             "
           >
-            <span
-              style="
-                display: inline-block;
-                padding: 0 0.5rem;
-                background-color: #ffffff;
-              "
-            >
-              OR
-            </span>
+            <span class="d-inline-block px-2 white"> OR </span>
           </div>
         </div>
       </v-col>
@@ -155,7 +142,7 @@
 
     <v-row dense>
       <v-col cols="12">
-        <v-btn plain block to="signup">Sign up</v-btn>
+        <v-btn plain block :to="{ name: 'GeneralSignUp' }">Sign up</v-btn>
       </v-col>
     </v-row>
   </v-container>
