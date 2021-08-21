@@ -28,10 +28,12 @@
                 v-model="password"
                 :rules="passwordRules"
                 autocomplete="new-password"
-                type="password"
                 label="Password"
                 :prepend-icon="lockIcon"
                 required
+                :type="showPassword ? 'text' : 'password'"
+                :append-icon="showPassword ? eyeIcon : eyeOffIcon"
+                @click:append="showPassword = !showPassword"
               ></v-text-field>
             </v-col>
           </v-row>
@@ -75,7 +77,7 @@
 </template>
 
 <script>
-import { mdiEmail, mdiLock, mdiLockReset } from "@mdi/js";
+import { mdiEmail, mdiLock, mdiEye, mdiEyeOff, mdiLockReset } from "@mdi/js";
 import firebase from "firebase/app";
 import Alert from "../../components/app/Alert.vue";
 
@@ -84,9 +86,14 @@ export default {
 
   data() {
     return {
+      // Icons
       emailIcon: mdiEmail,
       lockIcon: mdiLock,
+      eyeIcon: mdiEye,
+      eyeOffIcon: mdiEyeOff,
       lockResetIcon: mdiLockReset,
+
+      // Form controls
       loading: false,
       valid: false,
       error: null,
@@ -99,6 +106,7 @@ export default {
         (v) => !!v || "Password is required",
         (v) => v.length >= 6 || "Password must be at least 6 characters",
       ],
+      showPassword: false,
       confirmPassword: "",
       confirmPasswordRules: [
         (v) => !!v || "Password confirmation is required",
@@ -138,6 +146,10 @@ export default {
           this.loading = false;
           this.done = true;
           this.success = "Password reset successfully.";
+
+          this.password = "";
+          this.confirmPassword = "";
+          this.$refs.form.resetValidation();
         })
         .catch((error) => {
           this.loading = false;

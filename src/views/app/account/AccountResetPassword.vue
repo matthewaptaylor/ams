@@ -28,10 +28,12 @@
                 v-model="password"
                 :rules="passwordRules"
                 autocomplete="new-password"
-                type="password"
                 label="Password"
                 :prepend-icon="lockIcon"
                 required
+                :type="showPassword ? 'text' : 'password'"
+                :append-icon="showPassword ? eyeIcon : eyeOffIcon"
+                @click:append="showPassword = !showPassword"
               ></v-text-field>
             </v-col>
           </v-row>
@@ -59,7 +61,6 @@
               <v-btn
                 color="primary"
                 type="submit"
-                class="mt-4"
                 :disabled="!valid || loading"
                 :loading="loading"
               >
@@ -75,7 +76,7 @@
 </template>
 
 <script>
-import { mdiEmail, mdiLock, mdiLockReset } from "@mdi/js";
+import { mdiEmail, mdiLock, mdiEye, mdiEyeOff, mdiLockReset } from "@mdi/js";
 import Alert from "../../../components/app/Alert.vue";
 
 export default {
@@ -86,6 +87,8 @@ export default {
       // Icons
       emailIcon: mdiEmail,
       lockIcon: mdiLock,
+      eyeIcon: mdiEye,
+      eyeOffIcon: mdiEyeOff,
       lockResetIcon: mdiLockReset,
 
       // Form status
@@ -102,6 +105,7 @@ export default {
         (v) => !!v || "Password is required",
         (v) => v.length >= 6 || "Password must be at least 6 characters",
       ],
+      showPassword: false,
       confirmPassword: "",
       confirmPasswordRules: [
         (v) => !!v || "Password confirmation is required",

@@ -98,10 +98,12 @@
                 v-model="password"
                 :rules="passwordRules"
                 autocomplete="current-password"
-                type="password"
                 label="Password"
                 :prepend-icon="lockIcon"
                 required
+                :type="showPassword ? 'text' : 'password'"
+                :append-icon="showPassword ? eyeIcon : eyeOffIcon"
+                @click:append="showPassword = !showPassword"
               ></v-text-field>
             </v-col>
           </v-row>
@@ -143,7 +145,14 @@
 </template>
 <style scoped></style>
 <script>
-import { mdiGoogle, mdiEmail, mdiLock, mdiLogin } from "@mdi/js";
+import {
+  mdiGoogle,
+  mdiEmail,
+  mdiLock,
+  mdiEye,
+  mdiEyeOff,
+  mdiLogin,
+} from "@mdi/js";
 import firebase from "firebase/app";
 import Alert from "../../components/app/Alert.vue";
 
@@ -158,14 +167,20 @@ export default {
         GeneralSignIn: "Sign In",
       }[this.$route.name],
 
+      // Icons
       googleIcon: mdiGoogle,
       googleLoading: false,
       emailIcon: mdiEmail,
       lockIcon: mdiLock,
+      eyeIcon: mdiEye,
+      eyeOffIcon: mdiEyeOff,
       loginIcon: mdiLogin,
+
+      googleError: null,
+
+      // Form control
       loading: false,
       valid: false,
-      error: null,
       email: "",
       emailRules: [
         (v) => !!v || "Email is required",
@@ -176,7 +191,8 @@ export default {
         (v) => !!v || "Password is required",
         (v) => v.length >= 6 || "Password must be at least 6 characters",
       ],
-      googleError: null,
+      showPassword: false,
+      error: null,
     };
   },
   computed: {

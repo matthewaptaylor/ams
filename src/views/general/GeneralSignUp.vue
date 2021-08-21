@@ -29,10 +29,12 @@
                 v-model="password"
                 :rules="passwordRules"
                 autocomplete="new-password"
-                type="password"
                 label="Password"
                 :prepend-icon="lockIcon"
                 required
+                :type="showPassword ? 'text' : 'password'"
+                :append-icon="showPassword ? eyeIcon : eyeOffIcon"
+                @click:append="showPassword = !showPassword"
               ></v-text-field>
             </v-col>
           </v-row>
@@ -80,7 +82,7 @@
 </template>
 <style scoped></style>
 <script>
-import { mdiEmail, mdiLock, mdiAccountPlus } from "@mdi/js";
+import { mdiEmail, mdiLock, mdiEye, mdiEyeOff, mdiAccountPlus } from "@mdi/js";
 import firebase from "firebase/app";
 import Alert from "../../components/app/Alert.vue";
 
@@ -89,9 +91,14 @@ export default {
 
   data() {
     return {
+      // Icons
       emailIcon: mdiEmail,
       lockIcon: mdiLock,
+      eyeIcon: mdiEye,
+      eyeOffIcon: mdiEyeOff,
       accountPlusIcon: mdiAccountPlus,
+
+      // Form control
       loading: false,
       valid: false,
       error: null,
@@ -105,6 +112,7 @@ export default {
         (v) => !!v || "Password is required",
         (v) => v.length >= 6 || "Password must be at least 6 characters",
       ],
+      showPassword: false,
       confirmPassword: "",
       confirmPasswordRules: [
         (v) => !!v || "Password confirmation is required",
