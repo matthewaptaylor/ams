@@ -13,12 +13,7 @@
           <v-toolbar-title>Create activity</v-toolbar-title>
         </v-toolbar>
 
-        <v-form
-          v-model="valid"
-          :disabled="loading"
-          @submit.prevent="createActivity"
-          class="pa-4"
-        >
+        <v-form v-model="valid" @submit.prevent="createActivity" class="pa-4">
           <v-text-field
             v-model="activityName"
             :rules="activityNameRules"

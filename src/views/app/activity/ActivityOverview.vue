@@ -6,12 +6,7 @@
       </v-col>
     </v-row>
 
-    <v-form
-      v-model="valid"
-      :disabled="loading"
-      @submit.prevent="save"
-      class="mt-3"
-    >
+    <v-form v-model="valid" @submit.prevent="save" class="mt-3">
       <v-row dense>
         <v-col cols="12" sm="6" md="8" lg="6">
           <v-text-field

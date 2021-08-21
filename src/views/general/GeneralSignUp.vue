@@ -8,12 +8,7 @@
 
     <v-row dense>
       <v-col cols="12">
-        <v-form
-          v-model="valid"
-          :disabled="loading"
-          ref="form"
-          @submit.prevent="signUp"
-        >
+        <v-form v-model="valid" ref="form" @submit.prevent="signUp">
           <v-row dense>
             <v-col cols="12">
               <v-text-field

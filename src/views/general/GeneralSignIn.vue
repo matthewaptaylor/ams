@@ -74,7 +74,6 @@
       <v-col cols="12">
         <v-form
           v-model="valid"
-          :disabled="loading"
           @submit.prevent="signIn"
           v-if="providers.includes('password')"
         >

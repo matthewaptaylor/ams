@@ -13,12 +13,7 @@
           <v-toolbar-title>Add risk</v-toolbar-title>
         </v-toolbar>
 
-        <v-form
-          v-model="valid"
-          :disabled="loading"
-          @submit.prevent="createActivity"
-          class="pa-4"
-        >
+        <v-form v-model="valid" @submit.prevent="createActivity" class="pa-4">
           <v-row>
             <v-col cols="12" sm="6" md="8" class="pb-0 pb-sm-3">
               <v-row>
