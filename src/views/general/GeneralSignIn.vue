@@ -26,9 +26,7 @@
           {{ action }} with Google
         </v-btn>
 
-        <v-alert type="error" class="mt-4" v-if="googleError">
-          {{ googleError }}
-        </v-alert>
+        <Alert type="error" :message="googleError" class="mt-5" />
       </v-col>
     </v-row>
 
@@ -110,12 +108,6 @@
 
           <v-row dense>
             <v-col cols="12">
-              <v-alert type="error" v-if="error">{{ error }}</v-alert>
-            </v-col>
-          </v-row>
-
-          <v-row dense>
-            <v-col cols="12">
               <v-btn
                 block
                 color="primary"
@@ -126,6 +118,8 @@
                 <v-icon left dark>{{ loginIcon }}</v-icon>
                 {{ action }}
               </v-btn>
+
+              <Alert type="error" :message="error" class="mt-5" />
             </v-col>
           </v-row>
         </v-form>
@@ -151,8 +145,11 @@
 <script>
 import { mdiGoogle, mdiEmail, mdiLock, mdiLogin } from "@mdi/js";
 import firebase from "firebase/app";
+import Alert from "../../components/app/Alert.vue";
 
 export default {
+  components: { Alert },
+
   data() {
     return {
       // Change name of the page based on whether the URL is sign in or reauthenticate
@@ -196,6 +193,7 @@ export default {
   methods: {
     signInWithGoogle() {
       this.googleLoading = true;
+      this.googleError = null;
 
       if (this.action === "Sign In") {
         firebase
@@ -218,7 +216,6 @@ export default {
           .then(() => {
             // Success
             this.googleLoading = false;
-            this.googleError = null;
 
             // Redirect back to the account page
             this.$router.go(-1);
@@ -231,6 +228,7 @@ export default {
     },
     signIn() {
       this.loading = true;
+      this.error = null;
 
       if (this.action === "Sign In") {
         firebase
@@ -239,7 +237,6 @@ export default {
           .then(() => {
             // Signed in
             this.loading = false;
-            this.error = null;
           })
           .catch((error) => {
             this.loading = false;
@@ -247,6 +244,8 @@ export default {
           });
       } else {
         // Reauthenticate the user
+        this.error = null;
+
         var credential = firebase.auth.EmailAuthProvider.credential(
           firebase.auth().currentUser.email,
           this.password
@@ -258,7 +257,6 @@ export default {
           .then(() => {
             // Success
             this.loading = false;
-            this.error = null;
 
             // Redirect back to the account page
             this.$router.go(-1);

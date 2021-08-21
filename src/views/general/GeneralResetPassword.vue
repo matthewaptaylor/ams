@@ -57,31 +57,20 @@
 
           <v-row dense>
             <v-col cols="12">
-              <v-alert type="success" v-if="success">
-                Password reset successfully.
-                <router-link to="/">Sign in.</router-link>.
-              </v-alert>
-            </v-col>
-          </v-row>
-
-          <v-row dense>
-            <v-col cols="12">
-              <v-alert type="error" v-if="error">{{ error }}</v-alert>
-            </v-col>
-          </v-row>
-
-          <v-row dense>
-            <v-col cols="12">
               <v-btn
                 block
                 color="primary"
                 type="submit"
-                :disabled="!valid || loading"
+                :disabled="!valid || loading || done"
                 :loading="loading"
               >
                 <v-icon left dark>{{ lockResetIcon }}</v-icon>
                 Reset password
               </v-btn>
+
+              <Alert type="success" :message="success" class="mt-5" />
+
+              <Alert type="error" :message="error" class="mt-5" />
             </v-col>
           </v-row>
         </v-form>
@@ -93,8 +82,11 @@
 <script>
 import { mdiEmail, mdiLock, mdiLockReset } from "@mdi/js";
 import firebase from "firebase/app";
+import Alert from "../../components/app/Alert.vue";
 
 export default {
+  components: { Alert },
+
   data() {
     return {
       emailIcon: mdiEmail,
@@ -103,7 +95,8 @@ export default {
       loading: false,
       valid: false,
       error: null,
-      success: false,
+      success: null,
+      done: false,
 
       email: null,
       password: "",
@@ -135,24 +128,25 @@ export default {
       })
       .catch((error) => {
         this.error = error.message;
-        this.success = false;
       });
   },
   methods: {
     resetPassword() {
       this.loading = true;
+      this.error = null;
+      this.success = null;
+
       firebase
         .auth()
         .confirmPasswordReset(this.oobCode, this.password)
         .then(() => {
           this.loading = false;
-          this.error = null;
-          this.success = true;
+          this.done = true;
+          this.success = "Password reset successfully.";
         })
         .catch((error) => {
           this.loading = false;
           this.error = error.message;
-          this.success = false;
         });
     },
   },

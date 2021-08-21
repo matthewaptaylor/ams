@@ -58,12 +58,6 @@
 
           <v-row dense>
             <v-col cols="12">
-              <v-alert type="error" v-if="error">{{ error }}</v-alert>
-            </v-col>
-          </v-row>
-
-          <v-row dense>
-            <v-col cols="12">
               <v-btn
                 block
                 color="primary"
@@ -74,6 +68,8 @@
                 <v-icon left dark>{{ accountPlusIcon }}</v-icon>
                 Sign up
               </v-btn>
+
+              <Alert type="error" :message="error" class="mt-5" />
             </v-col>
           </v-row>
         </v-form>
@@ -91,8 +87,11 @@
 <script>
 import { mdiEmail, mdiLock, mdiAccountPlus } from "@mdi/js";
 import firebase from "firebase/app";
+import Alert from "../../components/app/Alert.vue";
 
 export default {
+  components: { Alert },
+
   data() {
     return {
       emailIcon: mdiEmail,
@@ -127,6 +126,7 @@ export default {
   methods: {
     signUp() {
       this.loading = true;
+      this.error = null;
 
       firebase
         .auth()
@@ -134,7 +134,6 @@ export default {
         .then(() => {
           // Signed in
           this.loading = false;
-          this.error = null;
         })
         .catch((error) => {
           this.loading = false;

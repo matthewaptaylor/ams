@@ -23,12 +23,6 @@
             </v-col>
           </v-row>
 
-          <v-alert type="success" v-if="success" class="mt-5">
-            Check your inbox for a confirmation email.
-          </v-alert>
-
-          <v-alert type="error" v-if="error" class="mt-5">{{ error }}</v-alert>
-
           <v-row dense>
             <v-col cols="12">
               <v-btn
@@ -41,6 +35,10 @@
                 <v-icon left dark>{{ emailSendIcon }}</v-icon>
                 Send reset email
               </v-btn>
+
+              <Alert type="success" :message="success" class="mt-5" />
+
+              <Alert type="error" :message="error" class="mt-5" />
             </v-col>
           </v-row>
         </v-form>
@@ -58,8 +56,11 @@
 <script>
 import { mdiEmail, mdiEmailSend } from "@mdi/js";
 import firebase from "firebase/app";
+import Alert from "../../components/app/Alert.vue";
 
 export default {
+  components: { Alert },
+
   data() {
     return {
       emailIcon: mdiEmail,
@@ -67,7 +68,7 @@ export default {
       loading: false,
       valid: false,
       error: null,
-      success: false,
+      success: null,
       email: "",
       emailRules: [
         (v) => !!v || "Email is required",
@@ -78,6 +79,8 @@ export default {
   methods: {
     submit() {
       this.loading = true;
+      this.error = null;
+      this.success = null;
 
       firebase
         .auth()
@@ -85,13 +88,11 @@ export default {
         .then(() => {
           // Signed in
           this.loading = false;
-          this.error = null;
-          this.success = true;
+          this.success = "Check your inbox for a confirmation email.";
         })
         .catch((error) => {
           this.loading = false;
           this.error = error.message;
-          this.success = false;
         });
     },
   },
