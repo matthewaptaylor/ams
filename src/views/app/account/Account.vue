@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <div>
     <Breadcrumbs :items="breadcrumbItems" />
 
     <NavMobile
@@ -24,7 +24,7 @@
         <router-view></router-view>
       </v-sheet>
     </div>
-  </v-container>
+  </div>
 </template>
 <style scoped></style>
 <script>
@@ -58,8 +58,8 @@ export default {
           icon: mdiAccount,
         },
         {
-          title: "Login Methods",
-          to: { name: "AccountLoginMethods" },
+          title: "Sign In Methods",
+          to: { name: "AccountSignInMethods" },
           icon: mdiAccountKey,
         },
         {

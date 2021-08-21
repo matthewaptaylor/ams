@@ -12,7 +12,7 @@ import GeneralNotFound from "../views/general/GeneralNotFound.vue";
 import AppRoot from "../views/app/AppRoot.vue";
 import Account from "../views/app/account/Account.vue";
 import AccountProfile from "../views/app/account/AccountProfile.vue";
-import AccountLoginMethods from "../views/app/account/AccountLoginMethods.vue";
+import AccountSignInMethods from "../views/app/account/AccountSignInMethods.vue";
 import AccountResetPassword from "../views/app/account/AccountResetPassword.vue";
 import AccountDeleteAccount from "../views/app/account/AccountDeleteAccount.vue";
 import ActivityPlanner from "../views/app/ActivityPlanner.vue";
@@ -95,9 +95,9 @@ const routes = [
             component: AccountProfile,
           },
           {
-            path: "loginmethods",
-            name: "AccountLoginMethods",
-            component: AccountLoginMethods,
+            path: "signinmethods",
+            name: "AccountSignInMethods",
+            component: AccountSignInMethods,
           },
           {
             path: "resetpassword",

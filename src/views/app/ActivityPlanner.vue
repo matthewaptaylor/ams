@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <div>
     <Breadcrumbs :items="breadcrumbItems" />
     <v-sheet elevation="2" rounded class="pa-4">
       <div
@@ -40,7 +40,7 @@
         </template>
       </v-list>
     </v-sheet>
-  </v-container>
+  </div>
 </template>
 <style scoped></style>
 <script>

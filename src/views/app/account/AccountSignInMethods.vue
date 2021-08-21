@@ -2,16 +2,16 @@
   <v-container fluid class="pa-4">
     <v-row dense>
       <v-col cols="12">
-        <h1 class="text-h4">Login Methods</h1>
+        <h1 class="text-h4">Sign In Methods</h1>
       </v-col>
     </v-row>
 
-    <v-row dense>
+    <v-row dense v-if="!this.$currentUser.emailVerified">
       <v-col cols="12">
-        <h2 class="text-h5">Email and Password</h2>
+        <h2 class="text-h5">Verify Email</h2>
       </v-col>
 
-      <v-col cols="12" v-if="!this.$currentUser.emailVerified">
+      <v-col cols="12" sm="6" md="8" lg="6">
         <p>Your email address hasn't been verified.</p>
 
         <v-btn
@@ -28,8 +28,14 @@
 
         <Alert type="error" :message="verifyEmailError" class="mt-5" />
       </v-col>
+    </v-row>
 
-      <v-col cols="12" sm="6" md="8" lg="6" dense>
+    <v-row dense>
+      <v-col cols="12">
+        <h2 class="text-h5">Email and Password</h2>
+      </v-col>
+
+      <v-col cols="12" sm="6" md="8" lg="6">
         <AutosaveText
           label="Email"
           type="email"
@@ -69,7 +75,7 @@
         <h2 class="text-h5">Google</h2>
       </v-col>
 
-      <v-col cols="12" dense>
+      <v-col cols="12" sm="6" md="8" lg="6" dense>
         <div v-if="!googleProvider">
           <p>You're not linked with a Google account.</p>
 
@@ -93,7 +99,6 @@
 
           <v-btn
             color="error"
-            dark
             :loading="unlinkGoogleLoading"
             :disabled="unlinkGoogleLoading"
             @click="unlinkGoogle"

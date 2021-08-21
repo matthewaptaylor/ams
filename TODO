@@ -12,14 +12,10 @@ Implement reload page/get data from server again (refresh icon button that appea
 COnvert firestore/everything else to production mode
 Make sure database rules are set correctly and are secure
 Customise firebase emails
-Customise login/forgot/signup error messages
 Sign in/up/reset password show/hide password feature
 XSS vulnerabilities in date stored in firestore and other firebase auth things like displayname
 Document everything
-Rename login methods to sign in methods
 Add sign in with email link functionality
-Make every error use error component
-Ensure users have verifies their emails, dialog appears
 Test noscript
 Date picker/time picker cursor: pointer, center time
 Test email action handlers

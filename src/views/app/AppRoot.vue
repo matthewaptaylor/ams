@@ -56,7 +56,19 @@
       </v-menu>
     </v-app-bar>
     <v-main class="mx-auto">
-      <router-view></router-view>
+      <v-container>
+        <Alert
+          type="error"
+          message="Your email address has not veen verified."
+          :link="{
+            text: 'Verify email',
+            link: { name: 'AccountSignInMethods' },
+          }"
+          v-if="!emailVerified"
+        />
+
+        <router-view></router-view>
+      </v-container>
     </v-main>
   </div>
 </template>
@@ -75,9 +87,10 @@
 import { mdiAccount, mdiLogout } from "@mdi/js";
 import firebase from "firebase/app";
 import Avatar from "vue-avatar";
+import Alert from "../../components/app/Alert";
 
 export default {
-  components: { Avatar },
+  components: { Avatar, Alert },
 
   data() {
     return {
@@ -86,6 +99,8 @@ export default {
 
       displayName: "",
       photoURL: false,
+
+      emailVerified: true, // Assume by default the user's email is verified
     };
   },
 
@@ -109,6 +124,7 @@ export default {
       this.displayName =
         this.$currentUser.displayName ?? this.$currentUser.email;
       this.photoURL = this.$currentUser.photoURL ?? false;
+      this.emailVerified = this.$currentUser.emailVerified;
     },
   },
 };

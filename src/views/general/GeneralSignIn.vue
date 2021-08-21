@@ -17,10 +17,11 @@
         <v-btn
           block
           color="blue"
-          class="mt-4 white--text"
+          class="white--text"
           :loading="googleLoading"
           :disabled="googleLoading"
           @click="signInWithGoogle"
+          style="max-width: 100%"
         >
           <v-icon left dark>{{ googleIcon }}</v-icon>
           {{ action }} with Google

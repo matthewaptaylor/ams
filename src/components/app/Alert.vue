@@ -17,7 +17,7 @@
 export default {
   data() {
     return {
-      showAlert: null,
+      showAlert: !!this.message, // Shows alert if initialised with a message
     };
   },
 
