@@ -8,7 +8,7 @@
 
     <v-row dense>
       <v-col cols="12">
-        <Editor class="mt-4" />
+        <Editor />
       </v-col>
     </v-row>
 

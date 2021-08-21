@@ -20,3 +20,6 @@ Date picker/time picker cursor: pointer, center time
 Test email action handlers
 Firebase countn't load message
 remove mt-4s and such of old buttons
+If you log out but on a page you don't need to be logged in for, youll still be redirected to signin
+All to links should be path names
+Email link reauthentication

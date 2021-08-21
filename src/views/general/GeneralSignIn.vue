@@ -12,7 +12,7 @@
       </v-col>
     </v-row>
 
-    <v-row dense v-if="providers.includes('google.com')">
+    <v-row v-if="providers.includes('google.com')">
       <v-col cols="12">
         <v-btn
           block
@@ -88,7 +88,24 @@
                 label="Email"
                 :prepend-icon="emailIcon"
                 required
+                ref="emailInput"
               ></v-text-field>
+              <v-btn
+                text
+                color="primary"
+                x-small
+                style="margin-top: -18px; margin-bottom: -2px; float: right"
+                v-if="showEmailLinkButton && action === 'Sign In'"
+                :loading="emailLinkLoading"
+                :disabled="emailLinkLoading"
+                @click="signInWithEmailLink"
+              >
+                Sign in with email link
+              </v-btn>
+
+              <Alert type="success" :message="emailLinkSuccess" class="mt-5" />
+
+              <Alert type="error" :message="emailLinkError" class="mt-5" />
             </v-col>
           </v-row>
 
@@ -105,10 +122,18 @@
                 :append-icon="showPassword ? eyeIcon : eyeOffIcon"
                 @click:append="showPassword = !showPassword"
               ></v-text-field>
+              <v-btn
+                plain
+                x-small
+                style="margin-top: -18px; margin-bottom: -2px; float: right"
+                to="forgotpassword"
+              >
+                Forgot password?
+              </v-btn>
             </v-col>
           </v-row>
 
-          <v-row dense>
+          <v-row>
             <v-col cols="12">
               <v-btn
                 block
@@ -130,15 +155,7 @@
 
     <v-row dense>
       <v-col cols="12">
-        <div
-          class="d-flex justify-space-between flex-wrap"
-          style="gap: 1rem"
-          v-if="this.action === 'Sign In'"
-        >
-          <v-btn plain to="forgotpassword">Forgot password?</v-btn>
-
-          <v-btn plain to="signup">Or sign up...</v-btn>
-        </div>
+        <v-btn plain block to="signup">Sign up</v-btn>
       </v-col>
     </v-row>
   </v-container>
@@ -193,8 +210,15 @@ export default {
       ],
       showPassword: false,
       error: null,
+
+      // Email link sign in
+      showEmailLinkButton: false,
+      emailLinkLoading: false,
+      emailLinkError: null,
+      emailLinkSuccess: null,
     };
   },
+
   computed: {
     providers() {
       if (this.action === "Reauthenticate") {
@@ -206,6 +230,23 @@ export default {
       }
     },
   },
+
+  watch: {
+    email() {
+      // Show sign in with email button when the email input is valid
+
+      if (this.$refs.emailInput.validate()) {
+        // Show email link option to user
+
+        this.showEmailLinkButton = true;
+      } else {
+        // Hide email link option from user
+
+        this.showEmailLinkButton = false;
+      }
+    },
+  },
+
   methods: {
     signInWithGoogle() {
       this.googleLoading = true;
@@ -242,6 +283,36 @@ export default {
           });
       }
     },
+
+    signInWithEmailLink() {
+      // Send an email link to the user to sign in with
+      this.emailLinkLoading = true;
+      this.emailLinkError = null;
+      this.emailLinkSuccess = null;
+
+      const actionCodeSettings = {
+        // The settings for the link to send to the user
+        url: "http://ams-scouts-aotearoa.web.app/emailaction",
+        handleCodeInApp: true,
+      };
+
+      firebase
+        .auth()
+        .sendSignInLinkToEmail(this.email, actionCodeSettings)
+        .then(() => {
+          // The link was successfully sent. Inform the user.
+          this.emailLinkLoading = false;
+          this.emailLinkSuccess = `A sign in link has been sent to ${this.email}.`;
+
+          window.localStorage.setItem("emailForSignIn", this.email); // Store the email so the user doesn't need to enter it again
+        })
+        .catch((error) => {
+          // An error occurred
+          this.emailLinkLoading = false;
+          this.emailLinkError = error.message;
+        });
+    },
+
     signIn() {
       this.loading = true;
       this.error = null;
