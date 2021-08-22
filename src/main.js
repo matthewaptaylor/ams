@@ -6,6 +6,7 @@ import firebase from "firebase/app";
 import "firebase/analytics";
 import "firebase/auth";
 import "firebase/functions";
+import "./registerServiceWorker";
 
 // Setup firebase authentication
 let vueLoaded = false;

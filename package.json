@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@mdi/js": "^5.9.55",
+    "@tiptap/core": "^2.0.0-beta.100",
     "@tiptap/extension-bold": "^2.0.0-beta.15",
     "@tiptap/extension-bullet-list": "^2.0.0-beta.15",
     "@tiptap/extension-document": "^2.0.0-beta.13",
@@ -23,6 +24,7 @@
     "@tiptap/vue-2": "^2.0.0-beta.46",
     "core-js": "^3.6.5",
     "firebase": "^8.9.1",
+    "register-service-worker": "^1.7.1",
     "roboto-fontface": "*",
     "vue": "^2.6.11",
     "vue-avatar": "^2.3.3",
@@ -32,6 +34,7 @@
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
     "@vue/cli-plugin-eslint": "~4.5.0",
+    "@vue/cli-plugin-pwa": "~4.5.0",
     "@vue/cli-plugin-router": "~4.5.0",
     "@vue/cli-service": "~4.5.0",
     "@vue/eslint-config-prettier": "^6.0.0",
