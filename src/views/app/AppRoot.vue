@@ -3,7 +3,7 @@
     <v-app-bar color="primary" dark app>
       <img
         alt="Scouts Aotearoa logo"
-        src="@/assets/images/app-logo.svg"
+        src="@/assets/images/logo.svg"
         class="me-4 py-2"
         style="height: 100%"
         draggable="false"

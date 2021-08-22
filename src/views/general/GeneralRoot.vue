@@ -3,23 +3,21 @@
     <v-main class="fill-height">
       <v-container class="fill-height align-content-center justify-center">
         <div style="width: 100%; max-width: 25rem">
-          <v-sheet elevation="2" rounded class="mb-4 pa-4 text-center">
-            <router-link
-              to="/"
-              class="d-inline-block mx-auto text-decoration-none"
-            >
-              <img
-                src="@/assets/images/sign-in-logo.svg"
-                alt="Scouts Aotearoa logo"
-                class="d-block mx-auto pa-2"
-                style="height: 4rem; max-width: 100%"
-                draggable="false"
-              />
-              <span class="text--primary" style="font-size: 1.25rem">
-                Activity Management System
-              </span>
-            </router-link>
-          </v-sheet>
+          <router-link
+            to="/"
+            class="d-block mx-auto mb-4 pa-4 text-decoration-none text-center"
+          >
+            <img
+              src="@/assets/images/logo.svg"
+              alt="Scouts Aotearoa logo"
+              class="d-block mx-auto pa-2"
+              style="height: 4rem; max-width: 100%"
+              draggable="false"
+            />
+            <span class="white--text" style="font-size: 1.25rem">
+              Activity Management System
+            </span>
+          </router-link>
           <v-sheet elevation="2" rounded>
             <router-view></router-view>
           </v-sheet>
