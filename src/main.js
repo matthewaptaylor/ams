@@ -10,6 +10,7 @@ import "firebase/functions";
 // Setup firebase authentication
 let vueLoaded = false;
 firebase.initializeApp(JSON.parse(process.env.VUE_APP_FIREBASE_CONFIG));
+firebase.analytics(); // Initialise Google analytics
 firebase.auth().onAuthStateChanged((user) => {
   if (vueLoaded) {
     // Triggered by genuine auth state change
