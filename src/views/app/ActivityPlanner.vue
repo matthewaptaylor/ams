@@ -1,44 +1,64 @@
 <template>
   <div>
     <Breadcrumbs :items="breadcrumbItems" />
-    <v-sheet elevation="2" rounded class="pa-4">
-      <div
-        class="d-flex justify-space-between align-center flex-wrap"
-        style="column-gap: 1rem; row-gap: 0.5rem"
-      >
-        <h1 class="text-h4">Activity Planner</h1>
-        <ActivityCreate />
-      </div>
-      <v-list two-line>
-        <template v-for="(category, categoryIndex) in activityCategories">
-          <v-divider v-if="categoryIndex !== 0" :key="category.categoryIndex" />
+    <v-sheet elevation="2" rounded>
+      <v-container fluid class="pa-4">
+        <v-row>
+          <v-col
+            cols="12"
+            class="d-flex justify-space-between align-center flex-wrap"
+            style="column-gap: 1rem; row-gap: 0.5rem"
+          >
+            <h1 class="text-h4">Activity Planner</h1>
+            <ActivityCreate />
+          </v-col>
+        </v-row>
 
-          <v-subheader :key="category.header">
-            <v-icon left>{{ category.icon }}</v-icon>
-            {{ category.header }}
-          </v-subheader>
+        <v-row>
+          <v-col cols="12">
+            <v-list two-line>
+              <template v-for="(category, categoryIndex) in activityCategories">
+                <v-divider
+                  v-if="categoryIndex !== 0"
+                  :key="category.categoryIndex"
+                />
 
-          <template v-for="activity in category.activities">
-            <v-list-item
-              :to="{ name: 'ActivityOverview', params: { activityId: 1 } }"
-              :key="activity.id"
-            >
-              <v-list-item-content>
-                <v-list-item-title v-html="activity.name"></v-list-item-title>
-                <v-list-item-subtitle>
-                  <span class="text--primary">
-                    {{ dateToString(activity.startDate) }} to
-                    {{ dateToString(activity.endDate) }}
-                  </span>
-                  <template v-if="categoryIndex !== 0">
-                    &mdash; Led by {{ activity.activityLeader }}
-                  </template>
-                </v-list-item-subtitle>
-              </v-list-item-content>
-            </v-list-item>
-          </template>
-        </template>
-      </v-list>
+                <v-subheader :key="category.header">
+                  <v-icon left>{{ category.icon }}</v-icon>
+                  {{ category.header }}
+                </v-subheader>
+
+                <template v-for="activity in category.activities">
+                  <v-list-item
+                    :to="{
+                      name: 'ActivityOverview',
+                      params: { activityId: 1 },
+                    }"
+                    :key="activity.id"
+                  >
+                    <v-list-item-content>
+                      <v-list-item-title
+                        v-html="activity.name"
+                      ></v-list-item-title>
+
+                      <v-list-item-subtitle>
+                        <span class="text--primary">
+                          {{ dateToString(activity.startDate) }} to
+                          {{ dateToString(activity.endDate) }}
+                        </span>
+
+                        <template v-if="categoryIndex !== 0">
+                          &mdash; Led by {{ activity.activityLeader }}
+                        </template>
+                      </v-list-item-subtitle>
+                    </v-list-item-content>
+                  </v-list-item>
+                </template>
+              </template>
+            </v-list>
+          </v-col>
+        </v-row>
+      </v-container>
     </v-sheet>
   </div>
 </template>

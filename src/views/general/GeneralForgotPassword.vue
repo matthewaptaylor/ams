@@ -1,12 +1,12 @@
 <template>
   <v-container fluid class="pa-4">
-    <v-row dense>
+    <v-row>
       <v-col cols="12">
         <h1 class="text-h4">Forgot Password?</h1>
       </v-col>
     </v-row>
 
-    <v-row dense>
+    <v-row>
       <v-col cols="12">
         <v-form v-model="valid" @submit.prevent="submit">
           <v-row dense>
@@ -19,12 +19,15 @@
                 label="Email"
                 :prepend-icon="emailIcon"
                 required
+                hide-details="auto"
               ></v-text-field>
             </v-col>
-          </v-row>
 
-          <v-row dense>
-            <v-col cols="12">
+            <v-col cols="12" class="mt-2">
+              <Alert type="success" :message="success" class="mb-2" />
+
+              <Alert type="error" :message="error" class="mb-2" />
+
               <v-btn
                 block
                 color="primary"
@@ -35,19 +38,15 @@
                 <v-icon left dark>{{ emailSendIcon }}</v-icon>
                 Send reset email
               </v-btn>
+            </v-col>
 
-              <Alert type="success" :message="success" class="mt-5" />
-
-              <Alert type="error" :message="error" class="mt-5" />
+            <v-col cols="12">
+              <v-btn plain block :to="{ name: 'GeneralSignIn' }">
+                Or sign in...
+              </v-btn>
             </v-col>
           </v-row>
         </v-form>
-      </v-col>
-    </v-row>
-
-    <v-row dense>
-      <v-col cols="12">
-        <v-btn plain block :to="{ name: 'GeneralSignIn' }">Or sign in...</v-btn>
       </v-col>
     </v-row>
   </v-container>

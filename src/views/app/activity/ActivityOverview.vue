@@ -1,38 +1,36 @@
 <template>
   <v-container fluid class="pa-4">
-    <v-row dense>
+    <v-row>
       <v-col cols="12">
         <h1 class="text-h4">Overview</h1>
       </v-col>
     </v-row>
 
-    <v-row dense>
-      <v-col cols="12">
+    <v-row>
+      <v-col cols="12" sm="6" md="8" lg="6">
         <v-form v-model="valid" @submit.prevent="save">
           <v-row dense>
-            <v-col cols="12" sm="6" md="8" lg="6">
+            <v-col>
               <v-text-field
                 label="Activity name"
                 value=""
                 type="text"
                 :rules="[(v) => !!v || 'Activity name is required']"
                 required
+                hide-details="auto"
               ></v-text-field>
             </v-col>
-          </v-row>
 
-          <v-row dense>
-            <v-col cols="12" sm="6" md="8" lg="6">
+            <v-col cols="12">
               <v-text-field
                 label="Location"
                 value=""
                 type="text"
+                hide-details="auto"
               ></v-text-field>
             </v-col>
-          </v-row>
 
-          <v-row dense>
-            <v-col cols="6" sm="3" md="4" lg="3">
+            <v-col cols="12" sm="6" md="8" lg="6">
               <v-dialog
                 ref="startDateDialog"
                 v-model="startDateModal"
@@ -50,6 +48,7 @@
                     v-on="on"
                     :rules="[(v) => !!v || 'Start date is required']"
                     required
+                    hide-details="auto"
                   ></v-text-field>
                 </template>
                 <v-date-picker v-model="startDate" scrollable>
@@ -70,7 +69,7 @@
               </v-dialog>
             </v-col>
 
-            <v-col cols="6" sm="3" md="4" lg="3">
+            <v-col cols="12" sm="6" md="8" lg="6">
               <v-dialog
                 ref="startTimeDialog"
                 v-model="startTimeModal"
@@ -86,6 +85,7 @@
                     readonly
                     v-bind="attrs"
                     v-on="on"
+                    hide-details="auto"
                   ></v-text-field>
                 </template>
 
@@ -106,10 +106,8 @@
                 </v-time-picker>
               </v-dialog>
             </v-col>
-          </v-row>
 
-          <v-row dense>
-            <v-col cols="6" sm="3" md="4" lg="3">
+            <v-col cols="12" sm="6" md="8" lg="6">
               <v-dialog
                 ref="endDateDialog"
                 v-model="endDateModal"
@@ -127,6 +125,7 @@
                     v-on="on"
                     :rules="[(v) => !!v || 'End date is required']"
                     required
+                    hide-details="auto"
                   ></v-text-field>
                 </template>
                 <v-date-picker v-model="endDate" scrollable>
@@ -147,7 +146,7 @@
               </v-dialog>
             </v-col>
 
-            <v-col cols="6" sm="3" md="4" lg="3">
+            <v-col cols="12" sm="6" md="8" lg="6">
               <v-dialog
                 ref="endTimeDialog"
                 v-model="endTimeModal"
@@ -163,6 +162,7 @@
                     readonly
                     v-bind="attrs"
                     v-on="on"
+                    hide-details="auto"
                   ></v-text-field>
                 </template>
                 <v-time-picker format="24hr" v-model="endTime" full-width>
@@ -182,10 +182,8 @@
                 </v-time-picker>
               </v-dialog>
             </v-col>
-          </v-row>
 
-          <v-row dense>
-            <v-col cols="12">
+            <v-col cols="12" class="mt-2">
               <v-btn
                 color="primary"
                 type="submit"

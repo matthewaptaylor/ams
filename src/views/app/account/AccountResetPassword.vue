@@ -1,12 +1,12 @@
 <template>
   <v-container fluid class="pa-4">
-    <v-row dense>
+    <v-row>
       <v-col cols="12">
         <h1 class="text-h4">Reset Password</h1>
       </v-col>
     </v-row>
 
-    <v-row dense>
+    <v-row>
       <v-col cols="12" sm="6" md="8" lg="6">
         <v-form v-model="valid" ref="form" @submit.prevent="resetPassword">
           <v-row dense>
@@ -18,11 +18,10 @@
                 autocomplete="username"
                 :prepend-icon="emailIcon"
                 disabled
+                hide-details="auto"
               ></v-text-field>
             </v-col>
-          </v-row>
 
-          <v-row dense>
             <v-col cols="12">
               <v-text-field
                 v-model="password"
@@ -34,11 +33,10 @@
                 :type="showPassword ? 'text' : 'password'"
                 :append-icon="showPassword ? eyeIcon : eyeOffIcon"
                 @click:append="showPassword = !showPassword"
+                hide-details="auto"
               ></v-text-field>
             </v-col>
-          </v-row>
 
-          <v-row dense>
             <v-col cols="12">
               <v-text-field
                 v-model="confirmPassword"
@@ -48,16 +46,20 @@
                 label="Confirm password"
                 :prepend-icon="lockIcon"
                 required
+                hide-details="auto"
               ></v-text-field>
             </v-col>
-          </v-row>
 
-          <Alert type="success" :message="success" class="mt-5" />
+            <v-col cols="12" class="mt-2">
+              <Alert type="success" :message="success" class="mb-2" />
 
-          <Alert type="error" :message="error" :link="errorLink" class="mt-5" />
+              <Alert
+                type="error"
+                :message="error"
+                :link="errorLink"
+                class="m2-2"
+              />
 
-          <v-row dense>
-            <v-col cols="12">
               <v-btn
                 color="primary"
                 type="submit"

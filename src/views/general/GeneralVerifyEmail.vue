@@ -1,17 +1,17 @@
 <template>
   <v-container fluid class="pa-4">
-    <v-row dense>
+    <v-row>
       <v-col cols="12">
         <h1 class="text-h4">Verify Email</h1>
       </v-col>
     </v-row>
 
-    <v-row dense>
+    <v-row>
       <v-col cols="12">
         <div
           class="d-flex flex-column align-center"
           style="gap: 1rem"
-          v-if="!emailVerified"
+          v-if="!emailVerified && !error"
         >
           <v-progress-circular
             indeterminate
@@ -21,9 +21,9 @@
           <p class="mb-0">Verifying your email address.</p>
         </div>
 
-        <Alert type="success" :message="success" class="mt-5" />
+        <Alert type="success" :message="success" />
 
-        <Alert type="error" :message="error" class="mt-5" />
+        <Alert type="error" :message="error" />
       </v-col>
     </v-row>
   </v-container>
@@ -57,6 +57,8 @@ export default {
         this.emailVerified = true;
 
         this.success = "Your email address has been verified.";
+
+        this.$updateUser(); // Update the global user object to match
       })
       .catch((error) => {
         // Code is invalid or expired

@@ -64,6 +64,7 @@
             text: 'Verify email',
             link: { name: 'AccountSignInMethods' },
           }"
+          class="mb-3"
           v-if="!emailVerified"
         />
 

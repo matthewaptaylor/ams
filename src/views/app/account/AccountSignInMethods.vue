@@ -1,114 +1,128 @@
 <template>
   <v-container fluid class="pa-4">
-    <v-row dense>
+    <v-row>
       <v-col cols="12">
         <h1 class="text-h4">Sign In Methods</h1>
       </v-col>
     </v-row>
 
-    <v-row dense v-if="!this.$currentUser.emailVerified">
+    <v-row>
+      <v-col cols="12" v-if="!this.$currentUser.emailVerified">
+        <v-row dense>
+          <v-col cols="12">
+            <h2 class="text-h5">Verify Email</h2>
+          </v-col>
+        </v-row>
+
+        <v-row dense>
+          <v-col cols="12" sm="6" md="8" lg="6">
+            <p class="mb-2">Your email address hasn't been verified.</p>
+
+            <v-btn
+              color="primary"
+              :loading="verifyEmailLoading"
+              :disabled="verifyEmailLoading"
+              @click="verifyEmail"
+            >
+              <v-icon left dark>{{ emailSendIcon }}</v-icon>
+              Verify email
+            </v-btn>
+
+            <Alert type="success" :message="verifyEmailSuccess" class="mt-2" />
+
+            <Alert type="error" :message="verifyEmailError" class="mt-2" />
+          </v-col>
+        </v-row>
+      </v-col>
+
       <v-col cols="12">
-        <h2 class="text-h5">Verify Email</h2>
+        <v-row dense>
+          <v-col cols="12">
+            <h2 class="text-h5">Email and Password</h2>
+          </v-col>
+        </v-row>
+
+        <v-row dense>
+          <v-col cols="12" sm="6" md="8" lg="6">
+            <AutosaveText
+              label="Email"
+              type="email"
+              :value="email"
+              autocomplete="username"
+              :rules="[(v) => !!v || 'Email is required']"
+              :required="true"
+              :error="emailError"
+              @save="saveEmail"
+            />
+          </v-col>
+
+          <v-col cols="12" dense v-if="!passwordProvider">
+            <p class="mb-0">
+              You currently can't sign in to this account with a password.
+
+              <router-link :to="{ name: 'AccountResetPassword' }">
+                Reset password </router-link
+              >.
+            </p>
+          </v-col>
+
+          <v-col cols="12" sm="6" md="8" lg="6" dense v-if="passwordProvider">
+            <v-text-field
+              value="        "
+              label="Password"
+              type="password"
+              hint="You can change this in Reset Password"
+              persistent-hint
+              disabled
+            ></v-text-field>
+          </v-col>
+        </v-row>
       </v-col>
 
-      <v-col cols="12" sm="6" md="8" lg="6">
-        <p>Your email address hasn't been verified.</p>
-
-        <v-btn
-          color="primary"
-          :loading="verifyEmailLoading"
-          :disabled="verifyEmailLoading"
-          @click="verifyEmail"
-        >
-          <v-icon left dark>{{ emailSendIcon }}</v-icon>
-          Verify email
-        </v-btn>
-
-        <Alert type="success" :message="verifyEmailSuccess" class="mt-5" />
-
-        <Alert type="error" :message="verifyEmailError" class="mt-5" />
-      </v-col>
-    </v-row>
-
-    <v-row dense>
       <v-col cols="12">
-        <h2 class="text-h5">Email and Password</h2>
-      </v-col>
+        <v-row dense>
+          <v-col cols="12">
+            <h2 class="text-h5">Google</h2>
+          </v-col>
+        </v-row>
 
-      <v-col cols="12" sm="6" md="8" lg="6">
-        <AutosaveText
-          label="Email"
-          type="email"
-          :value="email"
-          autocomplete="username"
-          :rules="[(v) => !!v || 'Email is required']"
-          :required="true"
-          :error="emailError"
-          @save="saveEmail"
-        />
-      </v-col>
+        <v-row dense>
+          <v-col cols="12" sm="6" md="8" lg="6">
+            <template v-if="!googleProvider">
+              <p>You're not linked with a Google account.</p>
 
-      <v-col cols="12" dense v-if="!passwordProvider">
-        <p>
-          You currently can't sign in to this account with a password.
+              <v-btn
+                color="blue"
+                :loading="linkGoogleLoading"
+                :disabled="linkGoogleLoading"
+                @click="linkGoogle"
+                class="white--text"
+              >
+                <v-icon left dark>{{ googleIcon }}</v-icon>
+                Link Google account
+              </v-btn>
+            </template>
 
-          <router-link :to="{ name: 'AccountResetPassword' }">
-            Reset password </router-link
-          >.
-        </p>
-      </v-col>
+            <template v-if="googleProvider">
+              <p class="mb-2">
+                You're linked with the Google account
+                {{ googleProvider.email }}.
+              </p>
 
-      <v-col cols="12" sm="6" md="8" lg="6" dense v-if="passwordProvider">
-        <v-text-field
-          value="        "
-          label="Password"
-          type="password"
-          hint="You can change this in Reset Password"
-          persistent-hint
-          disabled
-        ></v-text-field>
-      </v-col>
-    </v-row>
+              <v-btn
+                color="error"
+                :loading="unlinkGoogleLoading"
+                :disabled="unlinkGoogleLoading"
+                @click="unlinkGoogle"
+              >
+                <v-icon left dark>{{ googleIcon }}</v-icon>
+                Unlink Google account
+              </v-btn>
+            </template>
 
-    <v-row dense>
-      <v-col cols="12">
-        <h2 class="text-h5">Google</h2>
-      </v-col>
-
-      <v-col cols="12" sm="6" md="8" lg="6" dense>
-        <div v-if="!googleProvider">
-          <p>You're not linked with a Google account.</p>
-
-          <v-btn
-            color="blue"
-            :loading="linkGoogleLoading"
-            :disabled="linkGoogleLoading"
-            @click="linkGoogle"
-            class="white--text"
-          >
-            <v-icon left dark>{{ googleIcon }}</v-icon>
-            Link Google account
-          </v-btn>
-        </div>
-
-        <div v-if="googleProvider">
-          <p>
-            You're linked with the Google account
-            {{ googleProvider.email }}.
-          </p>
-
-          <v-btn
-            color="error"
-            :loading="unlinkGoogleLoading"
-            :disabled="unlinkGoogleLoading"
-            @click="unlinkGoogle"
-          >
-            <v-icon left dark>{{ googleIcon }}</v-icon>
-            Unlink Google account
-          </v-btn>
-        </div>
-
-        <Alert type="error" :message="googleError" class="mt-5" />
+            <Alert type="error" :message="googleError" class="mt-2" />
+          </v-col>
+        </v-row>
       </v-col>
     </v-row>
   </v-container>

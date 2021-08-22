@@ -1,13 +1,13 @@
 <template>
   <v-container fluid class="pa-4">
-    <v-row dense>
+    <v-row>
       <v-col cols="12">
         <h1 class="text-h4" v-if="signInMode !== true">Email Action</h1>
         <h1 class="text-h4" v-if="signInMode === true">Sign In With Link</h1>
       </v-col>
     </v-row>
 
-    <v-row dense v-if="signInMode === true">
+    <v-row v-if="signInMode === true">
       <v-col cols="12">
         <v-form v-model="valid" @submit.prevent="signIn">
           <v-row dense>
@@ -20,12 +20,13 @@
                 label="Confirm email"
                 :prepend-icon="emailIcon"
                 required
+                hide-details="auto"
               ></v-text-field>
             </v-col>
-          </v-row>
 
-          <v-row dense>
-            <v-col cols="12">
+            <v-col cols="12" class="mt-2">
+              <Alert type="error" :message="error" class="mb-2" />
+
               <v-btn
                 block
                 color="primary"
@@ -36,15 +37,13 @@
                 <v-icon left dark>{{ loginIcon }}</v-icon>
                 Sign in
               </v-btn>
-
-              <Alert type="error" :message="error" class="mt-5" />
             </v-col>
           </v-row>
         </v-form>
       </v-col>
     </v-row>
 
-    <v-row dense v-if="signInMode === false">
+    <v-row v-if="signInMode === false">
       <v-col cols="12">
         <p>
           There was an error with the link you followed to get here. Please make

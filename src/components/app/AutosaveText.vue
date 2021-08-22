@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <v-form @submit.prevent="save">
     <v-text-field
       :label="label"
       type="text"
@@ -7,11 +7,12 @@
       :autocomplete="autocomplete"
       :rules="rules"
       :required="required"
-      @blur="save"
       ref="input"
+      hide-details="auto"
+      @blur="save"
     >
       <template v-slot:append-outer>
-        <div v-if="showButton || showSuccess">
+        <div v-if="showButton || showSuccess" class="mt-n1 mb-n2 ms-n2">
           <v-tooltip bottom>
             <template v-slot:activator="{ on }">
               <div v-on="on">
@@ -19,22 +20,12 @@
                   icon
                   @click.stop="save"
                   :loading="currentlySaving"
-                  v-if="showButton"
+                  v-if="showButton || showSuccess"
                 >
-                  <v-icon color="error">
-                    {{ contentSaveIcon }}
+                  <v-icon :color="showButton ? 'error' : 'success'">
+                    {{ showButton ? contentSaveIcon : checkCircleIcon }}
                   </v-icon>
                 </v-btn>
-
-                <v-icon
-                  x-large
-                  color="success"
-                  v-on="on"
-                  v-if="showSuccess"
-                  class="pa-2"
-                >
-                  {{ checkCircleIcon }}
-                </v-icon>
               </div>
             </template>
 
@@ -53,9 +44,9 @@
       :link="
         error && error.link ? { text: error.linkText, link: error.link } : null
       "
-      class="mt-4"
+      class="mt-2"
     />
-  </div>
+  </v-form>
 </template>
 
 <script>
@@ -69,10 +60,13 @@ export default {
     return {
       contentSaveIcon: mdiContentSave,
       checkCircleIcon: mdiCheckCircle,
+
       currentValue: this.value,
+
       showButton: false,
       currentlySaving: false,
       showSuccess: false,
+
       successTimeout: null,
     };
   },
@@ -105,6 +99,8 @@ export default {
 
     currentValue(val) {
       this.showButton = val !== this.value; // Show save button if content has been changed
+
+      // Hide any previous success indicator
       this.showSuccess = false;
       clearTimeout(this.successTimeout);
     },

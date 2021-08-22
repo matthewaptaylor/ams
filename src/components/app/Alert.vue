@@ -5,6 +5,7 @@
     v-if="showAlert"
     close-text="Close Alert"
     dismissible
+    class="mb-0"
   >
     <div>{{ message }}</div>
     <v-btn outlined v-if="link" class="mt-2" :to="link.link">{{

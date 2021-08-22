@@ -7,19 +7,9 @@ import "firebase/analytics";
 import "firebase/auth";
 import "firebase/functions";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyCEP-66lWUOILlpK2QWLj196GJWezQPM7E",
-  authDomain: "ams-scouts-aotearoa.firebaseapp.com",
-  projectId: "ams-scouts-aotearoa",
-  storageBucket: "ams-scouts-aotearoa.appspot.com",
-  messagingSenderId: "1009744879723",
-  appId: "1:1009744879723:web:ffb8b54902f5d3ae54912e",
-  measurementId: "G-8K0GRKGLY6",
-};
-
 // Setup firebase authentication
 let vueLoaded = false;
-firebase.initializeApp(firebaseConfig);
+firebase.initializeApp(JSON.parse(process.env.VUE_APP_FIREBASE_CONFIG));
 firebase.auth().onAuthStateChanged((user) => {
   if (vueLoaded) {
     // Triggered by genuine auth state change
@@ -55,11 +45,23 @@ firebase.auth().onAuthStateChanged((user) => {
   }
 });
 
-// Setup firebase functions
-// firebase.functions().useEmulator("localhost", 5001);
-// var addMessage = firebase.functions().httpsCallable("addMessage");
-// addMessage({ text: "messageText" }).then((result) => {
-//   // Read result of the Cloud Function.
-//   var sanitizedMessage = result;
-//   console.log(sanitizedMessage);
-// });
+// Setup emulators
+if (process.env.NODE_ENV === "development") {
+  // Automatically switch to a local emulator in development
+  firebase.auth().useEmulator("http://localhost:9099");
+  firebase.functions().useEmulator("localhost", 5001);
+}
+
+var activityPlannerCreateActivity = firebase
+  .functions()
+  .httpsCallable("activityPlannerCreateActivity");
+
+activityPlannerCreateActivity({
+  name: "Wellington Trip",
+  startTime: new Date(),
+  endTime: new Date(),
+}).then((result) => {
+  // Read result of the Cloud Function.
+  var sanitizedMessage = result;
+  console.log(sanitizedMessage);
+});

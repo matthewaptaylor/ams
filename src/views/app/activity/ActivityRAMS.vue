@@ -1,26 +1,23 @@
 <template>
   <v-container fluid class="pa-4">
-    <v-row dense>
-      <v-col cols="12">
-        <div
-          class="d-flex justify-space-between align-center flex-wrap"
-          style="column-gap: 1rem; row-gap: 0.5rem"
-        >
-          <h1 class="text-h4">RAMS</h1>
+    <v-row>
+      <v-col
+        cols="12"
+        class="d-flex justify-space-between align-center flex-wrap"
+        style="column-gap: 1rem; row-gap: 0.5rem"
+      >
+        <h1 class="text-h4">RAMS</h1>
 
-          <ActivityRAMSRisk />
-        </div>
+        <ActivityRAMSRisk />
       </v-col>
     </v-row>
 
-    <v-row dense>
+    <v-row>
       <v-col cols="12">
         <v-simple-table fixed-header style="overflow: auto">
           <template v-slot:default>
             <thead>
               <tr>
-                <th>Category</th>
-
                 <th>Potential Incident</th>
 
                 <th>Controls</th>
@@ -30,9 +27,11 @@
             </thead>
             <tbody class="can-select">
               <tr v-for="risk in risks" :key="risk.id" class="pt-4">
-                <td>{{ risk.category }}</td>
-
                 <td>
+                  <p class="mb-1">
+                    <strong>Category:</strong> {{ risk.category }}
+                  </p>
+
                   <p class="mb-1"><strong>Hazard:</strong> {{ risk.hazard }}</p>
 
                   <p class="mb-0"><strong>Risk:</strong> {{ risk.risk }}</p>
@@ -62,10 +61,11 @@
                   </p>
 
                   <p class="mb-0">
-                    This risk is:<strong>
+                    This risk is
+                    <strong>
                       {{
                         risk.acceptable ? "acceptable" : "not acceptable"
-                      }}</strong
+                      }} </strong
                     >.
                   </p>
                 </td>

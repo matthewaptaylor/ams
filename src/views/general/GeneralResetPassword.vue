@@ -1,12 +1,12 @@
 <template>
   <v-container fluid class="pa-4">
-    <v-row dense>
+    <v-row>
       <v-col cols="12">
         <h1 class="text-h4">Reset Password</h1>
       </v-col>
     </v-row>
 
-    <v-row dense>
+    <v-row>
       <v-col cols="12">
         <v-form v-model="valid" ref="form" @submit.prevent="resetPassword">
           <v-row dense>
@@ -18,11 +18,10 @@
                 label="Email"
                 :prepend-icon="emailIcon"
                 disabled
+                hide-details="auto"
               ></v-text-field>
             </v-col>
-          </v-row>
 
-          <v-row dense>
             <v-col cols="12">
               <v-text-field
                 v-model="password"
@@ -34,11 +33,10 @@
                 :type="showPassword ? 'text' : 'password'"
                 :append-icon="showPassword ? eyeIcon : eyeOffIcon"
                 @click:append="showPassword = !showPassword"
+                hide-details="auto"
               ></v-text-field>
             </v-col>
-          </v-row>
 
-          <v-row dense>
             <v-col cols="12">
               <v-text-field
                 v-model="confirmPassword"
@@ -48,12 +46,15 @@
                 label="Confirm password"
                 :prepend-icon="lockIcon"
                 required
+                hide-details="auto"
               ></v-text-field>
             </v-col>
-          </v-row>
 
-          <v-row dense>
-            <v-col cols="12">
+            <v-col cols="12" class="mt-2">
+              <Alert type="success" :message="success" class="mb-2" />
+
+              <Alert type="error" :message="error" class="mb-2" />
+
               <v-btn
                 block
                 color="primary"
@@ -64,10 +65,6 @@
                 <v-icon left dark>{{ lockResetIcon }}</v-icon>
                 Reset password
               </v-btn>
-
-              <Alert type="success" :message="success" class="mt-5" />
-
-              <Alert type="error" :message="error" class="mt-5" />
             </v-col>
           </v-row>
         </v-form>

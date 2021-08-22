@@ -1,18 +1,19 @@
 <template>
   <v-container fluid class="pa-4">
-    <v-row dense>
+    <v-row>
       <v-col cols="12">
         <h1 class="text-h4">Delete Account</h1>
       </v-col>
     </v-row>
 
-    <v-row dense>
+    <v-row>
       <v-col cols="12" sm="6" md="8" lg="6">
-        <p>
+        <p class="mb-2">
           If you no longer use AMS, you may delete your account. If you are only
           deleting because you have gotten a new email address, please note that
-          you can change your email address in Login Methods.
+          you can change your email address in Sign In Methods.
         </p>
+
         <v-dialog v-model="dialog" width="25rem">
           <template v-slot:activator="{ on, attrs }">
             <v-btn color="error" dark v-bind="attrs" v-on="on">

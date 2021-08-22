@@ -1,36 +1,38 @@
 <template>
   <v-container fluid class="pa-4">
-    <v-row dense>
+    <v-row>
       <v-col cols="12">
         <h1 class="text-h4">Profile</h1>
       </v-col>
     </v-row>
 
-    <v-row dense>
+    <v-row>
       <v-col cols="12" sm="6" md="8" lg="6">
-        <AutosaveText
-          label="Display name"
-          type="text"
-          :value="displayName"
-          autocomplete="name"
-          :rules="[(v) => !!v || 'Display name is required']"
-          :required="true"
-          :error="displayNameError"
-          @save="saveDisplayName"
-        />
-      </v-col>
-    </v-row>
+        <v-row dense>
+          <v-col cols="12">
+            <AutosaveText
+              label="Display name"
+              type="text"
+              :value="displayName"
+              autocomplete="name"
+              :rules="[(v) => !!v || 'Display name is required']"
+              :required="true"
+              :error="displayNameError"
+              @save="saveDisplayName"
+            />
+          </v-col>
 
-    <v-row dense>
-      <v-col cols="12" sm="6" md="8" lg="6">
-        <v-text-field
-          :value="$currentUser.email"
-          label="Email"
-          type="email"
-          hint="You can change this in Login Methods"
-          persistent-hint
-          disabled
-        ></v-text-field>
+          <v-col cols="12">
+            <v-text-field
+              :value="$currentUser.email"
+              label="Email"
+              type="email"
+              hint="You can change this in Login Methods"
+              persistent-hint
+              disabled
+            ></v-text-field>
+          </v-col>
+        </v-row>
       </v-col>
     </v-row>
   </v-container>

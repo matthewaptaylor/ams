@@ -1,12 +1,12 @@
 <template>
   <v-container fluid class="pa-4">
-    <v-row dense>
+    <v-row>
       <v-col cols="12">
         <h1 class="text-h4">Sign Up</h1>
       </v-col>
     </v-row>
 
-    <v-row dense>
+    <v-row>
       <v-col cols="12">
         <v-form v-model="valid" ref="form" @submit.prevent="signUp">
           <v-row dense>
@@ -19,11 +19,10 @@
                 label="Email"
                 :prepend-icon="emailIcon"
                 required
+                hide-details="auto"
               ></v-text-field>
             </v-col>
-          </v-row>
 
-          <v-row dense>
             <v-col cols="12">
               <v-text-field
                 v-model="password"
@@ -35,11 +34,10 @@
                 :type="showPassword ? 'text' : 'password'"
                 :append-icon="showPassword ? eyeIcon : eyeOffIcon"
                 @click:append="showPassword = !showPassword"
+                hide-details="auto"
               ></v-text-field>
             </v-col>
-          </v-row>
 
-          <v-row dense>
             <v-col cols="12">
               <v-text-field
                 v-model="confirmPassword"
@@ -49,12 +47,13 @@
                 label="Confirm password"
                 :prepend-icon="lockIcon"
                 required
+                hide-details="auto"
               ></v-text-field>
             </v-col>
-          </v-row>
 
-          <v-row dense>
-            <v-col cols="12">
+            <v-col cols="12" class="mt-2">
+              <Alert type="error" :message="error" class="mb-2" />
+
               <v-btn
                 block
                 color="primary"
@@ -65,17 +64,13 @@
                 <v-icon left dark>{{ accountPlusIcon }}</v-icon>
                 Sign up
               </v-btn>
+            </v-col>
 
-              <Alert type="error" :message="error" class="mt-5" />
+            <v-col cols="12">
+              <v-btn plain block :to="{ name: 'GeneralSignIn' }">Sign in</v-btn>
             </v-col>
           </v-row>
         </v-form>
-      </v-col>
-    </v-row>
-
-    <v-row dense>
-      <v-col cols="12">
-        <v-btn plain block :to="{ name: 'GeneralSignIn' }">Sign in</v-btn>
       </v-col>
     </v-row>
   </v-container>

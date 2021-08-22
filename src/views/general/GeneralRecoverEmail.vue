@@ -1,24 +1,22 @@
 <template>
   <v-container fluid class="pa-4">
-    <v-row dense>
+    <v-row>
       <v-col cols="12">
         <h1 class="text-h4">Recover Email</h1>
       </v-col>
     </v-row>
 
-    <v-row dense>
+    <v-row>
       <v-col cols="12">
-        <p>
+        <p class="mb-0">
           Hi{{ restoredEmail ? ", " + restoredEmail : "" }}. You can restore
           your email address using the button below.
         </p>
 
-        <Alert type="error" :message="codeError" class="mt-5" />
+        <Alert type="error" :message="codeError" class="mt-2" />
       </v-col>
-    </v-row>
 
-    <v-row dense v-if="!invalidCode">
-      <v-col cols="12">
+      <v-col cols="12" v-if="!invalidCode">
         <v-btn
           block
           color="primary"
@@ -30,15 +28,13 @@
           Restore email
         </v-btn>
 
-        <Alert type="success" :message="restoreSuccess" class="mt-5" />
+        <Alert type="success" :message="restoreSuccess" class="mt-2" />
 
-        <Alert type="error" :message="restoreError" class="mt-5" />
+        <Alert type="error" :message="restoreError" class="mt-2" />
       </v-col>
-    </v-row>
 
-    <v-row dense v-if="showResetPasswordButton">
-      <v-col cols="12">
-        <p>
+      <v-col cols="12" v-if="showResetPasswordButton">
+        <p class="mb-0">
           If you think somebody may have your password, you can send yourself a
           password reset email using the button below.
         </p>
@@ -49,14 +45,15 @@
           :disabled="resetPasswordLoading"
           :loading="resetPasswordLoading"
           @click="resetPassword"
+          class="mt-2"
         >
           <v-icon left dark>{{ emailSendIcon }}</v-icon>
           Send reset email
         </v-btn>
 
-        <Alert type="success" :message="resetPasswordSuccess" class="mt-5" />
+        <Alert type="success" :message="resetPasswordSuccess" class="mt-2" />
 
-        <Alert type="error" :message="resetPasswordError" class="mt-5" />
+        <Alert type="error" :message="resetPasswordError" class="mt-2" />
       </v-col>
     </v-row>
   </v-container>
@@ -126,6 +123,8 @@ export default {
           this.emailRestored = true;
 
           this.showResetPasswordButton = true; // Show option to reset password
+
+          this.$updateUser(); // Update the global user object to match
         })
         .catch((error) => {
           // Invalid code
