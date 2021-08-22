@@ -26,8 +26,9 @@
             <v-toolbar dark color="error">
               <v-toolbar-title>Delete account</v-toolbar-title>
             </v-toolbar>
+
             <div class="pa-4">
-              <p>
+              <p class="mb-0">
                 This action can't be undone! Are you sure that you want to
                 continue?
               </p>
@@ -36,7 +37,7 @@
                 type="error"
                 :message="error"
                 :link="errorLink"
-                class="mt-5"
+                class="mt-2"
               />
 
               <div class="d-flex justify-space-between flex-wrap mt-4">

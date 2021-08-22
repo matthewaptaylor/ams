@@ -57,7 +57,7 @@
                 type="error"
                 :message="error"
                 :link="errorLink"
-                class="m2-2"
+                class="mb-2"
               />
 
               <v-btn

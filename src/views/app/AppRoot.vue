@@ -59,7 +59,7 @@
       <v-container>
         <Alert
           type="error"
-          message="Your email address has not veen verified."
+          message="Your email address has not been verified."
           :link="{
             text: 'Verify email',
             link: { name: 'AccountSignInMethods' },
