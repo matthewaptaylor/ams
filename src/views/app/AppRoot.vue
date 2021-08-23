@@ -1,6 +1,14 @@
 <template>
   <div id="app-root">
-    <v-app-bar color="primary" dark app>
+    <v-app-bar
+      color="primary"
+      dark
+      app
+      :class="{
+        'v-app-bar--hide':
+          $vuetify.breakpoint.mobile && $route.name !== 'ActivityPlanner',
+      }"
+    >
       <img
         alt="Scouts Aotearoa logo"
         src="@/assets/images/logo.svg"
@@ -55,8 +63,19 @@
         </v-list>
       </v-menu>
     </v-app-bar>
-    <v-main class="mx-auto">
-      <v-container>
+    <v-main
+      :class="{
+        'py-0': $vuetify.breakpoint.mobile && $route.name !== 'ActivityPlanner',
+      }"
+      style="transition: padding-top 0.25s"
+    >
+      <v-container
+        v-if="
+          !emailVerified &&
+          (!$vuetify.breakpoint.mobile || $route.name === 'ActivityPlanner')
+        "
+        class="px-2 px-md-4 py-0"
+      >
         <Alert
           type="error"
           message="Your email address has not been verified."
@@ -64,12 +83,11 @@
             text: 'Verify email',
             link: { name: 'AccountSignInMethods' },
           }"
-          class="mb-3"
-          v-if="!emailVerified"
+          class="mt-2"
         />
-
-        <router-view></router-view>
       </v-container>
+
+      <router-view></router-view>
     </v-main>
   </div>
 </template>
@@ -81,6 +99,12 @@
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
+}
+</style>
+
+<style>
+.v-app-bar--hide > * {
+  visibility: hidden;
 }
 </style>
 

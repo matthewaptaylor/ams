@@ -1,6 +1,6 @@
 <template>
   <div
-    class="d-flex flex-row align-center pt-0 pb-3"
+    class="d-flex flex-row align-center py-0 mb-2"
     style="gap: 0.5rem; min-height: 2rem"
   >
     <v-btn

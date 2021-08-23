@@ -3,7 +3,7 @@ module.exports = {
   pwa: {
     name: "Activity Management System",
     themeColor: "#5f249f",
-    msTileColor: "#5c3596",
+    msTileColor: "#5f249f",
     appleMobileWebAppCapable: "yes",
     appleMobileWebAppStatusBarStyle: "black",
 

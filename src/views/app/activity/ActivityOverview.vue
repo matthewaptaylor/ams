@@ -30,7 +30,7 @@
               ></v-text-field>
             </v-col>
 
-            <v-col cols="12" sm="6" md="8" lg="6">
+            <v-col cols="12" sm="6" lg="6">
               <v-dialog
                 ref="startDateDialog"
                 v-model="startDateModal"
@@ -69,7 +69,7 @@
               </v-dialog>
             </v-col>
 
-            <v-col cols="12" sm="6" md="8" lg="6">
+            <v-col cols="12" sm="6" lg="6">
               <v-dialog
                 ref="startTimeDialog"
                 v-model="startTimeModal"
@@ -107,7 +107,7 @@
               </v-dialog>
             </v-col>
 
-            <v-col cols="12" sm="6" md="8" lg="6">
+            <v-col cols="12" sm="6" lg="6">
               <v-dialog
                 ref="endDateDialog"
                 v-model="endDateModal"
@@ -146,7 +146,7 @@
               </v-dialog>
             </v-col>
 
-            <v-col cols="12" sm="6" md="8" lg="6">
+            <v-col cols="12" sm="6" lg="6">
               <v-dialog
                 ref="endTimeDialog"
                 v-model="endTimeModal"

@@ -1,8 +1,12 @@
 <template>
-  <v-sheet elevation="2" rounded class="mb-4 pa-4">
-    <h6 class="text-h6" style="line-height: 1.2">{{ title }}</h6>
+  <v-sheet elevation="2">
     <v-chip-group mandatory color="primary">
-      <v-chip v-for="item in items" :to="item.to" :key="item.title">
+      <v-chip
+        v-for="(item, index) in items"
+        :to="item.to"
+        :key="item.title"
+        :class="{ 'ms-2': index === 0 }"
+      >
         {{ item.title }}
       </v-chip>
     </v-chip-group>
@@ -12,7 +16,6 @@
 <script>
 export default {
   props: {
-    title: String,
     items: Array,
   },
 };

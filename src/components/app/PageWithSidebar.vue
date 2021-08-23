@@ -1,0 +1,78 @@
+<template>
+  <div>
+    <div
+      style="position: sticky; top: 0; z-index: 5"
+      v-if="$vuetify.breakpoint.mobile"
+    >
+      <v-toolbar dense color="primary" dark>
+        <v-btn icon @click="goBack" style="width: 40px; height: 40px">
+          <v-icon>{{ arrowLeftIcon }}</v-icon>
+        </v-btn>
+
+        <v-toolbar-title>{{ title }}</v-toolbar-title>
+      </v-toolbar>
+
+      <NavMobile :title="title" :items="navItems" />
+    </div>
+
+    <v-container class="pa-2 px-md-4">
+      <Breadcrumbs
+        :items="breadcrumbItems"
+        v-if="!$vuetify.breakpoint.mobile"
+      />
+
+      <div class="d-flex align-start" style="gap: 1rem">
+        <NavDesktop
+          :title="title"
+          :subtitle="subtitle"
+          :items="navItems"
+          v-if="!$vuetify.breakpoint.mobile"
+        />
+
+        <v-sheet
+          elevation="2"
+          rounded
+          class="flex-grow-1"
+          style="max-width: 100%"
+        >
+          <slot></slot>
+        </v-sheet>
+      </div>
+    </v-container>
+  </div>
+</template>
+
+<script>
+import { mdiArrowLeft } from "@mdi/js";
+import Breadcrumbs from "./Breadcrumbs.vue";
+import NavMobile from "./NavMobile.vue";
+import NavDesktop from "./NavDesktop.vue";
+import router from "../../router";
+
+export default {
+  data() {
+    return {
+      arrowLeftIcon: mdiArrowLeft,
+    };
+  },
+
+  components: {
+    Breadcrumbs,
+    NavMobile,
+    NavDesktop,
+  },
+
+  props: {
+    title: String,
+    subtitle: String,
+    breadcrumbItems: Array,
+    navItems: Array,
+  },
+
+  methods: {
+    goBack() {
+      router.push(this.breadcrumbItems[this.breadcrumbItems.length - 2].to);
+    },
+  },
+};
+</script>

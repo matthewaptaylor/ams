@@ -5,7 +5,7 @@
         <div style="width: 100%; max-width: 25rem">
           <router-link
             to="/"
-            class="d-block mx-auto mb-4 pa-4 text-decoration-none text-center"
+            class="d-block mx-auto mb-8 text-decoration-none text-center"
           >
             <img
               src="@/assets/images/logo.svg"

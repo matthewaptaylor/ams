@@ -1,33 +1,14 @@
 <template>
-  <div>
-    <Breadcrumbs :items="breadcrumbItems" />
-
-    <NavMobile
-      :title="activityName"
-      :items="navItems"
-      v-if="$vuetify.breakpoint.mobile"
-    />
-
-    <div class="d-flex align-start" style="gap: 1rem">
-      <NavDesktop
-        :title="activityName"
-        :subtitle="activityDates"
-        :items="navItems"
-        v-if="!$vuetify.breakpoint.mobile"
-      />
-
-      <v-sheet
-        elevation="2"
-        rounded
-        class="flex-grow-1"
-        style="max-width: 100%"
-      >
-        <router-view></router-view>
-      </v-sheet>
-    </div>
-  </div>
+  <PageWithSidebar
+    :title="activityName"
+    :subtitle="activityDates"
+    :breadcrumbItems="breadcrumbItems"
+    :navItems="navItems"
+  >
+    <router-view></router-view>
+  </PageWithSidebar>
 </template>
-<style scoped></style>
+
 <script>
 import {
   mdiInformation,
@@ -38,20 +19,18 @@ import {
   mdiBagPersonal,
   mdiFormSelect,
 } from "@mdi/js";
-import Breadcrumbs from "../../../components/app/Breadcrumbs.vue";
-import NavMobile from "../../../components/app/NavMobile.vue";
-import NavDesktop from "../../../components/app/NavDesktop.vue";
+import PageWithSidebar from "../../../components/app/PageWithSidebar.vue";
 
 export default {
   components: {
-    Breadcrumbs,
-    NavMobile,
-    NavDesktop,
+    PageWithSidebar,
   },
+
   data() {
     return {
       activityName: "Wellington Trip",
       activityDates: "24/06/2021 to 26/04/2021",
+
       navItems: [
         {
           title: "Overview",
@@ -77,6 +56,7 @@ export default {
         },
         { title: "AIF", to: { name: "ActivityAIF" }, icon: mdiFormSelect },
       ],
+
       breadcrumbItems: [
         {
           text: "Activity Planner",
