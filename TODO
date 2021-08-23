@@ -18,4 +18,4 @@ Test noscript
 If you log out but on a page you don't need to be logged in for, youll still be redirected to signin
 Prevent abuse with App Check firebase
 Custom scrollbar
-Padding on AMS icon for pwa
+Click sign out button if not connected to server

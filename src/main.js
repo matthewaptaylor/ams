@@ -17,9 +17,12 @@ firebase.auth().onAuthStateChanged((user) => {
     // Triggered by genuine auth state change
     Vue.prototype.$updateUser(); // Set new user status
 
-    if (user) {
+    // Change the route if the client is at a location they are no longer allowed
+    const routeMatched = router.history.current.matched;
+
+    if (user && routeMatched.some((record) => record.meta.noAuth)) {
       router.push("/");
-    } else {
+    } else if (routeMatched.some((record) => record.meta.requiresAuth)) {
       router.push("/signin");
     }
   } else {
