@@ -32,6 +32,7 @@
               v-if="photoURL"
               style="width: 36px; border-radius: 50%"
             />
+
             <avatar
               :username="displayName"
               :size="36"
@@ -41,6 +42,7 @@
             ></avatar>
           </v-btn>
         </template>
+
         <v-list>
           <v-list-item>
             <v-list-item-title>
@@ -48,16 +50,20 @@
               {{ displayName }}!
             </v-list-item-title>
           </v-list-item>
+
           <v-list-item :to="{ name: 'AccountProfile' }">
             <v-list-item-icon>
               <v-icon>{{ accountIcon }}</v-icon>
             </v-list-item-icon>
+
             <v-list-item-title>My Account</v-list-item-title>
           </v-list-item>
+
           <v-list-item @click="signOut">
             <v-list-item-icon>
               <v-icon>{{ logoutIcon }}</v-icon>
             </v-list-item-icon>
+
             <v-list-item-title>Sign Out</v-list-item-title>
           </v-list-item>
         </v-list>
@@ -129,15 +135,15 @@ export default {
     };
   },
 
+  created() {
+    // Add event listener for when the global user object changes
+    document.addEventListener("currentUserChanged", () => {
+      this.updateDetails();
+    });
+  },
+
   mounted() {
     this.updateDetails();
-
-    // Add event listener for when the global user object changes
-    document
-      .querySelector("#app")
-      .addEventListener("currentUserChanged", () => {
-        this.updateDetails();
-      });
   },
 
   methods: {

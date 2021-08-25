@@ -28,15 +28,13 @@ firebase.auth().onAuthStateChanged((user) => {
   } else {
     // Initialise Vue
     Vue.config.productionTip = false;
-    Vue.prototype.$currentUserChanged = new Event("currentUserChanged");
+    Vue.prototype.$currentUserChanged = new CustomEvent("currentUserChanged");
     Vue.prototype.$updateUser = () => {
       // Store user status in global variable
       Vue.prototype.$currentUser = firebase.auth().currentUser;
 
       // Vue fails to watch the $currentUser variable, so trigger an event when it is changed
-      document
-        .querySelector("#app")
-        .dispatchEvent(Vue.prototype.$currentUserChanged);
+      document.dispatchEvent(Vue.prototype.$currentUserChanged);
     };
     Vue.prototype.$updateUser(); // Set new user status
 
@@ -65,8 +63,8 @@ activityPlannerCreateActivity({
   name: "Wellington Trip",
   startTime: new Date(),
   endTime: new Date(),
-}).then((result) => {
+}).then(() => {
   // Read result of the Cloud Function.
-  var sanitizedMessage = result;
-  console.log(sanitizedMessage);
+  // var sanitizedMessage = result;
+  // console.log(sanitizedMessage);
 });

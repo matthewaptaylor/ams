@@ -1,6 +1,6 @@
 <template>
   <div class="text-center">
-    <v-dialog v-model="dialog" width="50rem">
+    <v-dialog v-model="dialog" width="50rem" persistent>
       <template v-slot:activator="{ on, attrs }">
         <v-btn color="primary" dark v-bind="attrs" v-on="on">
           <v-icon left dark>{{ plusIcon }}</v-icon>

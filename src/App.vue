@@ -1,6 +1,19 @@
 <template>
   <v-app id="app">
     <router-view></router-view>
+
+    <v-snackbar
+      v-model="updateExists"
+      :left="!$vuetify.breakpoint.mobile"
+      timeout="-1"
+      transition="scroll-y-transition"
+    >
+      An update is available.
+
+      <template v-slot:action="{ attrs }">
+        <v-btn text v-bind="attrs" @click="refreshApp"> Update </v-btn>
+      </template>
+    </v-snackbar>
   </v-app>
 </template>
 
@@ -109,3 +122,51 @@ html {
   justify-content: center !important;
 }
 </style>
+
+<script>
+export default {
+  data() {
+    return {
+      snackbar: false,
+
+      registration: null,
+      updateExists: false,
+      refreshing: false,
+    };
+  },
+
+  created() {
+    // Detect when an update is available
+    document.addEventListener("swUpdated", this.updateAvailable, {
+      once: true,
+    });
+
+    // Detect when the servie worker updates
+    navigator.serviceWorker.addEventListener("controllerchange", () => {
+      if (this.refreshing) return;
+      this.refreshing = true;
+
+      // Here the actual reload of the page occurs
+      window.location.reload();
+    });
+  },
+
+  methods: {
+    updateAvailable(event) {
+      // Called when an app update is detected
+      this.registration = event.detail;
+      this.updateExists = true;
+    },
+
+    refreshApp() {
+      this.updateExists = false;
+
+      // Make sure we only send a 'skip waiting' message if the SW is waiting
+      if (!this.registration || !this.registration.waiting) return;
+
+      // Send message to SW to skip the waiting and activate the new SW
+      this.registration.waiting.postMessage({ type: "SKIP_WAITING" });
+    },
+  },
+};
+</script>

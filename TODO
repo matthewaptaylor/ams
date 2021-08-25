@@ -15,9 +15,7 @@ Customise firebase emails
 XSS vulnerabilities in date stored in firestore and other firebase auth things like displayname
 Document everything
 Test noscript
-If you log out but on a page you don't need to be logged in for, youll still be redirected to signin
 Prevent abuse with App Check firebase
 Custom scrollbar
 Click sign out button if not connected to server
 Buggy transition between views
-Get PWA updates
