@@ -23,7 +23,11 @@
           </template>
 
           <v-sheet elevation="2" rounded>
-            <v-toolbar dark color="error">
+            <v-toolbar
+              dark
+              color="error"
+              style="position: sticky; top: 0; z-index: 1"
+            >
               <v-toolbar-title>Delete account</v-toolbar-title>
             </v-toolbar>
 

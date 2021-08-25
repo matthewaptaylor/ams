@@ -63,7 +63,7 @@
 <script>
 import { mdiAccount, mdiAccountSupervisor, mdiEye } from "@mdi/js";
 import Page from "../../components/app/Page.vue";
-import ActivityCreate from "../../components/app/ActivityCreate.vue";
+import ActivityCreate from "../../components/app/activity/ActivityCreate.vue";
 
 export default {
   components: {

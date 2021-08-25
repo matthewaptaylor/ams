@@ -9,7 +9,11 @@
       </template>
 
       <v-sheet elevation="2" rounded>
-        <v-toolbar dark color="primary">
+        <v-toolbar
+          dark
+          color="primary"
+          style="position: sticky; top: 0; z-index: 1"
+        >
           <v-toolbar-title>Add risk</v-toolbar-title>
         </v-toolbar>
 

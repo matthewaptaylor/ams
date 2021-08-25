@@ -1,7 +1,6 @@
 <template>
   <PageWithSidebar
     :title="activityName"
-    :subtitle="activityDates"
     :breadcrumbItems="breadcrumbItems"
     :navItems="navItems"
   >
@@ -29,7 +28,6 @@ export default {
   data() {
     return {
       activityName: "Wellington Trip",
-      activityDates: "24/06/2021 to 26/04/2021",
 
       navItems: [
         {

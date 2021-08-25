@@ -7,9 +7,13 @@
       :autocomplete="autocomplete"
       :rules="rules"
       :required="required"
+      :prepend-icon="icon"
       ref="input"
       hide-details="auto"
       @blur="save"
+      :readonly="type === 'date' || type === 'time'"
+      :class="{ 'v-input--pointer': type === 'date' || type === 'time' }"
+      @click="showPickerDialog = type === 'date' || type === 'time'"
     >
       <template v-slot:append-outer>
         <div v-if="showButton || showSuccess" class="mt-n1 mb-n2 ms-n2">
@@ -32,6 +36,7 @@
             <span v-if="showButton">
               {{ currentlySaving ? "Saving" : "Save" }}
             </span>
+
             <span v-if="showSuccess">Saved</span>
           </v-tooltip>
         </div>
@@ -46,39 +51,75 @@
       "
       class="mt-2"
     />
+
+    <PickerDialog
+      v-if="showPickerDialog"
+      :show="showPickerDialog"
+      :value="currentValue"
+      :type="type"
+      @close="
+        () => {
+          showPickerDialog = false;
+          $refs.input.blur();
+        }
+      "
+      @save="
+        (value) => {
+          currentValue = value;
+          showPickerDialog = false;
+          $refs.input.blur();
+          save();
+        }
+      "
+    />
   </v-form>
 </template>
+
+<style>
+.v-input--pointer input {
+  cursor: pointer;
+}
+</style>
 
 <script>
 import { mdiContentSave, mdiCheckCircle } from "@mdi/js";
 import Alert from "./Alert.vue";
+import PickerDialog from "./PickerDialog.vue";
 
 export default {
-  components: { Alert },
+  components: { Alert, PickerDialog },
 
   data() {
     return {
+      // Icons
       contentSaveIcon: mdiContentSave,
       checkCircleIcon: mdiCheckCircle,
 
+      // Track the current inputted value
       currentValue: this.value,
 
+      // Status button
       showButton: false,
       currentlySaving: false,
       showSuccess: false,
 
+      // Hide success icon after certain time
       successTimeout: null,
+
+      // Dialogs
+      showPickerDialog: false,
     };
   },
 
   props: {
-    label: String,
-    type: String,
-    value: String,
-    autocomplete: String,
-    rules: Array,
+    label: String, // Label to show to the user
+    type: String, // input type, e.g. "text"
+    value: String, // The value saved on the server
+    autocomplete: String, // The field's autocomplete attribute
+    rules: Array, // Input validation rules
     required: Boolean,
-    error: Object,
+    icon: String, // An icon to prepend to the input
+    error: Object, // An error to display to the user relating to the field
   },
 
   watch: {
@@ -113,6 +154,7 @@ export default {
 
   methods: {
     save() {
+      // Emits an event to the parent component that the current value should be saved
       if (this.value !== this.currentValue && !this.currentlySaving) {
         if (this.$refs.input.valid) {
           // Fire save event if not already currently saving
