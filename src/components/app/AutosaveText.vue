@@ -83,7 +83,7 @@
 
 <script>
 import { mdiContentSave, mdiCheckCircle } from "@mdi/js";
-import Alert from "./Alert.vue";
+import Alert from "../Alert.vue";
 import PickerDialog from "./PickerDialog.vue";
 
 export default {

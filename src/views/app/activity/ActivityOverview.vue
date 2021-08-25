@@ -159,6 +159,7 @@ export default {
   },
   methods: {
     saveStartDate() {},
+    saveStartTime() {},
   },
 };
 </script>

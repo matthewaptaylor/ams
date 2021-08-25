@@ -67,7 +67,7 @@
 
 <script>
 import { mdiDelete } from "@mdi/js";
-import Alert from "../../../components/app/Alert.vue";
+import Alert from "../../../components/Alert.vue";
 
 export default {
   components: { Alert },

@@ -79,7 +79,7 @@
 
 <script>
 import { mdiEmail, mdiLock, mdiEye, mdiEyeOff, mdiLockReset } from "@mdi/js";
-import Alert from "../../../components/app/Alert.vue";
+import Alert from "../../../components/Alert.vue";
 
 export default {
   components: { Alert },

@@ -55,7 +55,7 @@
 <script>
 import { mdiEmail, mdiEmailSend } from "@mdi/js";
 import firebase from "firebase/app";
-import Alert from "../../components/app/Alert.vue";
+import Alert from "../../components/Alert.vue";
 
 export default {
   components: { Alert },

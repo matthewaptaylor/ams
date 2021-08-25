@@ -1,72 +1,78 @@
 <template>
-  <Page :breadcrumbItems="breadcrumbItems">
-    <v-container class="pa-4">
-      <v-row>
-        <v-col
-          cols="12"
-          class="d-flex justify-space-between align-center flex-wrap"
-          style="column-gap: 1rem; row-gap: 0.5rem"
-        >
-          <h1 class="text-h4">Activity Planner</h1>
-          <ActivityCreate />
-        </v-col>
-      </v-row>
+  <div>
+    <!-- Only show if on mobile, as not shown in the AppRoot component -->
+    <AppBar v-if="$vuetify.breakpoint.mobile" />
+    <Page :breadcrumbItems="breadcrumbItems">
+      <v-container class="pa-4">
+        <v-row>
+          <v-col
+            cols="12"
+            class="d-flex justify-space-between align-center flex-wrap"
+            style="column-gap: 1rem; row-gap: 0.5rem"
+          >
+            <h1 class="text-h4">Activity Planner</h1>
+            <ActivityCreate />
+          </v-col>
+        </v-row>
 
-      <v-row>
-        <v-col cols="12">
-          <v-list two-line>
-            <template v-for="(category, categoryIndex) in activityCategories">
-              <v-divider
-                v-if="categoryIndex !== 0"
-                :key="category.categoryIndex"
-              />
+        <v-row>
+          <v-col cols="12">
+            <v-list two-line>
+              <template v-for="(category, categoryIndex) in activityCategories">
+                <v-divider
+                  v-if="categoryIndex !== 0"
+                  :key="category.categoryIndex"
+                />
 
-              <v-subheader :key="category.header">
-                <v-icon left>{{ category.icon }}</v-icon>
-                {{ category.header }}
-              </v-subheader>
+                <v-subheader :key="category.header">
+                  <v-icon left>{{ category.icon }}</v-icon>
+                  {{ category.header }}
+                </v-subheader>
 
-              <template v-for="activity in category.activities">
-                <v-list-item
-                  :to="{
-                    name: 'ActivityOverview',
-                    params: { activityId: 1 },
-                  }"
-                  :key="activity.id"
-                >
-                  <v-list-item-content>
-                    <v-list-item-title
-                      v-html="activity.name"
-                    ></v-list-item-title>
+                <template v-for="activity in category.activities">
+                  <v-list-item
+                    :to="{
+                      name: 'ActivityOverview',
+                      params: { activityId: 1 },
+                    }"
+                    :key="activity.id"
+                  >
+                    <v-list-item-content>
+                      <v-list-item-title
+                        v-html="activity.name"
+                      ></v-list-item-title>
 
-                    <v-list-item-subtitle>
-                      <span class="text--primary">
-                        {{ dateToString(activity.startDate) }} to
-                        {{ dateToString(activity.endDate) }}
-                      </span>
+                      <v-list-item-subtitle>
+                        <span class="text--primary">
+                          {{ dateToString(activity.startDate) }} to
+                          {{ dateToString(activity.endDate) }}
+                        </span>
 
-                      <template v-if="categoryIndex !== 0">
-                        &mdash; Led by {{ activity.activityLeader }}
-                      </template>
-                    </v-list-item-subtitle>
-                  </v-list-item-content>
-                </v-list-item>
+                        <template v-if="categoryIndex !== 0">
+                          &mdash; Led by {{ activity.activityLeader }}
+                        </template>
+                      </v-list-item-subtitle>
+                    </v-list-item-content>
+                  </v-list-item>
+                </template>
               </template>
-            </template>
-          </v-list>
-        </v-col>
-      </v-row>
-    </v-container>
-  </Page>
+            </v-list>
+          </v-col>
+        </v-row>
+      </v-container>
+    </Page>
+  </div>
 </template>
 <style scoped></style>
 <script>
 import { mdiAccount, mdiAccountSupervisor, mdiEye } from "@mdi/js";
+import AppBar from "../../components/app/AppBar.vue";
 import Page from "../../components/app/Page.vue";
 import ActivityCreate from "../../components/app/activity/ActivityCreate.vue";
 
 export default {
   components: {
+    AppBar,
     Page,
     ActivityCreate,
   },

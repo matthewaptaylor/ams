@@ -1,80 +1,8 @@
 <template>
-  <div id="app-root">
-    <v-app-bar
-      color="primary"
-      dark
-      app
-      :class="{
-        'v-app-bar--hide':
-          $vuetify.breakpoint.mobile && $route.name !== 'ActivityPlanner',
-      }"
-    >
-      <img
-        alt="Scouts Aotearoa logo"
-        src="@/assets/images/logo.svg"
-        class="me-4 py-2"
-        style="height: 100%"
-        draggable="false"
-      />
-
-      <v-app-bar-title v-if="!$vuetify.breakpoint.mobile">
-        Activity Management System
-      </v-app-bar-title>
-
-      <v-spacer></v-spacer>
-
-      <v-menu offset-y bottom left>
-        <template v-slot:activator="{ on, attrs }">
-          <v-btn dark icon v-bind="attrs" v-on="on">
-            <img
-              :src="photoURL"
-              alt="User picture"
-              v-if="photoURL"
-              style="width: 36px; border-radius: 50%"
-            />
-
-            <avatar
-              :username="displayName"
-              :size="36"
-              backgroundColor="#00000020"
-              color="#ffffff"
-              v-if="!photoURL"
-            ></avatar>
-          </v-btn>
-        </template>
-
-        <v-list>
-          <v-list-item>
-            <v-list-item-title>
-              Kia ora,
-              {{ displayName }}!
-            </v-list-item-title>
-          </v-list-item>
-
-          <v-list-item :to="{ name: 'AccountProfile' }">
-            <v-list-item-icon>
-              <v-icon>{{ accountIcon }}</v-icon>
-            </v-list-item-icon>
-
-            <v-list-item-title>My Account</v-list-item-title>
-          </v-list-item>
-
-          <v-list-item @click="signOut">
-            <v-list-item-icon>
-              <v-icon>{{ logoutIcon }}</v-icon>
-            </v-list-item-icon>
-
-            <v-list-item-title>Sign Out</v-list-item-title>
-          </v-list-item>
-        </v-list>
-      </v-menu>
-    </v-app-bar>
-    <v-main
-      :class="{
-        'py-0': $vuetify.breakpoint.mobile && $route.name !== 'ActivityPlanner',
-      }"
-      style="transition: padding-top 0.25s"
-    >
+  <div id="app-root" class="d-flex flex-column">
+    <!-- Only show AppBar when on desktop, otherwise, will only show in specific components -->
+    <AppBar v-if="!$vuetify.breakpoint.mobile" />
+    <v-main style="overflow: hidden" class="flex-grow-1">
       <v-container
         v-if="
           !emailVerified &&
@@ -93,7 +21,9 @@
         />
       </v-container>
 
-      <router-view></router-view>
+      <transition :name="transitionName">
+        <router-view></router-view>
+      </transition>
     </v-main>
   </div>
 </template>
@@ -106,6 +36,65 @@
   background-position: center;
   background-attachment: fixed;
 }
+
+/* Stack transition */
+
+.stack-enter-active,
+.unstack-leave-active {
+  position: absolute;
+  max-width: 100%;
+  width: 100%;
+  transition: transform 0.2s, opacity 0.2s;
+  z-index: 2;
+}
+.stack-leave-active,
+.unstack-enter-active {
+  position: absolute;
+  max-width: 100%;
+  width: 100%;
+  transition: opacity 0.2s;
+  z-index: 1;
+}
+.stack-enter-active {
+  transform: translateY(8rem);
+  opacity: 0;
+}
+.unstack-leave-active {
+  transform: translateY(0);
+  opacity: 1;
+}
+.stack-leave-active {
+  opacity: 1;
+}
+.unstack-enter-active {
+  opacity: 0;
+}
+
+.stack-enter-to {
+  transform: translateY(0);
+  opacity: 1;
+}
+.stack-leave-to {
+  opacity: 0;
+}
+.unstack-leave-to {
+  transform: translateY(8rem);
+  opacity: 0;
+}
+.unstack-enter-to {
+  position: absolute;
+  opacity: 1;
+}
+
+/* None transition */
+.none-enter-active,
+.none-leave-to {
+  display: none;
+}
+.none-enter-to,
+.none-leave-active {
+  display: block;
+}
 </style>
 
 <style>
@@ -115,23 +104,17 @@
 </style>
 
 <script>
-import { mdiAccount, mdiLogout } from "@mdi/js";
-import firebase from "firebase/app";
-import Avatar from "vue-avatar";
-import Alert from "../../components/app/Alert";
+import AppBar from "../../components/app/AppBar.vue";
+import Alert from "../../components/Alert";
 
 export default {
-  components: { Avatar, Alert },
+  components: { AppBar, Alert },
 
   data() {
     return {
-      accountIcon: mdiAccount,
-      logoutIcon: mdiLogout,
+      emailVerified: true, // Assume by default the user's email is verified\\
 
-      displayName: "",
-      photoURL: false,
-
-      emailVerified: true, // Assume by default the user's email is verified
+      transitionName: null, // Custom route transitions
     };
   },
 
@@ -146,17 +129,24 @@ export default {
     this.updateDetails();
   },
 
-  methods: {
-    signOut() {
-      firebase.auth().signOut();
+  watch: {
+    $route(to, from) {
+      // Determine if a transition should be slide right or left
+      if (this.$vuetify.breakpoint.mobile) {
+        // Only show transitions on mobile
+        const toDepth = to.path.split("/").length;
+        const fromDepth = from.path.split("/").length;
+        this.transitionName = toDepth < fromDepth ? "unstack" : "stack";
+      } else {
+        this.transitionName = "none";
+      }
     },
+  },
 
+  methods: {
     updateDetails() {
       // Choose personal details to display for user
       if (this.$currentUser) {
-        this.displayName =
-          this.$currentUser.displayName ?? this.$currentUser.email;
-        this.photoURL = this.$currentUser.photoURL ?? false;
         this.emailVerified = this.$currentUser?.emailVerified;
       }
     },
