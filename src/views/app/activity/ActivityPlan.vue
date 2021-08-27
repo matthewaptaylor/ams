@@ -32,7 +32,7 @@
 
 <script>
 import { mdiContentSave } from "@mdi/js";
-import Editor from "../../../components/app/Editor.vue";
+import Editor from "../../../components/inputs/Editor.vue";
 
 export default {
   components: { Editor },

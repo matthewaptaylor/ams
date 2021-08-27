@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import AutosaveText from "../../../components/app/AutosaveText.vue";
+import AutosaveText from "../../../components/inputs/AutosaveText.vue";
 
 export default {
   components: { AutosaveText },

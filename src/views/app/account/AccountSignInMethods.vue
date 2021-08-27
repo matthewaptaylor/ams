@@ -131,7 +131,7 @@
 <script>
 import { mdiEmailSend, mdiGoogle, mdiLock } from "@mdi/js";
 import firebase from "firebase/app";
-import AutosaveText from "../../../components/app/AutosaveText.vue";
+import AutosaveText from "../../../components/inputs/AutosaveText.vue";
 import Alert from "../../../components/Alert.vue";
 
 export default {
