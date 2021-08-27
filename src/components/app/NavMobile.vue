@@ -4,6 +4,7 @@
       <v-chip
         v-for="(item, index) in items"
         :to="item.to"
+        replace
         :key="item.title"
         :class="{ 'ms-2': index === 0 }"
       >

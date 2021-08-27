@@ -22,37 +22,54 @@
       </v-container>
 
       <transition :name="transitionName">
-        <router-view></router-view>
+        <router-view class="page-background"></router-view>
       </transition>
     </v-main>
   </div>
 </template>
 
+<style>
+@media only screen and (max-width: 959px) {
+  /* Show background on a page-by-page basis on mobile screens */
+  .page-background {
+    min-height: 100%;
+    background-image: url("../../assets/images/background.svg");
+    background-color: white;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+  }
+}
+</style>
+
 <style scoped>
 #app-root {
   min-height: 100%;
-  background-image: url("../../assets/images/background.svg");
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
+}
+@media only screen and (min-width: 960px) {
+  /* Show background globally on large displays */
+  #app-root {
+    background-image: url("../../assets/images/background.svg");
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+  }
 }
 
 /* Stack transition */
-
 .stack-enter-active,
 .unstack-leave-active {
   position: absolute;
   max-width: 100%;
   width: 100%;
-  transition: transform 0.2s, opacity 0.2s;
-  z-index: 2;
+  transition: transform 0.3s, opacity 0.3s;
+  z-index: 10000;
 }
 .stack-leave-active,
 .unstack-enter-active {
   position: absolute;
   max-width: 100%;
   width: 100%;
-  transition: opacity 0.2s;
   z-index: 1;
 }
 .stack-enter-active {
@@ -64,10 +81,12 @@
   opacity: 1;
 }
 .stack-leave-active {
-  opacity: 1;
+  visibility: visible;
+  transition: visibility 0s 0.3s;
 }
-.unstack-enter-active {
-  opacity: 0;
+.unstack-enter-active,
+.unstack-enter-to {
+  visibility: visible;
 }
 
 .stack-enter-to {
@@ -75,15 +94,11 @@
   opacity: 1;
 }
 .stack-leave-to {
-  opacity: 0;
+  visibility: hidden;
 }
 .unstack-leave-to {
   transform: translateY(8rem);
   opacity: 0;
-}
-.unstack-enter-to {
-  position: absolute;
-  opacity: 1;
 }
 
 /* None transition */

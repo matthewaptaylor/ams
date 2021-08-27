@@ -19,3 +19,8 @@ Prevent abuse with App Check firebase
 Custom scrollbar
 Click sign out button if not connected to server
 Buggy transition between views
+Check animations with others?
+Add about AMS button
+Add install app button, check if user agent is actually mobile and browser that accepts pwas?
+Back button on dialogs?
+transition on v-if for autosave
