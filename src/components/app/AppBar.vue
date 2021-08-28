@@ -61,6 +61,14 @@
           <v-list-item-title>My Account</v-list-item-title>
         </v-list-item>
 
+        <v-list-item :to="{ name: 'About' }">
+          <v-list-item-icon>
+            <v-icon>{{ informationIcon }}</v-icon>
+          </v-list-item-icon>
+
+          <v-list-item-title>About</v-list-item-title>
+        </v-list-item>
+
         <v-list-item @click="signOut">
           <v-list-item-icon>
             <v-icon>{{ logoutIcon }}</v-icon>
@@ -74,7 +82,7 @@
 </template>
 
 <script>
-import { mdiAccount, mdiLogout } from "@mdi/js";
+import { mdiAccount, mdiInformation, mdiLogout } from "@mdi/js";
 import firebase from "firebase/app";
 import Avatar from "vue-avatar";
 
@@ -84,6 +92,7 @@ export default {
   data() {
     return {
       accountIcon: mdiAccount,
+      informationIcon: mdiInformation,
       logoutIcon: mdiLogout,
 
       displayName: "",

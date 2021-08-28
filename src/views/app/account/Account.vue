@@ -1,20 +1,20 @@
 <template>
-  <PageWithSidebar
+  <ChildPage
     title="My Account"
     :breadcrumbItems="breadcrumbItems"
     :navItems="navItems"
   >
     <router-view></router-view>
-  </PageWithSidebar>
+  </ChildPage>
 </template>
-<style scoped></style>
+
 <script>
 import { mdiAccount, mdiAccountKey, mdiKey, mdiDelete } from "@mdi/js";
-import PageWithSidebar from "../../../components/app/PageWithSidebar.vue";
+import ChildPage from "../../../components/app/ChildPage.vue";
 
 export default {
   components: {
-    PageWithSidebar,
+    ChildPage,
   },
   data() {
     return {

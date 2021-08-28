@@ -11,6 +11,7 @@ import GeneralVerifyEmail from "../views/general/GeneralVerifyEmail.vue";
 import GeneralNotFound from "../views/general/GeneralNotFound.vue";
 import AppRoot from "../views/app/AppRoot.vue";
 import DialogParent from "../components/app/DialogParent.vue";
+import About from "../views/app/About.vue";
 import Account from "../views/app/account/Account.vue";
 import AccountProfile from "../views/app/account/AccountProfile.vue";
 import AccountSignInMethods from "../views/app/account/AccountSignInMethods.vue";
@@ -51,6 +52,44 @@ const routes = [
           dialog: ActivityPlannerCreateActivity,
           dialogPath: "createactivity", // Path that will open the dialog
         },
+      },
+      {
+        path: "about",
+        name: "About",
+        component: About,
+      },
+      {
+        path: "account",
+        component: Account,
+        children: [
+          { path: "", redirect: { name: "AccountProfile" } },
+          {
+            path: "profile",
+            name: "AccountProfile",
+            component: AccountProfile,
+          },
+          {
+            path: "signinmethods",
+            name: "AccountSignInMethods",
+            component: AccountSignInMethods,
+          },
+          {
+            path: "resetpassword",
+            name: "AccountResetPassword",
+            component: AccountResetPassword,
+          },
+          {
+            path: "delete",
+            name: "AccountDeleteAccount",
+            component: DialogParent,
+            alias: "delete/confirm", // Ensure the dialog path routes back to here
+            meta: {
+              default: AccountDeleteAccount,
+              dialog: AccountDeleteAccountConfirm,
+              dialogPath: "confirm", // Path that will open the dialog
+            },
+          },
+        ],
       },
       { path: "activity", redirect: { name: "ActivityPlanner" } },
       {
@@ -98,39 +137,6 @@ const routes = [
             path: "aif",
             name: "ActivityAIF",
             component: ActivityAIF,
-          },
-        ],
-      },
-      {
-        path: "account",
-        component: Account,
-        children: [
-          { path: "", redirect: { name: "AccountProfile" } },
-          {
-            path: "profile",
-            name: "AccountProfile",
-            component: AccountProfile,
-          },
-          {
-            path: "signinmethods",
-            name: "AccountSignInMethods",
-            component: AccountSignInMethods,
-          },
-          {
-            path: "resetpassword",
-            name: "AccountResetPassword",
-            component: AccountResetPassword,
-          },
-          {
-            path: "delete",
-            name: "AccountDeleteAccount",
-            component: DialogParent,
-            alias: "delete/confirm", // Ensure the dialog path routes back to here
-            meta: {
-              default: AccountDeleteAccount,
-              dialog: AccountDeleteAccountConfirm,
-              dialogPath: "confirm", // Path that will open the dialog
-            },
           },
         ],
       },

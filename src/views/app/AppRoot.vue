@@ -117,12 +117,20 @@ export default {
       // Determine if a transition should be slide right or left
       if (this.$vuetify.breakpoint.mobile) {
         // Only show transitions on mobile
-        const toDepth = to.path.split("/").length;
-        const fromDepth = from.path.split("/").length;
+        const toDepth = this.toArray(to.path).length;
+        const fromDepth = this.toArray(from.path).length;
+
         this.transitionName = toDepth < fromDepth ? "unstack" : "stack";
       } else {
         this.transitionName = "none";
       }
+    },
+  },
+
+  methods: {
+    toArray(x) {
+      // Takes a path string and splits it into an array, removing blank items
+      return x.split("/").filter((x) => x);
     },
   },
 };

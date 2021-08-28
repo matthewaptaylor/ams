@@ -1,11 +1,11 @@
 <template>
-  <PageWithSidebar
+  <ChildPage
     :title="activityName"
     :breadcrumbItems="breadcrumbItems"
     :navItems="navItems"
   >
     <router-view></router-view>
-  </PageWithSidebar>
+  </ChildPage>
 </template>
 
 <script>
@@ -18,11 +18,11 @@ import {
   mdiBagPersonal,
   mdiFormSelect,
 } from "@mdi/js";
-import PageWithSidebar from "../../../components/app/PageWithSidebar.vue";
+import ChildPage from "../../../components/app/ChildPage.vue";
 
 export default {
   components: {
-    PageWithSidebar,
+    ChildPage,
   },
 
   data() {

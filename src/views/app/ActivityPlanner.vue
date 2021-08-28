@@ -14,7 +14,7 @@
       />
     </v-container>
     <Page :breadcrumbItems="breadcrumbItems">
-      <v-container class="pa-4">
+      <v-container fluid class="pa-4">
         <v-row>
           <v-col
             cols="12"
