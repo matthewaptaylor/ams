@@ -13,6 +13,7 @@
         class="mt-2"
       />
     </v-container>
+
     <Page :breadcrumbItems="breadcrumbItems">
       <v-container fluid class="pa-4">
         <v-row>
@@ -68,6 +69,12 @@
                         </template>
                       </v-list-item-subtitle>
                     </v-list-item-content>
+
+                    <v-list-item-icon class="my-6">
+                      <v-icon>
+                        {{ chevronRightIcon }}
+                      </v-icon>
+                    </v-list-item-icon>
                   </v-list-item>
                 </template>
               </template>
@@ -80,7 +87,13 @@
 </template>
 <style scoped></style>
 <script>
-import { mdiAccount, mdiAccountSupervisor, mdiEye, mdiPlus } from "@mdi/js";
+import {
+  mdiAccount,
+  mdiChevronRight,
+  mdiAccountSupervisor,
+  mdiEye,
+  mdiPlus,
+} from "@mdi/js";
 import Alert from "../../components/Alert";
 import AppBar from "../../components/app/AppBar.vue";
 import Page from "../../components/app/Page.vue";
@@ -96,6 +109,7 @@ export default {
     return {
       // Icons
       plusIcon: mdiPlus,
+      chevronRightIcon: mdiChevronRight,
 
       emailVerified: true, // Assume by default the user's email is verified
 

@@ -19,8 +19,8 @@
       draggable="false"
     />
 
-    <v-app-bar-title v-if="!$vuetify.breakpoint.mobile">
-      Activity Management System
+    <v-app-bar-title>
+      {{ $vuetify.breakpoint.mobile ? "AMS" : "Activity Management System" }}
     </v-app-bar-title>
 
     <v-spacer></v-spacer>
@@ -45,28 +45,46 @@
         </v-btn>
       </template>
 
-      <v-list>
+      <v-list dense nav>
         <v-list-item>
-          <v-list-item-title>
+          <v-list-item-title class="font-weight-regular text-body-2">
             Kia ora,
             {{ displayName }}!
           </v-list-item-title>
         </v-list-item>
 
-        <v-list-item :to="{ name: 'AccountProfile' }">
-          <v-list-item-icon>
-            <v-icon>{{ accountIcon }}</v-icon>
-          </v-list-item-icon>
-
-          <v-list-item-title>My Account</v-list-item-title>
-        </v-list-item>
+        <v-subheader>Menu</v-subheader>
 
         <v-list-item :to="{ name: 'About' }">
           <v-list-item-icon>
             <v-icon>{{ informationIcon }}</v-icon>
           </v-list-item-icon>
 
-          <v-list-item-title>About</v-list-item-title>
+          <v-list-item-title class="font-weight-regular text-body-2">
+            About
+          </v-list-item-title>
+        </v-list-item>
+
+        <v-list-item v-if="showInstallItem" @click="$appPrompt.prompt()">
+          <v-list-item-icon>
+            <v-icon>{{ downloadIcon }}</v-icon>
+          </v-list-item-icon>
+
+          <v-list-item-title class="font-weight-regular text-body-2">
+            Install App
+          </v-list-item-title>
+        </v-list-item>
+
+        <v-subheader>Account</v-subheader>
+
+        <v-list-item :to="{ name: 'AccountProfile' }">
+          <v-list-item-icon>
+            <v-icon>{{ accountIcon }}</v-icon>
+          </v-list-item-icon>
+
+          <v-list-item-title class="font-weight-regular text-body-2">
+            My Account
+          </v-list-item-title>
         </v-list-item>
 
         <v-list-item @click="signOut">
@@ -74,7 +92,9 @@
             <v-icon>{{ logoutIcon }}</v-icon>
           </v-list-item-icon>
 
-          <v-list-item-title>Sign Out</v-list-item-title>
+          <v-list-item-title class="font-weight-regular text-body-2">
+            Sign Out
+          </v-list-item-title>
         </v-list-item>
       </v-list>
     </v-menu>
@@ -82,7 +102,7 @@
 </template>
 
 <script>
-import { mdiAccount, mdiInformation, mdiLogout } from "@mdi/js";
+import { mdiAccount, mdiInformation, mdiDownload, mdiLogout } from "@mdi/js";
 import firebase from "firebase/app";
 import Avatar from "vue-avatar";
 
@@ -93,10 +113,13 @@ export default {
     return {
       accountIcon: mdiAccount,
       informationIcon: mdiInformation,
+      downloadIcon: mdiDownload,
       logoutIcon: mdiLogout,
 
       displayName: "",
       photoURL: false,
+
+      showInstallItem: !!this.$appPrompt,
     };
   },
 
@@ -104,6 +127,11 @@ export default {
     // Add event listener for when the global user object changes
     document.addEventListener("currentUserChanged", () => {
       this.updateDetails();
+    });
+
+    // Add event listener for when the app prompt state changes
+    document.addEventListener("appPromptChanged", () => {
+      this.showInstallItem = !!this.$appPrompt;
     });
   },
 

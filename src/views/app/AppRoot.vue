@@ -2,11 +2,33 @@
   <div id="app-root" class="d-flex flex-column">
     <!-- Only show AppBar when on desktop, otherwise, will only show in specific components -->
     <AppBar v-if="!$vuetify.breakpoint.mobile" />
+
     <v-main style="overflow: hidden" class="flex-grow-1">
       <transition :name="transitionName">
         <router-view class="page-background"></router-view>
       </transition>
     </v-main>
+
+    <v-snackbar
+      v-model="showAppPrompt"
+      :left="!$vuetify.breakpoint.mobile"
+      timeout="-1"
+      transition="scroll-y-transition"
+    >
+      Get the AMS app.
+
+      <template v-slot:action="{ attrs }">
+        <div v-bind="attrs">
+          <v-btn text @click="$appPrompt.prompt()" class="mr-2">
+            Install
+          </v-btn>
+
+          <v-btn icon @click="closeAppSnackbar">
+            <v-icon>{{ closeIcon }}</v-icon>
+          </v-btn>
+        </div>
+      </template>
+    </v-snackbar>
   </div>
 </template>
 
@@ -101,6 +123,7 @@
 </style>
 
 <script>
+import { mdiClose } from "@mdi/js";
 import AppBar from "../../components/app/AppBar.vue";
 
 export default {
@@ -108,7 +131,13 @@ export default {
 
   data() {
     return {
+      // Icons
+      closeIcon: mdiClose,
+
       transitionName: null, // Custom route transitions
+
+      // App snackbar
+      showAppPrompt: false,
     };
   },
 
@@ -127,7 +156,34 @@ export default {
     },
   },
 
+  created() {
+    // Add event listener for when the app prompt state changes
+    document.addEventListener("appPromptChanged", this.updateShowAppPrompt);
+    this.updateShowAppPrompt();
+  },
+
   methods: {
+    async closeAppSnackbar() {
+      this.showAppPrompt = false;
+    },
+
+    updateShowAppPrompt() {
+      // Determine the last time the user was prompted to install the app
+      const twoWeeks = 1209600000; // in ms
+
+      if (
+        localStorage.getItem("lastInstallPrompt") + twoWeeks <= Date.now() &&
+        this.$appPrompt
+      ) {
+        // It has been at least two weeks since the user was prompted to install, ask again
+        this.showAppPrompt = true;
+
+        localStorage.setItem("lastInstallPrompt", Date.now());
+      } else {
+        this.showAppPrompt = false;
+      }
+    },
+
     toArray(x) {
       // Takes a path string and splits it into an array, removing blank items
       return x.split("/").filter((x) => x);

@@ -54,7 +54,7 @@
     />
 
     <PickerDialog
-      v-if="showPickerDialog"
+      v-if="type === 'date' || type === 'time'"
       :show="showPickerDialog"
       :value="currentValue"
       :type="type"

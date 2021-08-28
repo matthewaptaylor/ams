@@ -28,13 +28,19 @@ firebase.auth().onAuthStateChanged((user) => {
   } else {
     // Initialise Vue
     Vue.config.productionTip = false;
-    Vue.prototype.$currentUserChanged = new CustomEvent("currentUserChanged");
+
+    Vue.prototype.$appPrompt = null; // Store the browser install app event
+    Vue.prototype.$setAppPrompt = (x) => {
+      Vue.prototype.$appPrompt = x;
+      document.dispatchEvent(new CustomEvent("appPromptChanged"));
+    };
+
     Vue.prototype.$updateUser = () => {
       // Store user status in global variable
       Vue.prototype.$currentUser = firebase.auth().currentUser;
 
       // Vue fails to watch the $currentUser variable, so trigger an event when it is changed
-      document.dispatchEvent(Vue.prototype.$currentUserChanged);
+      document.dispatchEvent(new CustomEvent("currentUserChanged"));
     };
     Vue.prototype.$updateUser(); // Set new user status
 

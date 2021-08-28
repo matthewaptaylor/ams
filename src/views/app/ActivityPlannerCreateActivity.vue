@@ -16,7 +16,10 @@
           required
         ></v-text-field>
 
-        <div class="d-flex justify-space-between flex-wrap mt-4">
+        <div
+          class="d-flex justify-space-between flex-wrap mt-4"
+          style="gap: 0.5rem 1rem"
+        >
           <v-btn plain @click="$emit('exitDialog')">Cancel</v-btn>
 
           <v-btn

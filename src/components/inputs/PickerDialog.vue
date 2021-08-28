@@ -1,24 +1,30 @@
 <template>
   <v-dialog v-model="show" persistent width="290px">
     <v-date-picker v-model="newValue" scrollable v-if="type === 'date'">
-      <v-spacer></v-spacer>
+      <div
+        class="d-flex justify-space-between flex-wrap mt-n8"
+        style="gap: 0.5rem 1rem; width: 100%"
+      >
+        <v-btn plain @click="close">Cancel</v-btn>
 
-      <v-btn text color="primary" @click="close"> Cancel </v-btn>
-
-      <v-btn text color="primary" @click="save"> OK </v-btn>
+        <v-btn color="primary" @click="save"> OK </v-btn>
+      </div>
     </v-date-picker>
 
     <v-time-picker
       format="24hr"
-      v-model="startTime"
+      v-model="newValue"
       full-width
       v-if="type === 'time'"
     >
-      <v-spacer></v-spacer>
+      <div
+        class="d-flex justify-space-between flex-wrap"
+        style="gap: 0.5rem 1rem; width: 100%"
+      >
+        <v-btn plain @click="close">Cancel</v-btn>
 
-      <v-btn text color="primary" @click="close"> Cancel </v-btn>
-
-      <v-btn text color="primary" @click="save"> OK </v-btn>
+        <v-btn color="primary" @click="save"> OK </v-btn>
+      </div>
     </v-time-picker>
   </v-dialog>
 </template>

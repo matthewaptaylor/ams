@@ -149,6 +149,18 @@ export default {
       // Here the actual reload of the page occurs
       window.location.reload();
     });
+
+    // Catch install prompt event
+    window.addEventListener("beforeinstallprompt", (e) => {
+      e.preventDefault();
+
+      this.$setAppPrompt(e); // Stash the event so it can be triggered later.
+    });
+
+    // Detect when app installed
+    window.addEventListener("appinstalled", () => {
+      this.$setAppPrompt(null);
+    });
   },
 
   methods: {
