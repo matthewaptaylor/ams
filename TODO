@@ -24,3 +24,4 @@ Add about AMS button
 Add install app button, check if user agent is actually mobile and browser that accepts pwas?
 Back button on dialogs?
 transition on v-if for autosave
+Use email link for reauthentication

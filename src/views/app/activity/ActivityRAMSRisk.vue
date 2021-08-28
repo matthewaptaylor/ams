@@ -1,101 +1,93 @@
 <template>
-  <div class="text-center">
-    <v-dialog v-model="dialog" width="50rem" persistent>
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn color="primary" dark v-bind="attrs" v-on="on">
-          <v-icon left dark>{{ plusIcon }}</v-icon>
-          Add risk
-        </v-btn>
-      </template>
+  <v-dialog :value="dialog" persistent max-width="25rem">
+    <v-sheet elevation="2" rounded>
+      <v-toolbar
+        dark
+        color="primary"
+        style="position: sticky; top: 0; z-index: 1"
+      >
+        <v-toolbar-title>Add risk</v-toolbar-title>
+      </v-toolbar>
 
-      <v-sheet elevation="2" rounded>
-        <v-toolbar
-          dark
-          color="primary"
-          style="position: sticky; top: 0; z-index: 1"
-        >
-          <v-toolbar-title>Add risk</v-toolbar-title>
-        </v-toolbar>
+      <v-form v-model="valid" @submit.prevent="createActivity" class="pa-4">
+        <v-row>
+          <v-col cols="12" sm="6" md="8" class="pb-0 pb-sm-3">
+            <v-row>
+              <v-col cols="12" md="6" class="pb-0 pb-md-1">
+                <v-select :items="categories" label="Category"></v-select>
 
-        <v-form v-model="valid" @submit.prevent="createActivity" class="pa-4">
-          <v-row>
-            <v-col cols="12" sm="6" md="8" class="pb-0 pb-sm-3">
-              <v-row>
-                <v-col cols="12" md="6" class="pb-0 pb-md-1">
-                  <v-select :items="categories" label="Category"></v-select>
+                <v-textarea
+                  label="Hazard"
+                  rows="2"
+                  hint="What causes this risk?"
+                  persistent-hint
+                ></v-textarea>
 
-                  <v-textarea
-                    label="Hazard"
-                    rows="2"
-                    hint="What causes this risk?"
-                    persistent-hint
-                  ></v-textarea>
+                <v-textarea
+                  label="Risk"
+                  rows="2"
+                  hint="What could happen?"
+                  persistent-hint
+                ></v-textarea>
+              </v-col>
+              <v-col cols="12" md="6" class="pt-0 pt-md-1">
+                <v-textarea
+                  label="Controls"
+                  rows="2"
+                  hint="How will you remove, minimise, or isolate the risk?"
+                  persistent-hint
+                ></v-textarea>
 
-                  <v-textarea
-                    label="Risk"
-                    rows="2"
-                    hint="What could happen?"
-                    persistent-hint
-                  ></v-textarea>
-                </v-col>
-                <v-col cols="12" md="6" class="pt-0 pt-md-1">
-                  <v-textarea
-                    label="Controls"
-                    rows="2"
-                    hint="How will you remove, minimise, or isolate the risk?"
-                    persistent-hint
-                  ></v-textarea>
+                <v-text-field
+                  label="Responsibility"
+                  hint="Who is responsible for managing this risk?"
+                  persistent-hint
+                ></v-text-field>
+              </v-col>
+            </v-row>
+          </v-col>
+          <v-col cols="12" sm="6" md="4" class="pt-0 pt-sm-3">
+            <v-select
+              v-model="likelihood"
+              :items="likelihoods"
+              item-text="text"
+              label="Likelihood"
+              persistent-hint
+              return-object
+              :hint="likelihood !== null ? likelihood.description : ''"
+            ></v-select>
 
-                  <v-text-field
-                    label="Responsibility"
-                    hint="Who is responsible for managing this risk?"
-                    persistent-hint
-                  ></v-text-field>
-                </v-col>
-              </v-row>
-            </v-col>
-            <v-col cols="12" sm="6" md="4" class="pt-0 pt-sm-3">
-              <v-select
-                v-model="likelihood"
-                :items="likelihoods"
-                item-text="text"
-                label="Likelihood"
-                persistent-hint
-                return-object
-                :hint="likelihood !== null ? likelihood.description : ''"
-              ></v-select>
+            <v-select
+              v-model="consequence"
+              :items="consequences"
+              item-text="text"
+              label="Consequence"
+              persistent-hint
+              return-object
+              :hint="consequence !== null ? consequence.description : ''"
+            ></v-select>
 
-              <v-select
-                v-model="consequence"
-                :items="consequences"
-                item-text="text"
-                label="Consequence"
-                persistent-hint
-                return-object
-                :hint="consequence !== null ? consequence.description : ''"
-              ></v-select>
+            <p>{{ riskLevels[riskLevel] }}</p>
 
-              <p>{{ riskLevels[riskLevel] }}</p>
+            <v-checkbox label="Risk is acceptable"></v-checkbox>
+          </v-col>
+        </v-row>
+        <div class="d-flex justify-space-between flex-wrap mt-4">
+          <v-btn plain @click="$emit('exitDialog')"> Cancel </v-btn>
 
-              <v-checkbox label="Risk is acceptable"></v-checkbox>
-            </v-col>
-          </v-row>
-          <div class="d-flex justify-space-between flex-wrap mt-4">
-            <v-btn plain @click="dialog = false"> Cancel </v-btn>
-            <v-btn
-              color="primary"
-              type="submit"
-              :disabled="!valid || loading"
-              :loading="loading"
-            >
-              <v-icon left dark>{{ plusIcon }}</v-icon>
-              Add risk
-            </v-btn>
-          </div>
-        </v-form>
-      </v-sheet>
-    </v-dialog>
-  </div>
+          <v-btn
+            color="primary"
+            type="submit"
+            :disabled="!valid || loading"
+            :loading="loading"
+          >
+            <v-icon left dark>{{ plusIcon }}</v-icon>
+            Add risk
+          </v-btn>
+        </div>
+      </v-form>
+    </v-sheet>
+  </v-dialog>
 </template>
 
 <script>
@@ -104,8 +96,9 @@ import { mdiPlus } from "@mdi/js";
 export default {
   data() {
     return {
+      // Icons
       plusIcon: mdiPlus,
-      dialog: false,
+
       valid: false,
       loading: false,
       categories: ["People", "Environment", "Equipment"],
@@ -181,11 +174,17 @@ export default {
       },
     };
   },
+
+  props: {
+    dialog: Boolean,
+  },
+
   methods: {
     createActivity() {
       this.loading = true;
     },
   },
+
   computed: {
     riskLevel() {
       if (this.likelihood && this.consequence) {

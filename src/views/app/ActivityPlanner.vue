@@ -11,7 +11,11 @@
             style="column-gap: 1rem; row-gap: 0.5rem"
           >
             <h1 class="text-h4">Activity Planner</h1>
-            <ActivityCreate />
+
+            <v-btn color="primary" @click="$emit('showDialog')">
+              <v-icon left dark>{{ plusIcon }}</v-icon>
+              Create activity
+            </v-btn>
           </v-col>
         </v-row>
 
@@ -65,20 +69,21 @@
 </template>
 <style scoped></style>
 <script>
-import { mdiAccount, mdiAccountSupervisor, mdiEye } from "@mdi/js";
+import { mdiAccount, mdiAccountSupervisor, mdiEye, mdiPlus } from "@mdi/js";
 import AppBar from "../../components/app/AppBar.vue";
 import Page from "../../components/app/Page.vue";
-import ActivityCreate from "../../components/app/activity/ActivityCreate.vue";
 
 export default {
   components: {
     AppBar,
     Page,
-    ActivityCreate,
   },
 
   data() {
     return {
+      // Icons
+      plusIcon: mdiPlus,
+
       breadcrumbItems: [
         {
           text: "Activity Planner",

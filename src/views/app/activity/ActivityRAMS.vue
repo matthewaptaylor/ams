@@ -8,7 +8,10 @@
       >
         <h1 class="text-h4">RAMS</h1>
 
-        <ActivityRAMSRisk />
+        <v-btn color="primary" @click="$emit('showDialog')">
+          <v-icon left dark>{{ plusIcon }}</v-icon>
+          Add risk
+        </v-btn>
       </v-col>
     </v-row>
 
@@ -89,15 +92,15 @@ td {
 </style>
 
 <script>
-import { mdiInformationOutline } from "@mdi/js";
-import ActivityRAMSRisk from "../../../components/app/activity/ActivityRAMSRisk.vue";
+import { mdiPlus, mdiInformationOutline } from "@mdi/js";
 
 export default {
-  components: { ActivityRAMSRisk },
-
   data() {
     return {
+      // Icons
+      plusIcon: mdiPlus,
       informationOutlineIcon: mdiInformationOutline,
+
       risks: [
         {
           id: 0,

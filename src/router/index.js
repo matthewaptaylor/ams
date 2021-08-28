@@ -10,16 +10,20 @@ import GeneralRecoverEmail from "../views/general/GeneralRecoverEmail.vue";
 import GeneralVerifyEmail from "../views/general/GeneralVerifyEmail.vue";
 import GeneralNotFound from "../views/general/GeneralNotFound.vue";
 import AppRoot from "../views/app/AppRoot.vue";
+import DialogParent from "../components/app/DialogParent.vue";
 import Account from "../views/app/account/Account.vue";
 import AccountProfile from "../views/app/account/AccountProfile.vue";
 import AccountSignInMethods from "../views/app/account/AccountSignInMethods.vue";
 import AccountResetPassword from "../views/app/account/AccountResetPassword.vue";
 import AccountDeleteAccount from "../views/app/account/AccountDeleteAccount.vue";
+import AccountDeleteAccountConfirm from "../views/app/account/AccountDeleteAccountConfirm.vue";
 import ActivityPlanner from "../views/app/ActivityPlanner.vue";
+import ActivityPlannerCreateActivity from "../views/app/ActivityPlannerCreateActivity.vue";
 import Activity from "../views/app/activity/Activity.vue";
 import ActivityOverview from "../views/app/activity/ActivityOverview.vue";
 import ActivityPlan from "../views/app/activity/ActivityPlan.vue";
 import ActivityRAMS from "../views/app/activity/ActivityRAMS.vue";
+import ActivityRAMSRisk from "../views/app/activity/ActivityRAMSRisk.vue";
 import ActivityBudget from "../views/app/activity/ActivityBudget.vue";
 import ActivityShoppingList from "../views/app/activity/ActivityShoppingList.vue";
 import ActivityGearList from "../views/app/activity/ActivityGearList.vue";
@@ -37,9 +41,16 @@ const routes = [
     },
     children: [
       {
+        // Show dialog in Activity Planner as a child route
         path: "",
         name: "ActivityPlanner",
-        component: ActivityPlanner,
+        component: DialogParent,
+        alias: "createactivity", // Ensure the dialog path routes back to here
+        meta: {
+          default: ActivityPlanner,
+          dialog: ActivityPlannerCreateActivity,
+          dialogPath: "createactivity", // Path that will open the dialog
+        },
       },
       { path: "activity", redirect: { name: "ActivityPlanner" } },
       {
@@ -60,7 +71,13 @@ const routes = [
           {
             path: "rams",
             name: "ActivityRAMS",
-            component: ActivityRAMS,
+            component: DialogParent,
+            alias: "rams/risk", // Ensure the dialog path routes back to here
+            meta: {
+              default: ActivityRAMS,
+              dialog: ActivityRAMSRisk,
+              dialogPath: "risk", // Path that will open the dialog
+            },
           },
           {
             path: "budget",
@@ -107,7 +124,13 @@ const routes = [
           {
             path: "delete",
             name: "AccountDeleteAccount",
-            component: AccountDeleteAccount,
+            component: DialogParent,
+            alias: "delete/confirm", // Ensure the dialog path routes back to here
+            meta: {
+              default: AccountDeleteAccount,
+              dialog: AccountDeleteAccountConfirm,
+              dialogPath: "confirm", // Path that will open the dialog
+            },
           },
         ],
       },

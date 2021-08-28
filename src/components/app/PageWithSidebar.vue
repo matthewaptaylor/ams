@@ -47,7 +47,6 @@ import { mdiArrowLeft } from "@mdi/js";
 import Breadcrumbs from "./Breadcrumbs.vue";
 import NavMobile from "./NavMobile.vue";
 import NavDesktop from "./NavDesktop.vue";
-import router from "../../router";
 
 export default {
   data() {
@@ -71,7 +70,9 @@ export default {
 
   methods: {
     goBack() {
-      router.push(this.breadcrumbItems[this.breadcrumbItems.length - 2].to);
+      this.$router.push(
+        this.breadcrumbItems[this.breadcrumbItems.length - 2].to
+      );
     },
   },
 };
