@@ -283,6 +283,9 @@ router.beforeEach(async (to, from, next) => {
     showingLoadingScreen = false;
   }
 
+  // Store the previous route as a global variable
+  Vue.prototype.$previousRoute = from;
+
   // Retermine the authentication status of the page and user
   const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
   const noAuth = to.matched.some((record) => record.meta.noAuth);

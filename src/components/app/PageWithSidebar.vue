@@ -70,9 +70,14 @@ export default {
 
   methods: {
     goBack() {
-      this.$router.push(
-        this.breadcrumbItems[this.breadcrumbItems.length - 2].to
-      );
+      const destination =
+        this.breadcrumbItems[this.breadcrumbItems.length - 2].to;
+
+      if (destination.name === this.$previousRoute.name) {
+        this.$router.go(-1);
+      } else {
+        this.$router.replace(destination);
+      }
     },
   },
 };

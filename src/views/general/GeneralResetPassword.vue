@@ -51,7 +51,12 @@
             </v-col>
 
             <v-col cols="12" class="mt-2">
-              <Alert type="success" :message="success" class="mb-2" />
+              <Alert
+                dismissable
+                type="success"
+                :message="success"
+                class="mb-2"
+              />
 
               <Alert type="error" :message="error" class="mb-2" />
 

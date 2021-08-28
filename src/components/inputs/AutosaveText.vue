@@ -44,6 +44,7 @@
     </v-text-field>
 
     <Alert
+      dismissable
       type="error"
       :message="error && error.message ? error.message : null"
       :link="

@@ -25,7 +25,7 @@
           {{ action }} with Google
         </v-btn>
 
-        <Alert type="error" :message="googleError" class="mt-2" />
+        <Alert dismissable type="error" :message="googleError" class="mt-2" />
       </v-col>
 
       <v-col cols="12" v-if="providers.length === 2">
@@ -85,9 +85,19 @@
                 Sign in with email link
               </v-btn>
 
-              <Alert type="success" :message="emailLinkSuccess" class="mt-2" />
+              <Alert
+                dismissable
+                type="success"
+                :message="emailLinkSuccess"
+                class="mt-2"
+              />
 
-              <Alert type="error" :message="emailLinkError" class="mt-2" />
+              <Alert
+                dismissable
+                type="error"
+                :message="emailLinkError"
+                class="mt-2"
+              />
             </v-col>
 
             <v-col cols="12">
@@ -114,7 +124,7 @@
             </v-col>
 
             <v-col cols="12" class="mt-2">
-              <Alert type="error" :message="error" class="mb-2" />
+              <Alert dismissable type="error" :message="error" class="mb-2" />
 
               <v-btn
                 block

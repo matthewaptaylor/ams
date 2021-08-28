@@ -2,6 +2,17 @@
   <div>
     <!-- Only show if on mobile, as not shown in the AppRoot component -->
     <AppBar v-if="$vuetify.breakpoint.mobile" />
+    <v-container v-if="!emailVerified" class="px-2 px-md-4 py-0">
+      <Alert
+        type="error"
+        message="Your email address has not been verified."
+        :link="{
+          text: 'Verify email',
+          link: { name: 'AccountSignInMethods' },
+        }"
+        class="mt-2"
+      />
+    </v-container>
     <Page :breadcrumbItems="breadcrumbItems">
       <v-container class="pa-4">
         <v-row>
@@ -70,6 +81,7 @@
 <style scoped></style>
 <script>
 import { mdiAccount, mdiAccountSupervisor, mdiEye, mdiPlus } from "@mdi/js";
+import Alert from "../../components/Alert";
 import AppBar from "../../components/app/AppBar.vue";
 import Page from "../../components/app/Page.vue";
 
@@ -77,12 +89,15 @@ export default {
   components: {
     AppBar,
     Page,
+    Alert,
   },
 
   data() {
     return {
       // Icons
       plusIcon: mdiPlus,
+
+      emailVerified: true, // Assume by default the user's email is verified
 
       breadcrumbItems: [
         {
@@ -134,9 +149,27 @@ export default {
     };
   },
 
+  created() {
+    // Add event listener for when the global user object changes
+    document.addEventListener("currentUserChanged", () => {
+      this.updateDetails();
+    });
+  },
+
+  mounted() {
+    this.updateDetails();
+  },
+
   methods: {
     dateToString(date) {
       return `${date.getDay()}/${date.getMonth()}/${date.getFullYear()}`;
+    },
+
+    updateDetails() {
+      // Choose personal details to display for user
+      if (this.$currentUser) {
+        this.emailVerified = this.$currentUser?.emailVerified;
+      }
     },
   },
 };

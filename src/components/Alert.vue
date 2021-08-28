@@ -4,7 +4,7 @@
     v-model="showAlert"
     v-if="showAlert"
     close-text="Close Alert"
-    dismissible
+    :dismissible="dismissable"
     class="mb-0"
   >
     <div>{{ message }}</div>
@@ -26,6 +26,7 @@ export default {
     type: String,
     message: String,
     link: Object,
+    dismissable: Boolean,
   },
 
   watch: {

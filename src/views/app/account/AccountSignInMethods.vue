@@ -28,9 +28,19 @@
               Verify email
             </v-btn>
 
-            <Alert type="success" :message="verifyEmailSuccess" class="mt-2" />
+            <Alert
+              dismissable
+              type="success"
+              :message="verifyEmailSuccess"
+              class="mt-2"
+            />
 
-            <Alert type="error" :message="verifyEmailError" class="mt-2" />
+            <Alert
+              dismissable
+              type="error"
+              :message="verifyEmailError"
+              class="mt-2"
+            />
           </v-col>
         </v-row>
       </v-col>
@@ -120,7 +130,12 @@
               </v-btn>
             </template>
 
-            <Alert type="error" :message="googleError" class="mt-2" />
+            <Alert
+              dismissable
+              type="error"
+              :message="googleError"
+              class="mt-2"
+            />
           </v-col>
         </v-row>
       </v-col>

@@ -3,24 +3,6 @@
     <!-- Only show AppBar when on desktop, otherwise, will only show in specific components -->
     <AppBar v-if="!$vuetify.breakpoint.mobile" />
     <v-main style="overflow: hidden" class="flex-grow-1">
-      <v-container
-        v-if="
-          !emailVerified &&
-          (!$vuetify.breakpoint.mobile || $route.name === 'ActivityPlanner')
-        "
-        class="px-2 px-md-4 py-0"
-      >
-        <Alert
-          type="error"
-          message="Your email address has not been verified."
-          :link="{
-            text: 'Verify email',
-            link: { name: 'AccountSignInMethods' },
-          }"
-          class="mt-2"
-        />
-      </v-container>
-
       <transition :name="transitionName">
         <router-view class="page-background"></router-view>
       </transition>
@@ -120,28 +102,14 @@
 
 <script>
 import AppBar from "../../components/app/AppBar.vue";
-import Alert from "../../components/Alert";
 
 export default {
-  components: { AppBar, Alert },
+  components: { AppBar },
 
   data() {
     return {
-      emailVerified: true, // Assume by default the user's email is verified\\
-
       transitionName: null, // Custom route transitions
     };
-  },
-
-  created() {
-    // Add event listener for when the global user object changes
-    document.addEventListener("currentUserChanged", () => {
-      this.updateDetails();
-    });
-  },
-
-  mounted() {
-    this.updateDetails();
   },
 
   watch: {
@@ -154,15 +122,6 @@ export default {
         this.transitionName = toDepth < fromDepth ? "unstack" : "stack";
       } else {
         this.transitionName = "none";
-      }
-    },
-  },
-
-  methods: {
-    updateDetails() {
-      // Choose personal details to display for user
-      if (this.$currentUser) {
-        this.emailVerified = this.$currentUser?.emailVerified;
       }
     },
   },

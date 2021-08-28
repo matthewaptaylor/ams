@@ -14,7 +14,13 @@
           This action can't be undone! Are you sure that you want to continue?
         </p>
 
-        <Alert type="error" :message="error" :link="errorLink" class="mt-2" />
+        <Alert
+          dismissable
+          type="error"
+          :message="error"
+          :link="errorLink"
+          class="mt-2"
+        />
 
         <div class="d-flex justify-space-between flex-wrap mt-4">
           <v-btn plain @click="$emit('exitDialog')"> Cancel </v-btn>

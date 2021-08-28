@@ -30,7 +30,7 @@
 
         <Alert type="success" :message="restoreSuccess" class="mt-2" />
 
-        <Alert type="error" :message="restoreError" class="mt-2" />
+        <Alert dismissable type="error" :message="restoreError" class="mt-2" />
       </v-col>
 
       <v-col cols="12" v-if="showResetPasswordButton">
@@ -51,9 +51,19 @@
           Send reset email
         </v-btn>
 
-        <Alert type="success" :message="resetPasswordSuccess" class="mt-2" />
+        <Alert
+          dismissable
+          type="success"
+          :message="resetPasswordSuccess"
+          class="mt-2"
+        />
 
-        <Alert type="error" :message="resetPasswordError" class="mt-2" />
+        <Alert
+          dismissable
+          type="error"
+          :message="resetPasswordError"
+          class="mt-2"
+        />
       </v-col>
     </v-row>
   </v-container>
