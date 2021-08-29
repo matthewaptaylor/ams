@@ -162,6 +162,10 @@ export default {
     this.updateShowAppPrompt();
   },
 
+  beforeDestroy() {
+    document.removeEventListener("appPromptChanged", this.updateShowAppPrompt);
+  },
+
   methods: {
     async closeAppSnackbar() {
       this.showAppPrompt = false;

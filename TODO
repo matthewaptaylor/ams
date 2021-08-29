@@ -23,3 +23,4 @@ transition on v-if for autosave
 Use email link for reauthentication
 Make picker dialogs menus, or enable back button to dismiss picker dialog
 beforeDestriy for custom event listeners currentUserChanged and appPromptChanged
+Stop context menu appearing on installed app on long tap

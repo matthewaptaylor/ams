@@ -165,9 +165,11 @@ export default {
 
   created() {
     // Add event listener for when the global user object changes
-    document.addEventListener("currentUserChanged", () => {
-      this.updateDetails();
-    });
+    document.addEventListener("currentUserChanged", this.updateDetails);
+  },
+
+  beforeDestroy() {
+    document.removeEventListener("currentUserChanged", this.updateDetails);
   },
 
   mounted() {

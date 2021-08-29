@@ -125,14 +125,15 @@ export default {
 
   created() {
     // Add event listener for when the global user object changes
-    document.addEventListener("currentUserChanged", () => {
-      this.updateDetails();
-    });
+    document.addEventListener("currentUserChanged", this.updateDetails);
 
     // Add event listener for when the app prompt state changes
-    document.addEventListener("appPromptChanged", () => {
-      this.showInstallItem = !!this.$appPrompt;
-    });
+    document.addEventListener("appPromptChanged", this.updateInstallItem);
+  },
+
+  beforeDestroy() {
+    document.removeEventListener("currentUserChanged", this.updateDetails);
+    document.removeEventListener("appPromptChanged", this.updateInstallItem);
   },
 
   mounted() {
@@ -151,6 +152,10 @@ export default {
           this.$currentUser.displayName ?? this.$currentUser.email;
         this.photoURL = this.$currentUser.photoURL ?? false;
       }
+    },
+
+    updateInstallItem() {
+      this.showInstallItem = !!this.$appPrompt;
     },
   },
 };
