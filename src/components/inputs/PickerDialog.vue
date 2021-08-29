@@ -2,7 +2,7 @@
   <v-dialog v-model="show" persistent width="290px">
     <v-date-picker v-model="newValue" scrollable v-if="type === 'date'">
       <div
-        class="d-flex justify-space-between flex-wrap mt-n8"
+        class="d-flex justify-space-between flex-wrap"
         style="gap: 0.5rem 1rem; width: 100%"
       >
         <v-btn plain @click="close">Cancel</v-btn>

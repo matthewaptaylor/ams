@@ -46,20 +46,22 @@ html {
 }
 
 /* Custom scrollbar */
-::-webkit-scrollbar {
-  width: 14px;
-  height: 14px;
-}
-::-webkit-scrollbar-track {
-  background-color: #eee;
-}
-::-webkit-scrollbar-thumb {
-  background-color: #aaa;
-  border: 3px solid #eee;
-  border-radius: 7px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background-color: #888;
+@media only screen and (min-width: 960px) {
+  ::-webkit-scrollbar {
+    width: 14px;
+    height: 14px;
+  }
+  ::-webkit-scrollbar-track {
+    background-color: #eee;
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: #aaa;
+    border: 3px solid #eee;
+    border-radius: 7px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: #888;
+  }
 }
 
 @font-face {

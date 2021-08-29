@@ -18,3 +18,4 @@ Click sign out button if not connected to server
 transition on v-if for autosave
 Use email link for reauthentication
 Stop context menu appearing on installed app on long tap
+Disable custom 
