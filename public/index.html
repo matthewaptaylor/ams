@@ -8,12 +8,39 @@
     <link rel="icon" href="<%= BASE_URL %>favicon.ico" />
     <title>AMS - Scouts Aotearoa</title>
   </head>
-  <body style="margin: 0">
+  <body style="margin: 0;">
     <noscript>
-      <strong>
-        We're sorry but AMS doesn't work properly without JavaScript enabled.
-        Please enable it to continue.
-      </strong>
+      <div style="position: absolute;
+        padding: 16px;
+        width: 100%;
+        text-align: center;
+        z-index: 2;
+        box-sizing: border-box;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -o-user-select: none;
+        user-select: none;
+        ">
+        <div
+          style="
+            display: inline-flex;
+            border-radius: 4px;
+            padding: 16px;
+            font-family: sans-serif;
+            color: #ffffff;
+            background-color: #d22730;
+          "
+        >
+          <svg style="margin-right: 16px; min-width: 24px; height: 24px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img" aria-hidden="true" fill="#ffffff"><path d="M13,14H11V10H13M13,18H11V16H13M1,21H23L12,2L1,21Z"></path></svg>
+          
+          <div style="display: flex; align-items: center; min-height: 24px; text-align: left;">
+            We're sorry, but the AMS Web App requires JavaScript to work properly.
+            Please enable it to continue.
+          </div>
+        </div>
+      </div>
+      </noscript>
     </noscript>
     <div id="loaderOverlay">
       <style>

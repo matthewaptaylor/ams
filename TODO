@@ -6,7 +6,6 @@ Run lighthouse
 Implement document title changing
 Test on other browsers
 v-autocomplete for searching emails to change activity leader 
-Check unneccesay auth, network requests
 Address security vulnerabilities
 Implement reload page/get data from server again (refresh icon button that appears in sidebar item? What about desktop nav?)
 COnvert firestore/everything else to production mode
@@ -14,7 +13,6 @@ Make sure database rules are set correctly and are secure
 Customise firebase emails
 XSS vulnerabilities in date stored in firestore and other firebase auth things like displayname
 Document everything
-Test noscript
 Prevent abuse with App Check firebase
 Click sign out button if not connected to server
 transition on v-if for autosave
