@@ -43,9 +43,27 @@ export default {
     type: String, // Either "date" or "time"
   },
 
+  watch: {
+    show(val) {
+      // Update URL if picker opened or closed
+      if (val) {
+        window.location.hash = "picker";
+      } else if (window.location.hash) {
+        this.$router.go(-1); // Remove hash
+      }
+    },
+
+    $route() {
+      if (!window.location.hash) {
+        // Hide picker if user navigated back
+        this.close();
+      }
+    },
+  },
+
   methods: {
     close() {
-      // EMit event to parent asking to close the dialog
+      // Emit event to parent asking to close the dialog
       this.$emit("close");
     },
 
