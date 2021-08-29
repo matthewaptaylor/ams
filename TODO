@@ -16,11 +16,7 @@ XSS vulnerabilities in date stored in firestore and other firebase auth things l
 Document everything
 Test noscript
 Prevent abuse with App Check firebase
-Custom scrollbar
 Click sign out button if not connected to server
-Check animations with others?
 transition on v-if for autosave
 Use email link for reauthentication
-Make picker dialogs menus, or enable back button to dismiss picker dialog
-beforeDestriy for custom event listeners currentUserChanged and appPromptChanged
 Stop context menu appearing on installed app on long tap
