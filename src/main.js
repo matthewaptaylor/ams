@@ -61,16 +61,16 @@ if (process.env.NODE_ENV === "development") {
   firebase.functions().useEmulator("localhost", 5001);
 }
 
-var activityPlannerCreateActivity = firebase
-  .functions()
-  .httpsCallable("activityPlannerCreateActivity");
+// var activityPlannerCreateActivity = firebase
+//   .functions()
+//   .httpsCallable("activityPlannerCreateActivity");
 
-activityPlannerCreateActivity({
-  name: "Wellington Trip",
-  startTime: new Date(),
-  endTime: new Date(),
-}).then(() => {
-  // Read result of the Cloud Function.
-  // var sanitizedMessage = result;
-  // console.log(sanitizedMessage);
-});
+// activityPlannerCreateActivity({
+//   name: "Wellington Trip",
+//   startTime: new Date(),
+//   endTime: new Date(),
+// }).then(() => {
+//   // Read result of the Cloud Function.
+//   // var sanitizedMessage = result;
+//   // console.log(sanitizedMessage);
+// });
