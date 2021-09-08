@@ -29,7 +29,7 @@
             ></v-text-field>
           </v-col>
 
-          <v-col cols="12" sm="6" lg="6">
+          <v-col cols="12" sm="6">
             <AutosaveText
               label="Start date"
               type="date"
@@ -40,7 +40,7 @@
             />
           </v-col>
 
-          <v-col cols="12" sm="6" lg="6">
+          <v-col cols="12" sm="6">
             <AutosaveText
               label="Start time"
               type="time"
@@ -51,78 +51,26 @@
             />
           </v-col>
 
-          <v-col cols="12" sm="6" lg="6">
-            <v-dialog
-              ref="endDateDialog"
-              v-model="endDateModal"
-              :return-value.sync="endDate"
-              persistent
-              width="290px"
-            >
-              <template v-slot:activator="{ on, attrs }">
-                <v-text-field
-                  v-model="endDate"
-                  label="End date"
-                  :prepend-icon="calendarIcon"
-                  readonly
-                  v-bind="attrs"
-                  v-on="on"
-                  hide-details="auto"
-                ></v-text-field>
-              </template>
-              <v-date-picker v-model="endDate" scrollable>
-                <v-spacer></v-spacer>
-
-                <v-btn text color="primary" @click="endDateModal = false">
-                  Cancel
-                </v-btn>
-
-                <v-btn
-                  text
-                  color="primary"
-                  @click="$refs.endDateDialog.save(endDate)"
-                >
-                  OK
-                </v-btn>
-              </v-date-picker>
-            </v-dialog>
+          <v-col cols="12" sm="6">
+            <AutosaveText
+              label="End date"
+              type="date"
+              :value="endDate"
+              :icon="calendarIcon"
+              :error="endDateError"
+              @save="saveEndDate"
+            />
           </v-col>
 
-          <v-col cols="12" sm="6" lg="6">
-            <v-dialog
-              ref="endTimeDialog"
-              v-model="endTimeModal"
-              :return-value.sync="endTime"
-              persistent
-              width="290px"
-            >
-              <template v-slot:activator="{ on, attrs }">
-                <v-text-field
-                  v-model="endTime"
-                  label="End time"
-                  :prepend-icon="clockIcon"
-                  readonly
-                  v-bind="attrs"
-                  v-on="on"
-                  hide-details="auto"
-                ></v-text-field>
-              </template>
-              <v-time-picker format="24hr" v-model="endTime" full-width>
-                <v-spacer></v-spacer>
-
-                <v-btn text color="primary" @click="endTimeModal = false">
-                  Cancel
-                </v-btn>
-
-                <v-btn
-                  text
-                  color="primary"
-                  @click="$refs.endTimeDialog.save(endTime)"
-                >
-                  OK
-                </v-btn>
-              </v-time-picker>
-            </v-dialog>
+          <v-col cols="12" sm="6">
+            <AutosaveText
+              label="End time"
+              type="time"
+              :value="endTime"
+              :icon="clockIcon"
+              :error="endTimeError"
+              @save="saveEndTime"
+            />
           </v-col>
         </v-row>
       </v-col>
@@ -151,15 +99,18 @@ export default {
       startTime: null,
       startTimeError: null,
 
-      endDateModal: false,
-      endDate: null,
-      endTimeModal: false,
+      endDate: "2020-01-01",
+      endDateError: null,
+
       endTime: null,
+      endTimeError: null,
     };
   },
   methods: {
     saveStartDate() {},
     saveStartTime() {},
+    saveEndDate() {},
+    saveEndTime() {},
   },
 };
 </script>

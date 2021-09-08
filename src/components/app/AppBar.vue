@@ -45,7 +45,7 @@
         </v-btn>
       </template>
 
-      <v-list dense nav>
+      <v-list dense nav style="max-width: 15rem">
         <v-list-item>
           <v-list-item-title class="font-weight-regular text-body-2">
             Kia ora,

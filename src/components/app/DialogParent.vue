@@ -4,6 +4,7 @@
       :is="$route.meta.dialog"
       @exitDialog="exitDialog"
       :dialog="dialog"
+      :key="key"
     />
 
     <component :is="$route.meta.default" @showDialog="showDialog" />
@@ -20,6 +21,8 @@ export default {
       useBackToExit: null, // Going back if the dialog is opened will stay on this page
 
       dialogPathArray: null,
+
+      key: 0, // Increment to force rerender of dialog on reopen
     };
   },
 
@@ -49,8 +52,8 @@ export default {
 
   beforeRouteUpdate(to, from, next) {
     // User action has caused move between default view and dialog
-    this.dialog = !this.arrayIsEqual(
-      this.toArray(this.$route.path),
+    this.dialog = this.arrayIsEqual(
+      this.toArray(to.path),
       this.dialogPathArray
     );
 
@@ -61,6 +64,8 @@ export default {
     showDialog() {
       // Shows the dialog
       this.$router.push("/" + this.dialogPathArray.join("/"));
+
+      this.key++;
     },
 
     exitDialog() {

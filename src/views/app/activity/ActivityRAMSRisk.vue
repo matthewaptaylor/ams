@@ -1,5 +1,5 @@
 <template>
-  <v-dialog :value="dialog" persistent max-width="25rem">
+  <v-dialog :value="dialog" persistent max-width="50rem">
     <v-sheet elevation="2" rounded>
       <v-toolbar
         dark

@@ -60,17 +60,3 @@ if (process.env.NODE_ENV === "development") {
   firebase.auth().useEmulator("http://localhost:9099");
   firebase.functions().useEmulator("localhost", 5001);
 }
-
-// var activityPlannerCreateActivity = firebase
-//   .functions()
-//   .httpsCallable("activityPlannerCreateActivity");
-
-// activityPlannerCreateActivity({
-//   name: "Wellington Trip",
-//   startTime: new Date(),
-//   endTime: new Date(),
-// }).then(() => {
-//   // Read result of the Cloud Function.
-//   // var sanitizedMessage = result;
-//   // console.log(sanitizedMessage);
-// });

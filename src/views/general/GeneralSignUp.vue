@@ -100,7 +100,7 @@ export default {
       email: "",
       emailRules: [
         (v) => !!v || "Email is required",
-        (v) => /.+@.+/.test(v) || "E-mail must be valid",
+        (v) => /.+@.+/.test(v) || "Email must be valid",
       ],
       password: "",
       passwordRules: [

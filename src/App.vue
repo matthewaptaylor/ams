@@ -140,6 +140,12 @@ html {
 .v-time-picker-title {
   justify-content: center !important;
 }
+.v-input--pointer input {
+  cursor: pointer;
+}
+.v-select .v-text-field__details {
+  margin-top: 0.25rem;
+}
 </style>
 
 <script>

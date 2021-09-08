@@ -76,12 +76,6 @@
   </v-form>
 </template>
 
-<style>
-.v-input--pointer input {
-  cursor: pointer;
-}
-</style>
-
 <script>
 import { mdiContentSave, mdiCheckCircle } from "@mdi/js";
 import Alert from "../Alert.vue";
