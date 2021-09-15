@@ -22,18 +22,42 @@
           }"
         >
           <v-list-item-avatar>
-            <v-icon class="grey lighten-1" dark> mdi-folder </v-icon>
+            <img
+              :src="account.photoURL"
+              alt="User picture"
+              v-if="account.photoURL"
+              style="width: 40px; border-radius: 50%"
+            />
+
+            <avatar
+              :username="
+                account.displayName ? account.displayName : account.email
+              "
+              :size="40"
+              backgroundColor="var(--v-primary-darken1)"
+              color="#ffffff"
+              v-if="!account.photoURL"
+            ></avatar>
           </v-list-item-avatar>
 
           <v-list-item-content>
             <v-list-item-title
               :class="{ 'error--text': removedPeople.includes(account.email) }"
+              v-if="account.userExists"
               >{{
-                account.name +
+                (account.displayName ? account.displayName : account.email) +
                 (account.email === $currentUser.email ? " (You)" : "") +
                 (removedPeople.includes(account.email) ? " (removed)" : "")
               }}</v-list-item-title
             >
+
+            <v-list-item-title v-if="account.userExists === undefined">
+              Loading...
+            </v-list-item-title>
+
+            <v-list-item-title v-if="account.userExists === false">
+              No AMS Account
+            </v-list-item-title>
 
             <v-list-item-subtitle v-text="account.email"></v-list-item-subtitle>
           </v-list-item-content>
@@ -73,11 +97,7 @@
                 <v-btn
                   icon
                   class="ml-2"
-                  @click="
-                    () => {
-                      removedPeople.push(account.email);
-                    }
-                  "
+                  @click="removedPeople.push(account.email)"
                   :disabled="account.role === 'Activity Leader'"
                   v-bind="attrs"
                   v-on="on"
@@ -85,7 +105,7 @@
                   <v-icon>{{ deleteIcon }}</v-icon>
                 </v-btn>
               </template>
-              <span>remove</span>
+              <span>Remove user</span>
             </v-tooltip>
 
             <v-tooltip bottom v-if="removedPeople.includes(account.email)">
@@ -106,7 +126,7 @@
                   <v-icon>{{ plusIcon }}</v-icon>
                 </v-btn>
               </template>
-              <span>Undo remove</span>
+              <span>Undo remove user</span>
             </v-tooltip>
           </v-list-item-action>
         </v-list-item>
@@ -200,9 +220,11 @@
 <script>
 import { mdiDelete, mdiPlus } from "@mdi/js";
 import Alert from "../Alert.vue";
+import Avatar from "vue-avatar";
+import firebase from "firebase/app";
 
 export default {
-  components: { Alert },
+  components: { Avatar, Alert },
 
   data() {
     return {
@@ -212,13 +234,7 @@ export default {
 
       // People
       activityRoles: ["Activity Leader", "Assisting", "Editor", "Viewer"],
-      people: [
-        {
-          name: this.$currentUser.displayName,
-          email: this.$currentUser.email,
-          role: "Activity Leader",
-        },
-      ], // Array of people objects, start off with current user
+      people: [...this.storedPeople], // Array of people objects. Includes removed people listed in removedPeople
       modifiedPeople: [], // Emails of existing entries in people array with modified roles
       newPeople: [], // Emails of new entries to people array
       removedPeople: [],
@@ -231,14 +247,59 @@ export default {
     };
   },
 
+  props: {
+    storedPeople: Array, // People already stored
+  },
+
+  watch: {
+    people(val) {
+      // Notify parent when people changes
+      this.$emit("people", val);
+    },
+
+    modifiedPeople(val) {
+      // Notify parent when modifiedPeople changes
+      this.$emit("modifiedPeople", val);
+    },
+
+    newPeople(val) {
+      // Notify parent when newPeople changes
+      this.$emit("newPeople", val);
+    },
+
+    removedPeople(val) {
+      // Notify parent when removedPeople changes
+      this.$emit("removedPeople", val);
+    },
+  },
+
   methods: {
     addPerson() {
       this.addPersonError = null;
 
       if (this.people.some((person) => person.email === this.addPersonEmail)) {
         // Person is already entered
-        this.addPersonError = "This person has already been added.";
+        if (this.removedPeople.includes(this.addPersonEmail)) {
+          // Add back if removed
+          this.removedPeople = this.removedPeople.filter(
+            (email) => email !== this.addPersonEmail
+          );
+
+          // Check if role was changed
+          const personIndex = this.people.findIndex(
+            (person) => person.email === this.addPersonEmail
+          );
+          if (this.addPersonRole !== this.people[personIndex].role) {
+            this.people[personIndex].role = this.addPersonRole;
+          }
+
+          this.$refs.addPersonForm.reset();
+          this.$refs.addPersonForm.resetValidation();
+        } else {
+          this.addPersonError = "This person has already been added.";
+        }
       } else {
+        // New person
         if (this.addPersonRole === "Activity Leader") {
           // New activity leader, remove old one
           const leaderIndex = this.people.findIndex(
@@ -250,12 +311,38 @@ export default {
 
         // Add person
         this.people.push({
-          name: this.addPersonEmail,
           email: this.addPersonEmail,
           role: this.addPersonRole,
         });
 
         this.newPeople.push(this.addPersonEmail);
+
+        // Check if the email is registered as an account
+        const email = this.addPersonEmail;
+
+        var getUserByEmail = firebase
+          .functions()
+          .httpsCallable("getUserByEmail");
+
+        getUserByEmail({ email: this.addPersonEmail })
+          .then((data) => {
+            // Get the person's record
+            const personIndex = this.people.findIndex(
+              (person) => person.email === email
+            );
+
+            // Update record
+            this.people[personIndex].userExists = data.data.userExists;
+            if (data.data.displayName)
+              this.people[personIndex].displayName = data.data.displayName;
+            if (data.data.photoURL)
+              this.people[personIndex].photoURL = data.data.photoURL;
+
+            this.$forceUpdate();
+          })
+          .catch(() => {
+            this.addPersonError = `An error occurred when searching for the user ${email}.`;
+          });
 
         this.$refs.addPersonForm.reset();
         this.$refs.addPersonForm.resetValidation();
@@ -274,7 +361,7 @@ export default {
       }
 
       if (!this.people.some((person) => person.role === "Activity Leader")) {
-        // Currently no Activity LEader, make this person it
+        // Currently no Activity Leader, make this person it
         const accountIndex = this.people.findIndex(
           (person) => person.email === account.email
         );

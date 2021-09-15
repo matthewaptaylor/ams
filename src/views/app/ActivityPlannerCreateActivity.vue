@@ -63,9 +63,9 @@
                   <v-row dense>
                     <v-col cols="12">
                       <v-text-field
-                        v-model="activityName"
-                        :rules="[(v) => !!v || 'Activity name is required']"
-                        label="Activity Name"
+                        v-model="formData.name"
+                        :rules="[(v) => !!v || 'Name is required']"
+                        label="Name"
                         hide-details="auto"
                         autofocus
                         required
@@ -74,10 +74,9 @@
 
                     <v-col cols="12">
                       <v-text-field
-                        v-model="location"
+                        v-model="formData.location"
                         label="Location"
                         hide-details="auto"
-                        autofocus
                       ></v-text-field>
                     </v-col>
 
@@ -205,10 +204,18 @@
 
             <v-row>
               <v-col cols="12">
-                <ActivityAccess />
+                <ActivityPeople
+                  :storedPeople="people"
+                  @people="(val) => (people = val)"
+                  @modifiedPeople="(val) => (modifiedPeople = val)"
+                  @newPeople="(val) => (newPeople = val)"
+                  @removedPeople="(val) => (removedPeople = val)"
+                />
               </v-col>
 
               <v-col cols="12" class="mt-n4">
+                <Alert dismissable type="error" :message="error" class="mb-2" />
+
                 <div
                   class="d-flex justify-space-between flex-wrap mt-2 border-top"
                   style="gap: 0.5rem 1rem"
@@ -218,7 +225,12 @@
                     Back
                   </v-btn>
 
-                  <v-btn color="primary" type="submit">
+                  <v-btn
+                    color="primary"
+                    @click="submit"
+                    :disabled="loading"
+                    :loading="loading"
+                  >
                     <v-icon left dark>{{ plusIcon }}</v-icon>
                     Create Activity
                   </v-btn>
@@ -242,10 +254,11 @@
 import { mdiArrowLeft, mdiClose, mdiArrowRight, mdiPlus } from "@mdi/js";
 import firebase from "firebase/app";
 import PickerDialog from "../../components/inputs/PickerDialog.vue";
-import ActivityAccess from "../../components/app/ActivityAccess.vue";
+import ActivityPeople from "../../components/app/ActivityPeople.vue";
+import Alert from "../../components/Alert.vue";
 
 export default {
-  components: { PickerDialog, ActivityAccess },
+  components: { PickerDialog, ActivityPeople, Alert },
 
   data() {
     return {
@@ -257,14 +270,16 @@ export default {
 
       // Stepper
       step: 1,
+      error: null,
 
       // Details form
       valid: false,
       loading: false,
 
-      activityName: "",
-
-      location: "",
+      formData: {
+        name: "",
+        location: "",
+      },
 
       startDate: null,
       showStartDate: false,
@@ -278,7 +293,19 @@ export default {
       endTime: null,
       showEndTime: false,
 
-      // Values
+      // People form
+      people: [
+        {
+          displayName: this.$currentUser.displayName,
+          email: this.$currentUser.email,
+          role: "Activity Leader",
+          photoURL: this.$currentUser.photoURL,
+          userExists: true,
+        },
+      ], // Array of people objects, start off with current user
+      modifiedPeople: [], // Emails of existing entries in people array with modified roles
+      newPeople: [], // Emails of new entries to people array
+      removedPeople: [],
     };
   },
 
@@ -296,21 +323,67 @@ export default {
       );
     },
 
+    convertToTimestamp(date, time) {
+      // Converts the seperate date and time inputs into one
+      const timestamp = date || time ? new Date(0) : null;
+
+      if (date) {
+        timestamp.setFullYear(date.substr(0, 4));
+        timestamp.setMonth(parseInt(date.substr(5, 2)) - 1);
+        timestamp.setDate(date.substr(8, 2));
+      }
+
+      if (time) {
+        timestamp.setHours(time?.substr(0, 2));
+        timestamp.setMinutes(time?.substr(3, 2));
+      }
+
+      return timestamp;
+    },
+
     submit() {
+      // Prepare data to be sent
+      this.formData.startTimestamp = this.convertToTimestamp(
+        this.startDate,
+        this.startTime
+      )?.getTime();
+      this.formData.endTimestamp = this.convertToTimestamp(
+        this.endDate,
+        this.endTime
+      )?.getTime();
+
+      // Determine list of people, without removed people
+      this.formData.people = this.people;
+      this.formData.people = this.formData.people.filter(
+        (person) => !this.removedPeople.includes(person.email)
+      );
+
+      // Send to firebase
       this.loading = true;
+      this.error = null;
 
       var activityPlannerCreateActivity = firebase
         .functions()
         .httpsCallable("activityPlannerCreateActivity");
 
-      activityPlannerCreateActivity({
-        name: this.activityName,
-      }).then(() => {
-        // Success
-        this.loading = false;
+      activityPlannerCreateActivity(this.formData)
+        .then((data) => {
+          // Success
+          this.loading = false;
 
-        this.$emit("exitDialog");
-      });
+          // Redirect to page
+
+          this.$router.replace({
+            name: "ActivityOverview",
+            params: { activityId: data.data.id },
+          });
+        })
+        .catch((error) => {
+          // Error
+          this.loading = false;
+
+          this.error = error.message;
+        });
     },
   },
 };

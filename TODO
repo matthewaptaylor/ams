@@ -24,4 +24,19 @@ If you create an activity and aren't leading or assisting, you should be able to
 Back button for fullscreen dialog
 Dislog toolbars dense and fullscreen on mobile
 Swipe between views on mobile e.g. swipe left to get from overview to plan
-FOrce rerender dialog
+Run through caniuse
+Press enter to open dialog when tabbed onto date picker, or even when focused
+Press enter on dialog doesn't fill the input
+If you delete yourself when on activity create, the redirect won't work
+Implement ma of 100 users because firebase.auth.getusers has max of 100?
+Nest scrollbars under header
+If redirected to login, redirect to correct page after login. Do the same with reauthentication, so we can enable email link reauth?
+What if the assigned activity leader doesn't have an account? Means any editors can change people settings
+Enforce everyone must be verified before they can sign in. Remove please verify email alert
+Privacy data laws, terms of service
+Add plan, do, review collaborative feature - and add ability for the best activities to be shared to a public page for ideas
+Delete user, change all UIDs back to email
+Change add activity so the conversion to {email: role} is done on the front end and only checked on the backend
+When adding a person, have the avatar be a loading wheel instead of the name saying loading...
+Stop showing loading when a getuserbyemail request fails on ActivityPeople.vue
+When user is created search for peopleByEmail references and add them

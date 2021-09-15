@@ -1,12 +1,33 @@
 <template>
-  <v-dialog :value="dialog" persistent max-width="35rem">
-    <v-sheet elevation="2" rounded>
+  <v-dialog
+    :value="dialog"
+    persistent
+    max-width="35rem"
+    :fullscreen="$vuetify.breakpoint.mobile"
+  >
+    <v-sheet elevation="2" rounded class="fill-height">
       <v-toolbar
         dark
         color="error"
         style="position: sticky; top: 0; z-index: 1"
+        :dense="$vuetify.breakpoint.mobile"
       >
-        <v-toolbar-title>Delete Account</v-toolbar-title>
+        <v-btn
+          icon
+          @click="$emit('exitDialog')"
+          style="width: 40px; height: 40px"
+          class="d-md-none"
+        >
+          <v-icon>{{ arrowLeftIcon }}</v-icon>
+        </v-btn>
+
+        <v-toolbar-title class="pl-md-0">Delete Account</v-toolbar-title>
+
+        <v-spacer />
+
+        <v-btn icon @click="$emit('exitDialog')" class="d-none d-md-block">
+          <v-icon>{{ closeIcon }}</v-icon>
+        </v-btn>
       </v-toolbar>
 
       <div class="pa-4">
@@ -45,7 +66,7 @@
 </template>
 
 <script>
-import { mdiDelete } from "@mdi/js";
+import { mdiArrowLeft, mdiClose, mdiDelete } from "@mdi/js";
 import Alert from "../../../components/Alert.vue";
 
 export default {
@@ -54,6 +75,8 @@ export default {
   data() {
     return {
       // Icons
+      arrowLeftIcon: mdiArrowLeft,
+      closeIcon: mdiClose,
       deleteIcon: mdiDelete,
 
       // FOrm

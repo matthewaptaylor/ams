@@ -1,12 +1,33 @@
 <template>
-  <v-dialog :value="dialog" persistent max-width="50rem">
-    <v-sheet elevation="2" rounded>
+  <v-dialog
+    :value="dialog"
+    persistent
+    max-width="50rem"
+    :fullscreen="$vuetify.breakpoint.mobile"
+  >
+    <v-sheet elevation="2" rounded class="fill-height">
       <v-toolbar
         dark
         color="primary"
         style="position: sticky; top: 0; z-index: 1"
+        :dense="$vuetify.breakpoint.mobile"
       >
-        <v-toolbar-title>Add risk</v-toolbar-title>
+        <v-btn
+          icon
+          @click="$emit('exitDialog')"
+          style="width: 40px; height: 40px"
+          class="d-md-none"
+        >
+          <v-icon>{{ arrowLeftIcon }}</v-icon>
+        </v-btn>
+
+        <v-toolbar-title class="pl-md-0">Add Risk</v-toolbar-title>
+
+        <v-spacer />
+
+        <v-btn icon @click="$emit('exitDialog')" class="d-none d-md-block">
+          <v-icon>{{ closeIcon }}</v-icon>
+        </v-btn>
       </v-toolbar>
 
       <v-form v-model="valid" @submit.prevent="createActivity" class="pa-4">
@@ -65,11 +86,12 @@
               persistent-hint
               return-object
               :hint="consequence !== null ? consequence.description : ''"
+              class="mb-2"
             ></v-select>
 
-            <p>{{ riskLevels[riskLevel] }}</p>
+            <p class="mb-0">{{ riskLevels[riskLevel] }}</p>
 
-            <v-checkbox label="Risk is acceptable"></v-checkbox>
+            <v-checkbox label="Risk is acceptable" class="mt-2"></v-checkbox>
           </v-col>
         </v-row>
         <div
@@ -94,12 +116,14 @@
 </template>
 
 <script>
-import { mdiPlus } from "@mdi/js";
+import { mdiArrowLeft, mdiClose, mdiPlus } from "@mdi/js";
 
 export default {
   data() {
     return {
       // Icons
+      arrowLeftIcon: mdiArrowLeft,
+      closeIcon: mdiClose,
       plusIcon: mdiPlus,
 
       valid: false,

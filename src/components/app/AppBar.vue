@@ -20,7 +20,9 @@
     />
 
     <v-app-bar-title>
-      {{ $vuetify.breakpoint.mobile ? "AMS" : "Activity Management System" }}
+      {{
+        $vuetify.breakpoint.name === "xs" ? "AMS" : "Activity Management System"
+      }}
     </v-app-bar-title>
 
     <v-spacer></v-spacer>
@@ -38,7 +40,7 @@
           <avatar
             :username="displayName"
             :size="36"
-            backgroundColor="#00000020"
+            backgroundColor="var(--v-primary-darken1)"
             color="#ffffff"
             v-if="!photoURL"
           ></avatar>
@@ -100,6 +102,12 @@
     </v-menu>
   </v-app-bar>
 </template>
+
+<style>
+.v-app-bar-title__content {
+  width: unset !important;
+}
+</style>
 
 <script>
 import { mdiAccount, mdiInformation, mdiDownload, mdiLogout } from "@mdi/js";

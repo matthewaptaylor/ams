@@ -94,6 +94,7 @@ import {
   mdiEye,
   mdiPlus,
 } from "@mdi/js";
+import firebase from "firebase/app";
 import Alert from "../../components/Alert";
 import AppBar from "../../components/app/AppBar.vue";
 import Page from "../../components/app/Page.vue";
@@ -111,14 +112,20 @@ export default {
       plusIcon: mdiPlus,
       chevronRightIcon: mdiChevronRight,
 
-      emailVerified: true, // Assume by default the user's email is verified
-
+      // Nav
       breadcrumbItems: [
         {
           text: "Activity Planner",
           disabled: true,
         },
       ],
+
+      emailVerified: true, // Assume by default the user's email is verified
+
+      // Activities
+      loading: true,
+      error: null,
+
       activityCategories: [
         {
           header: "Activities you're leading",
@@ -174,6 +181,28 @@ export default {
 
   mounted() {
     this.updateDetails();
+
+    // Display activities
+    this.loading = true;
+    this.error = null;
+
+    var activityPlannerGetActivities = firebase
+      .functions()
+      .httpsCallable("activityPlannerGetActivities");
+
+    activityPlannerGetActivities()
+      .then((data) => {
+        // Success
+        this.loading = false;
+
+        console.log(data);
+      })
+      .catch((error) => {
+        // Error
+        this.loading = false;
+
+        this.error = error.message;
+      });
   },
 
   methods: {
