@@ -32,15 +32,17 @@
         </v-row>
 
         <v-row>
+          <Alert dismissable type="error" :message="error" class="mb-2" />
+
           <v-col cols="12">
             <v-list two-line>
-              <template v-for="(category, categoryIndex) in activityCategories">
-                <v-divider
-                  v-if="categoryIndex !== 0"
-                  :key="category.categoryIndex"
-                />
+              <div
+                v-for="(category, categoryIndex) in activityCategories"
+                :key="category.categoryIndex"
+              >
+                <v-divider v-if="categoryIndex !== 0" />
 
-                <v-subheader :key="category.header">
+                <v-subheader>
                   <v-icon left>{{ category.icon }}</v-icon>
                   {{ category.header }}
                 </v-subheader>
@@ -49,25 +51,13 @@
                   <v-list-item
                     :to="{
                       name: 'ActivityOverview',
-                      params: { activityId: 1 },
+                      params: { activityId: activity.id },
                     }"
                     :key="activity.id"
                   >
                     <v-list-item-content>
-                      <v-list-item-title
-                        v-html="activity.name"
-                      ></v-list-item-title>
-
-                      <v-list-item-subtitle>
-                        <span class="text--primary">
-                          {{ dateToString(activity.startDate) }} to
-                          {{ dateToString(activity.endDate) }}
-                        </span>
-
-                        <template v-if="categoryIndex !== 0">
-                          &mdash; Led by {{ activity.activityLeader }}
-                        </template>
-                      </v-list-item-subtitle>
+                      <v-list-item-title v-text="activity.name" />
+                      <v-list-item-subtitle v-text="activity.role" />
                     </v-list-item-content>
 
                     <v-list-item-icon class="my-6">
@@ -77,7 +67,23 @@
                     </v-list-item-icon>
                   </v-list-item>
                 </template>
-              </template>
+
+                <v-skeleton-loader
+                  max-width="300"
+                  type="list-item-two-line"
+                  v-if="loading"
+                ></v-skeleton-loader>
+
+                <v-list-item v-if="!category.activities.length && !loading">
+                  <v-list-item-content class="text--secondary text-center">
+                    <v-icon>{{ mapSearchIcon }}</v-icon>
+
+                    <v-list-item-title class="text-wrap">
+                      We searched all over, but there's nothing here.
+                    </v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
+              </div>
             </v-list>
           </v-col>
         </v-row>
@@ -88,11 +94,11 @@
 <style scoped></style>
 <script>
 import {
-  mdiAccount,
   mdiChevronRight,
   mdiAccountSupervisor,
   mdiEye,
   mdiPlus,
+  mdiMapSearch,
 } from "@mdi/js";
 import firebase from "firebase/app";
 import Alert from "../../components/Alert";
@@ -111,6 +117,7 @@ export default {
       // Icons
       plusIcon: mdiPlus,
       chevronRightIcon: mdiChevronRight,
+      mapSearchIcon: mdiMapSearch,
 
       // Nav
       breadcrumbItems: [
@@ -128,43 +135,14 @@ export default {
 
       activityCategories: [
         {
-          header: "Activities you're leading",
-          icon: mdiAccount,
-          activities: [
-            {
-              id: 0,
-              name: "Wellington Trip",
-              startDate: new Date(),
-              endDate: new Date(),
-              activityLeader: "Matthew Taylor",
-            },
-          ],
-        },
-        {
-          header: "Activities you're assisting",
+          header: "Activities you're running",
           icon: mdiAccountSupervisor,
-          activities: [
-            {
-              id: 1,
-              name: "Wellington Trip",
-              startDate: new Date(),
-              endDate: new Date(),
-              activityLeader: "Matthew Taylor",
-            },
-          ],
+          activities: [],
         },
         {
-          header: "Activities you can view",
+          header: "Other activities",
           icon: mdiEye,
-          activities: [
-            {
-              id: 2,
-              name: "Wellington Trip",
-              startDate: new Date(),
-              endDate: new Date(),
-              activityLeader: "Matthew Taylor",
-            },
-          ],
+          activities: [],
         },
       ],
     };
@@ -183,7 +161,6 @@ export default {
     this.updateDetails();
 
     // Display activities
-    this.loading = true;
     this.error = null;
 
     var activityPlannerGetActivities = firebase
@@ -195,7 +172,16 @@ export default {
         // Success
         this.loading = false;
 
-        console.log(data);
+        data.data.forEach((activity) => {
+          // Sort each activity the user has access to into categories
+          const activityCategory = ["Activity Leader", "Assisting"].includes(
+            activity.role
+          )
+            ? 0
+            : 1;
+
+          this.activityCategories[activityCategory].activities.push(activity);
+        });
       })
       .catch((error) => {
         // Error
@@ -206,10 +192,6 @@ export default {
   },
 
   methods: {
-    dateToString(date) {
-      return `${date.getDay()}/${date.getMonth()}/${date.getFullYear()}`;
-    },
-
     updateDetails() {
       // Choose personal details to display for user
       if (this.$currentUser) {
