@@ -8,9 +8,25 @@
       >
         <h1 class="text-h4">RAMS</h1>
 
-        <v-btn color="primary" @click="$emit('showDialog')">
+        <v-btn
+          color="primary"
+          @click="$emit('showDialog')"
+          v-if="$vuetify.breakpoint.name !== 'xs'"
+        >
           <v-icon left dark>{{ plusIcon }}</v-icon>
           Add risk
+        </v-btn>
+
+        <v-btn
+          color="primary"
+          fab
+          fixed
+          bottom
+          right
+          v-else
+          @click="$emit('showDialog')"
+        >
+          <v-icon>{{ plusIcon }}</v-icon>
         </v-btn>
       </v-col>
     </v-row>

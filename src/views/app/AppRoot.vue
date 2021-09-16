@@ -3,7 +3,7 @@
     <!-- Only show AppBar when on desktop, otherwise, will only show in specific components -->
     <AppBar v-if="!$vuetify.breakpoint.mobile" />
 
-    <v-main style="overflow: hidden" class="flex-grow-1">
+    <v-main>
       <transition :name="transitionName">
         <router-view class="page-background"></router-view>
       </transition>

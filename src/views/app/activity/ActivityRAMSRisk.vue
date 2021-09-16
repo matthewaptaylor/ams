@@ -4,8 +4,9 @@
     persistent
     max-width="50rem"
     :fullscreen="$vuetify.breakpoint.mobile"
+    style="overflow: hidden"
   >
-    <v-sheet elevation="2" rounded class="fill-height">
+    <v-sheet elevation="2" :rounded="!$vuetify.breakpoint.mobile">
       <v-toolbar
         dark
         color="primary"
@@ -30,7 +31,18 @@
         </v-btn>
       </v-toolbar>
 
-      <v-form v-model="valid" @submit.prevent="createActivity" class="pa-4">
+      <v-form
+        v-model="valid"
+        @submit.prevent="createActivity"
+        class="pa-4"
+        style="overflow: auto"
+        :style="{
+          height: $vuetify.breakpoint.mobile ? 'calc(100vh - 48px)' : null,
+          'max-height': !$vuetify.breakpoint.mobile
+            ? 'calc(100vh - 144px)'
+            : null,
+        }"
+      >
         <v-row>
           <v-col cols="12" sm="6" md="8" class="pb-0 pb-sm-3">
             <v-row>

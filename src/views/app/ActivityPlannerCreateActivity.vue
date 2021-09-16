@@ -4,8 +4,9 @@
     persistent
     max-width="35rem"
     :fullscreen="$vuetify.breakpoint.mobile"
+    style="overflow: hidden"
   >
-    <v-sheet elevation="2" rounded class="fill-height">
+    <v-sheet elevation="2" :rounded="!$vuetify.breakpoint.mobile">
       <v-toolbar
         dark
         color="primary"
@@ -30,7 +31,17 @@
         </v-btn>
       </v-toolbar>
 
-      <v-stepper v-model="step" flat>
+      <v-stepper
+        v-model="step"
+        flat
+        style="overflow: auto"
+        :style="{
+          height: $vuetify.breakpoint.mobile ? 'calc(100vh - 48px)' : null,
+          'max-height': !$vuetify.breakpoint.mobile
+            ? 'calc(100vh - 144px)'
+            : null,
+        }"
+      >
         <v-stepper-header
           class="py-2"
           style="height: unset; box-shadow: none"
@@ -252,7 +263,6 @@
 
 <script>
 import { mdiArrowLeft, mdiClose, mdiArrowRight, mdiPlus } from "@mdi/js";
-import firebase from "firebase/app";
 import PickerDialog from "../../components/inputs/PickerDialog.vue";
 import ActivityPeople from "../../components/app/ActivityPeople.vue";
 import Alert from "../../components/Alert.vue";
@@ -362,9 +372,9 @@ export default {
       this.loading = true;
       this.error = null;
 
-      var activityPlannerCreateActivity = firebase
-        .functions()
-        .httpsCallable("activityPlannerCreateActivity");
+      var activityPlannerCreateActivity = this.$functions.httpsCallable(
+        "activityPlannerCreateActivity"
+      );
 
       activityPlannerCreateActivity(this.formData)
         .then((data) => {

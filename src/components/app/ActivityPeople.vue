@@ -221,7 +221,6 @@
 import { mdiDelete, mdiPlus } from "@mdi/js";
 import Alert from "../Alert.vue";
 import Avatar from "vue-avatar";
-import firebase from "firebase/app";
 
 export default {
   components: { Avatar, Alert },
@@ -320,9 +319,7 @@ export default {
         // Check if the email is registered as an account
         const email = this.addPersonEmail;
 
-        var getUserByEmail = firebase
-          .functions()
-          .httpsCallable("getUserByEmail");
+        var getUserByEmail = this.$functions.httpsCallable("getUserByEmail");
 
         getUserByEmail({ email: this.addPersonEmail })
           .then((data) => {

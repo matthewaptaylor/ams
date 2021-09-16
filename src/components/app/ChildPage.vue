@@ -34,6 +34,11 @@
           rounded
           class="flex-grow-1"
           style="max-width: 100%"
+          :style="{
+            'min-height': $vuetify.breakpoint.mobile
+              ? `calc(100vh - ${72 + (navItems ? 40 : 0)}px)`
+              : null,
+          }"
         >
           <slot></slot>
         </v-sheet>

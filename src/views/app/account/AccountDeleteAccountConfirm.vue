@@ -4,8 +4,9 @@
     persistent
     max-width="35rem"
     :fullscreen="$vuetify.breakpoint.mobile"
+    style="overflow: hidden"
   >
-    <v-sheet elevation="2" rounded class="fill-height">
+    <v-sheet elevation="2" :rounded="!$vuetify.breakpoint.mobile">
       <v-toolbar
         dark
         color="error"
@@ -30,7 +31,16 @@
         </v-btn>
       </v-toolbar>
 
-      <div class="pa-4">
+      <div
+        class="pa-4"
+        style="overflow: auto"
+        :style="{
+          height: $vuetify.breakpoint.mobile ? 'calc(100vh - 48px)' : null,
+          'max-height': !$vuetify.breakpoint.mobile
+            ? 'calc(100vh - 144px)'
+            : null,
+        }"
+      >
         <p class="mb-0">
           This action can't be undone! Are you sure that you want to continue?
         </p>

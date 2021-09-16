@@ -12,6 +12,11 @@ import "./registerServiceWorker";
 let vueLoaded = false;
 firebase.initializeApp(JSON.parse(process.env.VUE_APP_FIREBASE_CONFIG));
 firebase.analytics(); // Initialise Google analytics
+
+// Automatically switch to a local emulator in development
+if (process.env.NODE_ENV === "development")
+  firebase.auth().useEmulator("http://localhost:9099");
+
 firebase.auth().onAuthStateChanged((user) => {
   if (vueLoaded) {
     // Triggered by genuine auth state change
@@ -28,6 +33,11 @@ firebase.auth().onAuthStateChanged((user) => {
   } else {
     // Initialise Vue
     Vue.config.productionTip = false;
+
+    // Setup functions
+    Vue.prototype.$functions = firebase.app().functions("australia-southeast1");
+    if (process.env.NODE_ENV === "development")
+      Vue.prototype.$functions.useEmulator("localhost", 5001);
 
     Vue.prototype.$appPrompt = null; // Store the browser install app event
     Vue.prototype.$setAppPrompt = (x) => {
@@ -53,10 +63,3 @@ firebase.auth().onAuthStateChanged((user) => {
     vueLoaded = true;
   }
 });
-
-// Setup emulators
-if (process.env.NODE_ENV === "development") {
-  // Automatically switch to a local emulator in development
-  firebase.auth().useEmulator("http://localhost:9099");
-  firebase.functions().useEmulator("localhost", 5001);
-}

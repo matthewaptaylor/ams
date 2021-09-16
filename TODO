@@ -40,3 +40,8 @@ Change add activity so the conversion to {email: role} is done on the front end 
 When adding a person, have the avatar be a loading wheel instead of the name saying loading...
 Stop showing loading when a getuserbyemail request fails on ActivityPeople.vue
 When user is created search for peopleByEmail references and add them
+Test what the error dialog on the main activity planner page looks like
+Retry button on error alerts
+Stop create activity if there isn't a current user with editing permissions
+Organise activities by date
+Hide scrollbar dialog
