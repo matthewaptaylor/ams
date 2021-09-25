@@ -8,8 +8,13 @@
     class="mb-0"
   >
     <div>{{ message }}</div>
+
     <v-btn outlined v-if="link" class="mt-2" :to="link.link">{{
       link.text
+    }}</v-btn>
+
+    <v-btn outlined v-if="action" class="mt-2" @click="action.callback">{{
+      action.text
     }}</v-btn>
   </v-alert>
 </template>
@@ -26,6 +31,7 @@ export default {
     type: String,
     message: String,
     link: Object,
+    action: Object,
     dismissable: Boolean,
   },
 

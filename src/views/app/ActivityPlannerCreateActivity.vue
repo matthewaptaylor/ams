@@ -352,6 +352,9 @@ export default {
     },
 
     submit() {
+      this.loading = true;
+      this.error = null;
+
       // Prepare data to be sent
       this.formData.startTimestamp = this.convertToTimestamp(
         this.startDate,
@@ -368,32 +371,71 @@ export default {
         (person) => !this.removedPeople.includes(person.email)
       );
 
-      // Send to firebase
-      this.loading = true;
-      this.error = null;
+      // If anybody's status is unknown, retry
+      if (
+        this.formData.people.some((person) => person.userExists === "unknown")
+      ) {
+        var getUsersByEmail = this.$functions.httpsCallable("getUsersByEmail");
 
-      var activityPlannerCreateActivity = this.$functions.httpsCallable(
-        "activityPlannerCreateActivity"
-      );
-
-      activityPlannerCreateActivity(this.formData)
-        .then((data) => {
-          // Success
-          this.loading = false;
-
-          // Redirect to page
-
-          this.$router.replace({
-            name: "ActivityOverview",
-            params: { activityId: data.data.id },
-          });
+        getUsersByEmail({
+          emails: this.formData.people
+            .filter((person) => person.userExists === "unknown")
+            .map((person) => person.email),
         })
-        .catch((error) => {
-          // Error
-          this.loading = false;
+          .then((data) => {
+            data.data.forEach((person) => {
+              const email = person.email;
 
-          this.error = error.message;
-        });
+              // Get the person's record
+              const personIndex = this.formData.people.findIndex(
+                (person) => person.email === email
+              );
+
+              // Update record
+              this.formData.people[personIndex].userExists = person.userExists;
+              if (person.displayName)
+                this.formData.people[personIndex].displayName =
+                  person.displayName;
+              if (person.photoURL)
+                this.formData.people[personIndex].photoURL = person.photoURL;
+            });
+          })
+          .catch(() => {
+            this.loading = false;
+
+            this.error = "An error occurred when connecting to the server.";
+          });
+      }
+
+      if (!this.error) {
+        // Safe to continue
+        var activityPlannerCreateActivity = this.$functions.httpsCallable(
+          "activityPlannerCreateActivity"
+        );
+
+        activityPlannerCreateActivity(this.formData)
+          .then((data) => {
+            // Success
+            this.loading = false;
+
+            // Redirect to page
+
+            this.$router.replace({
+              name: "ActivityOverview",
+              params: { activityId: data.data.id },
+            });
+          })
+          .catch((error) => {
+            // Error
+            this.loading = false;
+
+            console.log(error);
+            this.error =
+              error.message === "internal"
+                ? "An error occurred when connecting to the server."
+                : error.message;
+          });
+      }
     },
   },
 };

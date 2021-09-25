@@ -34,7 +34,12 @@
 
       <v-row>
         <v-col cols="12">
-          <Alert dismissable type="error" :message="error" class="mb-2" />
+          <Alert
+            type="error"
+            :message="error"
+            :action="{ text: 'Retry', callback: load }"
+            class="mb-2"
+          />
 
           <v-list two-line>
             <div
@@ -125,7 +130,7 @@ export default {
       ],
 
       // Activities
-      loading: true,
+      loading: null,
       error: null,
 
       activityCategories: [
@@ -144,35 +149,42 @@ export default {
   },
 
   mounted() {
-    // Display activities
-    this.error = null;
+    this.load();
+  },
 
-    var activityPlannerGetActivities = this.$functions.httpsCallable(
-      "activityPlannerGetActivities"
-    );
+  methods: {
+    load() {
+      // Display activities
+      this.error = null;
+      this.loading = true;
 
-    activityPlannerGetActivities()
-      .then((data) => {
-        // Success
-        this.loading = false;
+      var activityPlannerGetActivities = this.$functions.httpsCallable(
+        "activityPlannerGetActivities"
+      );
 
-        data.data.forEach((activity) => {
-          // Sort each activity the user has access to into categories
-          const activityCategory = ["Activity Leader", "Assisting"].includes(
-            activity.role
-          )
-            ? 0
-            : 1;
+      activityPlannerGetActivities()
+        .then((data) => {
+          // Success
+          this.loading = false;
 
-          this.activityCategories[activityCategory].activities.push(activity);
+          data.data.forEach((activity) => {
+            // Sort each activity the user has access to into categories
+            const activityCategory = ["Activity Leader", "Assisting"].includes(
+              activity.role
+            )
+              ? 0
+              : 1;
+
+            this.activityCategories[activityCategory].activities.push(activity);
+          });
+        })
+        .catch(() => {
+          // Error
+          this.loading = false;
+
+          this.error = "An error occurred when connecting to the server.";
         });
-      })
-      .catch((error) => {
-        // Error
-        this.loading = false;
-
-        this.error = error.message;
-      });
+    },
   },
 };
 </script>

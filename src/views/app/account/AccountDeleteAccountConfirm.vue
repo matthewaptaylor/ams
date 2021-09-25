@@ -89,7 +89,7 @@ export default {
       closeIcon: mdiClose,
       deleteIcon: mdiDelete,
 
-      // FOrm
+      // Form
       loading: false,
       error: null,
       errorLink: null,

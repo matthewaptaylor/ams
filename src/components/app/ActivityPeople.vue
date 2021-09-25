@@ -36,8 +36,18 @@
               :size="40"
               backgroundColor="var(--v-primary-darken1)"
               color="#ffffff"
-              v-if="!account.photoURL"
+              v-if="
+                (!account.photoURL && account.userExists !== undefined) ||
+                account.userExists === 'unknown'
+              "
             ></avatar>
+
+            <v-progress-circular
+              indeterminate
+              color="primary"
+              size="40"
+              v-if="account.userExists === undefined"
+            ></v-progress-circular>
           </v-list-item-avatar>
 
           <v-list-item-content>
@@ -319,9 +329,9 @@ export default {
         // Check if the email is registered as an account
         const email = this.addPersonEmail;
 
-        var getUserByEmail = this.$functions.httpsCallable("getUserByEmail");
+        var getUsersByEmail = this.$functions.httpsCallable("getUsersByEmail");
 
-        getUserByEmail({ email: this.addPersonEmail })
+        getUsersByEmail({ emails: [this.addPersonEmail] })
           .then((data) => {
             // Get the person's record
             const personIndex = this.people.findIndex(
@@ -329,16 +339,22 @@ export default {
             );
 
             // Update record
-            this.people[personIndex].userExists = data.data.userExists;
-            if (data.data.displayName)
-              this.people[personIndex].displayName = data.data.displayName;
-            if (data.data.photoURL)
-              this.people[personIndex].photoURL = data.data.photoURL;
+            this.people[personIndex].userExists = data.data[0].userExists;
+            if (data.data[0].displayName)
+              this.people[personIndex].displayName = data.data[0].displayName;
+            if (data.data[0].photoURL)
+              this.people[personIndex].photoURL = data.data[0].photoURL;
 
             this.$forceUpdate();
           })
           .catch(() => {
             this.addPersonError = `An error occurred when searching for the user ${email}.`;
+
+            // Update record
+            const personIndex = this.people.findIndex(
+              (person) => person.email === email
+            );
+            this.people[personIndex].userExists = "unknown";
           });
 
         this.$refs.addPersonForm.reset();
