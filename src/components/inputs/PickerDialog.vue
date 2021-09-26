@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="show" persistent width="290px">
+  <v-dialog v-model="show" width="290px">
     <v-date-picker v-model="newValue" scrollable v-if="type === 'date'">
       <div
         class="d-flex justify-space-between flex-wrap"

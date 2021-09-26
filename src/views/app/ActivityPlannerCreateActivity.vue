@@ -93,22 +93,24 @@
 
                     <v-col cols="12" sm="6">
                       <v-text-field
-                        v-model="startDate"
+                        v-model="formData.startDate"
                         label="Start date"
                         hide-details="auto"
                         readonly
                         class="v-input--pointer"
                         @click="showStartDate = true"
+                        v-on:keydown.space.prevent
+                        v-on:keyup.space="showStartDate = true"
                       ></v-text-field>
 
                       <PickerDialog
                         :show="showStartDate"
-                        :value="startDate"
+                        :value="formData.startDate"
                         type="date"
                         @close="showStartDate = false"
                         @save="
                           (value) => {
-                            startDate = value;
+                            formData.startDate = value;
                             showStartDate = false;
                           }
                         "
@@ -117,22 +119,24 @@
 
                     <v-col cols="12" sm="6">
                       <v-text-field
-                        v-model="startTime"
+                        v-model="formData.startTime"
                         label="Start time"
                         hide-details="auto"
                         readonly
                         class="v-input--pointer"
                         @click="showStartTime = true"
+                        v-on:keydown.space.prevent
+                        v-on:keyup.space="showStartTime = true"
                       ></v-text-field>
 
                       <PickerDialog
                         :show="showStartTime"
-                        :value="startTime"
+                        :value="formData.startTime"
                         type="time"
                         @close="showStartTime = false"
                         @save="
                           (value) => {
-                            startTime = value;
+                            formData.startTime = value;
                             showStartTime = false;
                           }
                         "
@@ -141,22 +145,24 @@
 
                     <v-col cols="12" sm="6">
                       <v-text-field
-                        v-model="endDate"
+                        v-model="formData.endDate"
                         label="End date"
                         hide-details="auto"
                         readonly
                         class="v-input--pointer"
                         @click="showEndDate = true"
+                        v-on:keydown.space.prevent
+                        v-on:keyup.space="showEndDate = true"
                       ></v-text-field>
 
                       <PickerDialog
                         :show="showEndDate"
-                        :value="endDate"
+                        :value="formData.endDate"
                         type="date"
                         @close="showEndDate = false"
                         @save="
                           (value) => {
-                            endDate = value;
+                            formData.endDate = value;
                             showEndDate = false;
                           }
                         "
@@ -165,22 +171,24 @@
 
                     <v-col cols="12" sm="6">
                       <v-text-field
-                        v-model="endTime"
+                        v-model="formData.endTime"
                         label="End time"
                         hide-details="auto"
                         readonly
                         class="v-input--pointer"
                         @click="showEndTime = true"
+                        v-on:keydown.space.prevent
+                        v-on:keyup.space="showEndTime = true"
                       ></v-text-field>
 
                       <PickerDialog
                         :show="showEndTime"
-                        :value="endTime"
+                        :value="formData.endTime"
                         type="time"
                         @close="showEndTime = false"
                         @save="
                           (value) => {
-                            endTime = value;
+                            formData.endTime = value;
                             showEndTime = false;
                           }
                         "
@@ -291,16 +299,10 @@ export default {
         location: "",
       },
 
-      startDate: null,
+      // Pickers
       showStartDate: false,
-
-      startTime: null,
       showStartTime: false,
-
-      endDate: null,
       showEndDate: false,
-
-      endTime: null,
       showEndTime: false,
 
       // People form
@@ -333,37 +335,9 @@ export default {
       );
     },
 
-    convertToTimestamp(date, time) {
-      // Converts the seperate date and time inputs into one
-      const timestamp = date || time ? new Date(0) : null;
-
-      if (date) {
-        timestamp.setFullYear(date.substr(0, 4));
-        timestamp.setMonth(parseInt(date.substr(5, 2)) - 1);
-        timestamp.setDate(date.substr(8, 2));
-      }
-
-      if (time) {
-        timestamp.setHours(time?.substr(0, 2));
-        timestamp.setMinutes(time?.substr(3, 2));
-      }
-
-      return timestamp;
-    },
-
     submit() {
       this.loading = true;
       this.error = null;
-
-      // Prepare data to be sent
-      this.formData.startTimestamp = this.convertToTimestamp(
-        this.startDate,
-        this.startTime
-      )?.getTime();
-      this.formData.endTimestamp = this.convertToTimestamp(
-        this.endDate,
-        this.endTime
-      )?.getTime();
 
       // Determine list of people, without removed people
       this.formData.people = this.people;

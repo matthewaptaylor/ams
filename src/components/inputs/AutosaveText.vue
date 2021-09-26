@@ -1,80 +1,108 @@
 <template>
-  <v-form @submit.prevent="save">
-    <v-text-field
-      :label="label"
-      type="text"
-      v-model="currentValue"
-      :autocomplete="autocomplete"
-      :rules="rules"
-      :required="required"
-      :prepend-icon="icon"
-      ref="input"
-      hide-details="auto"
-      @blur="save"
-      :readonly="type === 'date' || type === 'time'"
-      :class="{ 'v-input--pointer': type === 'date' || type === 'time' }"
-      @click="showPickerDialog = type === 'date' || type === 'time'"
-    >
-      <template v-slot:append-outer>
-        <div v-if="showButton || showSuccess" class="mt-n1 mb-n2 ms-n2">
-          <v-tooltip bottom>
-            <template v-slot:activator="{ on }">
-              <div v-on="on">
-                <v-btn
-                  icon
-                  @click.stop="save"
-                  :loading="currentlySaving"
-                  v-if="showButton || showSuccess"
-                >
-                  <v-icon :color="showButton ? 'error' : 'success'">
-                    {{ showButton ? contentSaveIcon : checkCircleIcon }}
-                  </v-icon>
-                </v-btn>
-              </div>
-            </template>
+  <div style="position: relative">
+    <transition name="fade-transition">
+      <v-skeleton-loader
+        type="custom"
+        height="48px"
+        width="100%"
+        v-if="loading"
+      />
 
-            <span v-if="showButton">
-              {{ currentlySaving ? "Saving" : "Save" }}
-            </span>
+      <v-form @submit.prevent="save" v-else>
+        <v-text-field
+          :label="label"
+          type="text"
+          v-model="currentValue"
+          :autocomplete="autocomplete"
+          :rules="rules"
+          :required="required"
+          :prepend-icon="icon"
+          ref="input"
+          hide-details="auto"
+          @blur="save"
+          :readonly="type === 'date' || type === 'time'"
+          :class="{ 'v-input--pointer': type === 'date' || type === 'time' }"
+          @click="showPickerDialog = type === 'date' || type === 'time'"
+          v-on:keydown.space.prevent
+          v-on:keyup.space="
+            showPickerDialog = type === 'date' || type === 'time'
+          "
+          style="width: 100%"
+        >
+          <template v-slot:append-outer>
+            <div v-if="showButton || showSuccess" class="mt-n1 mb-n2 ms-n2">
+              <v-tooltip bottom>
+                <template v-slot:activator="{ on }">
+                  <div v-on="on">
+                    <v-btn
+                      icon
+                      @click.stop="save"
+                      :loading="currentlySaving"
+                      v-if="showButton || showSuccess"
+                    >
+                      <v-icon :color="showButton ? 'error' : 'success'">
+                        {{ showButton ? contentSaveIcon : checkCircleIcon }}
+                      </v-icon>
+                    </v-btn>
+                  </div>
+                </template>
 
-            <span v-if="showSuccess">Saved</span>
-          </v-tooltip>
-        </div>
-      </template>
-    </v-text-field>
+                <span v-if="showButton">
+                  {{ currentlySaving ? "Saving" : "Save" }}
+                </span>
 
-    <Alert
-      dismissable
-      type="error"
-      :message="error && error.message ? error.message : null"
-      :link="
-        error && error.link ? { text: error.linkText, link: error.link } : null
-      "
-      class="mt-2"
-    />
+                <span v-if="showSuccess">Saved</span>
+              </v-tooltip>
+            </div>
+          </template>
+        </v-text-field>
 
-    <PickerDialog
-      v-if="type === 'date' || type === 'time'"
-      :show="showPickerDialog"
-      :value="currentValue"
-      :type="type"
-      @close="
-        () => {
-          showPickerDialog = false;
-          $refs.input.blur();
-        }
-      "
-      @save="
-        (value) => {
-          currentValue = value;
-          showPickerDialog = false;
-          $refs.input.blur();
-          save();
-        }
-      "
-    />
-  </v-form>
+        <Alert
+          dismissable
+          type="error"
+          :message="error && error.message ? error.message : null"
+          :link="
+            error && error.link
+              ? { text: error.linkText, link: error.link }
+              : null
+          "
+          class="mt-2"
+        />
+
+        <PickerDialog
+          v-if="type === 'date' || type === 'time'"
+          :show="showPickerDialog"
+          :value="currentValue"
+          :type="type"
+          @close="
+            () => {
+              showPickerDialog = false;
+              $refs.input.blur();
+            }
+          "
+          @save="
+            (value) => {
+              currentValue = value;
+              showPickerDialog = false;
+              $refs.input.blur();
+              save();
+            }
+          "
+        />
+      </v-form>
+    </transition>
+  </div>
 </template>
+
+<style>
+.fade-transition-leave-active {
+  position: absolute !important;
+}
+.v-skeleton-loader__custom {
+  height: 100%;
+  background: rgba(0, 0, 0, 0.12);
+}
+</style>
 
 <script>
 import { mdiContentSave, mdiCheckCircle } from "@mdi/js";
@@ -115,6 +143,7 @@ export default {
     required: Boolean,
     icon: String, // An icon to prepend to the input
     error: Object, // An error to display to the user relating to the field
+    loading: Boolean, // Whether to display a skeleton loader
   },
 
   watch: {
