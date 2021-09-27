@@ -21,17 +21,37 @@
             the activity's paperwork, but not change it.
           </v-col>
 
-          <v-col cols="12">
+          <v-col cols="12" v-if="error || loading">
+            <Alert
+              type="error"
+              fullWidth
+              :message="error"
+              :action="{ text: 'Retry', callback: load }"
+            />
+
+            <div class="mt-2" v-if="loading">
+              <v-skeleton-loader
+                max-width="300"
+                type="list-item-two-line"
+                class="my-n3 mx-n4 mx-sm-0 px-sm-0"
+                v-for="i in 2"
+                :key="i"
+              ></v-skeleton-loader>
+            </div>
+          </v-col>
+
+          <v-col cols="12" v-else>
             <v-list two-line class="mt-2 py-0">
               <ActivityPeoplePerson
-                v-for="(role, uid) in peopleByUid"
+                v-for="(role, uid) in peopleByUID"
                 :key="uid"
                 :uid="uid"
-                :displayName="infoByUid[uid].displayName"
-                :email="infoByUid[uid].email"
+                :displayName="infoByUID[uid].displayName"
+                :email="infoByUID[uid].email"
                 :currentRole="role"
-                :photoURL="infoByUid[uid].photoURL"
+                :photoURL="infoByUID[uid].photoURL"
                 :activityRoles="activityRoles"
+                @updateObject="updateObject"
               />
 
               <ActivityPeoplePerson
@@ -40,92 +60,13 @@
                 :email="email"
                 :currentRole="role"
                 :activityRoles="activityRoles"
+                @updateObject="updateObject"
               />
 
-              <v-sheet outlined rounded class="mt-4 pa-4 pt-1">
-                <v-form
-                  v-model="addPersonValid"
-                  @submit.prevent="addPerson"
-                  ref="addPersonForm"
-                >
-                  <v-list-item
-                    class="flex-column mt-1 mb-3 mb-sm-n1 px-0 flex-sm-row"
-                  >
-                    <v-list-item-content
-                      class="align-self-baseline"
-                      style="width: 100%"
-                    >
-                      <v-text-field
-                        v-model="addPersonEmail"
-                        outlined
-                        dense
-                        label="Add person"
-                        placeholder="Email"
-                        type="email"
-                        hide-details="auto"
-                        :rules="[
-                          (v) => !!v || 'Email is required',
-                          (v) => /.+@.+/.test(v) || 'Email must be valid',
-                        ]"
-                        required
-                      ></v-text-field>
-                    </v-list-item-content>
-
-                    <v-list-item-action
-                      class="
-                        text-left
-                        mt-0
-                        mb-0
-                        ml-0 ml-sm-4
-                        align-self-baseline
-                      "
-                      :class="{
-                        'mb-n16': $vuetify.breakpoint.name === 'xs',
-                      }"
-                      :style="{
-                        width:
-                          $vuetify.breakpoint.name === 'xs'
-                            ? '100%'
-                            : '8.75rem',
-                      }"
-                    >
-                      <v-select
-                        :items="activityRoles"
-                        label="Role"
-                        v-model="addPersonRole"
-                        solo
-                        dense
-                        single-line
-                        :menu-props="{ bottom: true, offsetY: true }"
-                        hide-details="auto"
-                        :rules="[(v) => !!v || 'Role is required']"
-                        required
-                        class="v-select"
-                        style="width: 100%"
-                      >
-                      </v-select>
-                    </v-list-item-action>
-                  </v-list-item>
-
-                  <Alert
-                    dismissable
-                    type="error"
-                    :message="addPersonError"
-                    class="mb-2"
-                  />
-
-                  <v-btn
-                    plain
-                    color="primary"
-                    type="submit"
-                    :disabled="!addPersonValid || !addPersonRole"
-                    style="width: 100%"
-                  >
-                    <v-icon left dark>{{ plusIcon }}</v-icon>
-                    Add person
-                  </v-btn>
-                </v-form>
-              </v-sheet>
+              <ActivityPeopleAdd
+                :activityRoles="activityRoles"
+                @updateObject="updateObject"
+              />
             </v-list>
           </v-col>
         </v-row>
@@ -135,44 +76,71 @@
 </template>
 
 <script>
-import { mdiPlus } from "@mdi/js";
 import Alert from "../../../components/Alert.vue";
 import ActivityPeoplePerson from "../../../components/app/ActivityPeoplePerson.vue";
+import ActivityPeopleAdd from "../../../components/app/ActivityPeopleAdd.vue";
 
 export default {
-  components: { Alert, ActivityPeoplePerson },
+  components: { Alert, ActivityPeoplePerson, ActivityPeopleAdd },
 
   data() {
     return {
-      // Icons
-      plusIcon: mdiPlus,
+      // Data fetching
+      loading: false,
+      error: null,
+
+      // People
+      peopleByUID: null,
+      infoByUID: null,
+      peopleByEmail: null, // People without accounts
 
       activityRoles: ["Activity Leader", "Assisting", "Editor", "Viewer"],
-
-      // People with accounts
-      peopleByUid: { Uz0n2bElE0Pbryy3FEfnPPht0yQ8: "Activity Leader" },
-      infoByUid: {
-        Uz0n2bElE0Pbryy3FEfnPPht0yQ8: {
-          displayName: "Mountain Orange",
-          email: "mountain.orange.338@example.com",
-          photoURL:
-            "https://hobsonville.org.nz/wp-content/uploads/2020/09/blank-profile-picture-mystery-man-avatar-973460.jpg",
-        },
-      },
-
-      // People without accounts
-      peopleByEmail: { "test@test.com": "Editor" },
-
-      // Add person
-      addPersonValid: null,
-      addPersonEmail: null,
-      addPersonRole: "Viewer",
-      addPersonError: null,
     };
   },
 
+  mounted() {
+    this.load();
+  },
+
   methods: {
-    addPerson() {},
+    load() {
+      // Display people info
+      this.error = null;
+      this.loading = true;
+
+      this.$functions
+        .httpsCallable("activityPeopleGet")({
+          id: this.$route.params.activityId,
+        })
+        .then((data) => {
+          // Success
+          this.loading = false;
+
+          this.peopleByUID = data.data.peopleByUID;
+          this.infoByUID = data.data.infoByUID;
+          this.peopleByEmail = data.data.peopleByEmail;
+        })
+        .catch((error) => {
+          // Error
+          this.loading = false;
+
+          this.error =
+            error.message === "internal"
+              ? "An error occurred when connecting to the server."
+              : error.message;
+        });
+    },
+
+    // Person has been updated
+    updateObject(fieldName, v) {
+      // Update new roles
+      this[fieldName] = { ...this[fieldName], ...v };
+
+      // Remove nullish values from object
+      Object.keys(v).forEach((key) => {
+        if (this[fieldName][key] == null) delete this[fieldName][key];
+      });
+    },
   },
 };
 </script>

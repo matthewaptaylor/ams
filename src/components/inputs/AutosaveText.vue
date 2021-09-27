@@ -1,5 +1,5 @@
 <template>
-  <div style="position: relative">
+  <div style="position: relative" class="autosave-text">
     <transition name="fade-transition">
       <v-skeleton-loader
         type="custom"
@@ -94,7 +94,7 @@
 </template>
 
 <style>
-.fade-transition-leave-active {
+.autosave-text .fade-transition-leave-active {
   position: absolute !important;
 }
 .v-skeleton-loader__custom {

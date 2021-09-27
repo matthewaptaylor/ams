@@ -18,6 +18,7 @@ Test on other browsers
 Address security vulnerabilities
 Stop navigation away from page if something is still submitting
 Make view only users work
+Nothing stopping >1Activity Leader being set - how wil lthis work with AIF generation?
 
 ===============
   Minor Fixes
@@ -32,10 +33,12 @@ XSS vulnerabilities in date stored in firestore and other firebase auth things l
 Click sign out button if not connected to server
 Make sure database rules are set correctly and are secure
 Add top negative margin to person remove icon on mobile? or just make it align somehow?
+Use v-avatar instead of the module that generates avatars
 
 ===============
    Better UX
 ===============
+Delete activities
 Preload fonts and images
 Chunk vendors to only load needed views initially
 Add logo and customise google login screen
@@ -47,7 +50,9 @@ Change add activity so the conversion to {email: role} is done on the front end 
 If redirected to login, redirect to correct page after login. Do the same with reauthentication, so we can enable email link reauth?
 Implement document title changing
 transition on v-if for autosave
+Transitions on alert component
 Use email link for reauthentication
+Test all functions, vulnerabilities, make sure dates are valid, etc
 
 ===============
  Nice Features
