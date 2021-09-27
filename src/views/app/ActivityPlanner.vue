@@ -178,11 +178,14 @@ export default {
             this.activityCategories[activityCategory].activities.push(activity);
           });
         })
-        .catch(() => {
+        .catch((error) => {
           // Error
           this.loading = false;
 
-          this.error = "An error occurred when connecting to the server.";
+          this.error =
+            error.message === "internal"
+              ? "An error occurred when connecting to the server."
+              : error.message;
         });
     },
   },

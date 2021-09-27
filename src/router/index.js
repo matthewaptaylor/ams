@@ -22,6 +22,7 @@ import ActivityPlanner from "../views/app/ActivityPlanner.vue";
 import ActivityPlannerCreateActivity from "../views/app/ActivityPlannerCreateActivity.vue";
 import Activity from "../views/app/activity/Activity.vue";
 import ActivityOverview from "../views/app/activity/ActivityOverview.vue";
+import ActivityPeople from "../views/app/activity/ActivityPeople.vue";
 import ActivityPlan from "../views/app/activity/ActivityPlan.vue";
 import ActivityRAMS from "../views/app/activity/ActivityRAMS.vue";
 import ActivityRAMSRisk from "../views/app/activity/ActivityRAMSRisk.vue";
@@ -101,6 +102,11 @@ const routes = [
             path: "overview",
             name: "ActivityOverview",
             component: ActivityOverview,
+          },
+          {
+            path: "people",
+            name: "ActivityPeople",
+            component: ActivityPeople,
           },
           {
             path: "plan",

@@ -99,7 +99,6 @@
                         readonly
                         class="v-input--pointer"
                         @click="showStartDate = true"
-                        v-on:keydown.space.prevent
                         v-on:keyup.space="showStartDate = true"
                       ></v-text-field>
 
@@ -125,7 +124,6 @@
                         readonly
                         class="v-input--pointer"
                         @click="showStartTime = true"
-                        v-on:keydown.space.prevent
                         v-on:keyup.space="showStartTime = true"
                       ></v-text-field>
 
@@ -151,7 +149,6 @@
                         readonly
                         class="v-input--pointer"
                         @click="showEndDate = true"
-                        v-on:keydown.space.prevent
                         v-on:keyup.space="showEndDate = true"
                       ></v-text-field>
 
@@ -177,7 +174,6 @@
                         readonly
                         class="v-input--pointer"
                         @click="showEndTime = true"
-                        v-on:keydown.space.prevent
                         v-on:keyup.space="showEndTime = true"
                       ></v-text-field>
 
@@ -403,7 +399,6 @@ export default {
             // Error
             this.loading = false;
 
-            console.log(error);
             this.error =
               error.message === "internal"
                 ? "An error occurred when connecting to the server."

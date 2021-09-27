@@ -6,6 +6,7 @@
     close-text="Close Alert"
     :dismissible="dismissable"
     class="mb-0"
+    :style="{ width: fullWidth ? '100%' : null }"
   >
     <div>{{ message }}</div>
 
@@ -33,6 +34,7 @@ export default {
     link: Object,
     action: Object,
     dismissable: Boolean,
+    fullWidth: Boolean,
   },
 
   watch: {

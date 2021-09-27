@@ -16,10 +16,13 @@ Prevent abuse with App Check firebase
 Convert firestore/everything else to production mode
 Test on other browsers
 Address security vulnerabilities
+Stop navigation away from page if something is still submitting
+Make view only users work
 
 ===============
   Minor Fixes
 ===============
+Ensure firestore client/frontend web sdk can't be accessed by anyone - security risk
 Delete user, change all UIDs back to email
 Privacy data laws, terms of service
 Press enter to open dialog when tabbed onto date picker, or even when focused
@@ -49,6 +52,7 @@ Use email link for reauthentication
 ===============
  Nice Features
 ===============
+Add claims for authentication first, and if token too big then check db? Do tokens only update every hour?
 v-autocomplete for searching emails to change activity leader
 Dark mode
 Add plan, do, review collaborative feature - and add ability for the best activities to be shared to a public page for ideas

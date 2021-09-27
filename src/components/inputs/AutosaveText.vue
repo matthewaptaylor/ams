@@ -23,7 +23,6 @@
           :readonly="type === 'date' || type === 'time'"
           :class="{ 'v-input--pointer': type === 'date' || type === 'time' }"
           @click="showPickerDialog = type === 'date' || type === 'time'"
-          v-on:keydown.space.prevent
           v-on:keyup.space="
             showPickerDialog = type === 'date' || type === 'time'
           "
