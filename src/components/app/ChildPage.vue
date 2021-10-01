@@ -16,9 +16,16 @@
     </div>
 
     <v-container class="pa-2 px-md-4">
+      <Alert
+        type="error"
+        message="Sorry, to ensure privacy we need to verify your email before you can use AMS."
+        class="mt-3 mb-5"
+        v-if="!emailVerified"
+      />
+
       <Breadcrumbs
         :items="breadcrumbItems"
-        v-if="!$vuetify.breakpoint.mobile"
+        v-if="!$vuetify.breakpoint.mobile && emailVerified"
       />
 
       <div class="d-flex align-start" style="gap: 1rem">
@@ -49,6 +56,7 @@
 
 <script>
 import { mdiArrowLeft } from "@mdi/js";
+import Alert from "../Alert.vue";
 import Breadcrumbs from "./Breadcrumbs.vue";
 import NavMobile from "./NavMobile.vue";
 import NavDesktop from "./NavDesktop.vue";
@@ -56,11 +64,16 @@ import NavDesktop from "./NavDesktop.vue";
 export default {
   data() {
     return {
+      // Icons
       arrowLeftIcon: mdiArrowLeft,
+
+      // EMail verified alert
+      emailVerified: this.$currentUser.emailVerified,
     };
   },
 
   components: {
+    Alert,
     Breadcrumbs,
     NavMobile,
     NavDesktop,
@@ -73,7 +86,20 @@ export default {
     navItems: Array,
   },
 
+  created() {
+    // Add event listener for when the global user object changes
+    document.addEventListener("currentUserChanged", this.updateVerified);
+  },
+
+  beforeDestroy() {
+    document.removeEventListener("currentUserChanged", this.updateVerified);
+  },
+
   methods: {
+    updateVerified() {
+      // Update the user verified variable
+      this.emailVerified = this.$currentUser.emailVerified;
+    },
     goBack() {
       const destination =
         this.breadcrumbItems[this.breadcrumbItems.length - 2].to;

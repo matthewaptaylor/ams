@@ -300,6 +300,15 @@ router.beforeEach(async (to, from, next) => {
 
   // Retermine the authentication status of the page and user
   const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
+  const accountPage = [
+    "Account",
+    "AccountProfile",
+    "AccountSignInMethods",
+    "AccountResetPassword",
+    "AccountDeleteAccount",
+    "AccountDeleteAccountConfirm",
+    "About",
+  ].includes(to.name);
   const noAuth = to.matched.some((record) => record.meta.noAuth);
   const signedIn = Vue.prototype.$currentUser;
 
@@ -307,6 +316,14 @@ router.beforeEach(async (to, from, next) => {
   if (requiresAuth && !signedIn) {
     // Only signed in users, redirect
     next("/signin");
+  } else if (
+    requiresAuth &&
+    signedIn &&
+    !signedIn.emailVerified &&
+    !accountPage
+  ) {
+    // Email not authenticated, keep on account page
+    next({ name: "AccountSignInMethods" });
   } else if (noAuth && signedIn) {
     // Only non signed in users, redirect
     next("/");
