@@ -5,9 +5,10 @@
       @exitDialog="exitDialog"
       :dialog="dialog"
       :key="key"
+      @updateObject="updateObject"
     />
 
-    <component :is="$route.meta.default" @showDialog="showDialog" />
+    <component :is="$route.meta.default" @showDialog="showDialog" ref="page" />
   </div>
 </template>
 
@@ -61,6 +62,10 @@ export default {
   },
 
   methods: {
+    updateObject(fieldName, v) {
+      this.$refs.page.updateObject(fieldName, v);
+    },
+
     showDialog() {
       // Shows the dialog
       this.$router.push("/" + this.dialogPathArray.join("/"));

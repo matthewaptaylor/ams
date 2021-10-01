@@ -33,7 +33,7 @@
 
       <v-form
         v-model="valid"
-        @submit.prevent="createActivity"
+        @submit.prevent="updateRisk"
         class="pa-4"
         style="overflow: auto"
         :style="{
@@ -47,65 +47,94 @@
           <v-col cols="12" sm="6" md="8" class="pb-0 pb-sm-3">
             <v-row>
               <v-col cols="12" md="6" class="pb-0 pb-md-1">
-                <v-select :items="categories" label="Category"></v-select>
+                <v-select
+                  v-model="category"
+                  :items="categories"
+                  label="Category"
+                  :rules="[(v) => !!v || 'Category is required']"
+                  required
+                ></v-select>
 
                 <v-textarea
+                  v-model="hazard"
                   label="Hazard"
                   rows="2"
                   hint="What causes this risk?"
                   persistent-hint
+                  :rules="[(v) => !!v || 'Hazard is required']"
+                  required
                 ></v-textarea>
 
                 <v-textarea
+                  v-model="risk"
                   label="Risk"
                   rows="2"
                   hint="What could happen?"
                   persistent-hint
+                  :rules="[(v) => !!v || 'Risk is required']"
+                  required
                 ></v-textarea>
               </v-col>
+
               <v-col cols="12" md="6" class="pt-0 pt-md-1">
                 <v-textarea
+                  v-model="controls"
                   label="Controls"
                   rows="2"
                   hint="How will you remove, minimise, or isolate the risk?"
                   persistent-hint
+                  :rules="[(v) => !!v || 'Controls is required']"
+                  required
                 ></v-textarea>
 
                 <v-text-field
+                  v-model="responsibility"
                   label="Responsibility"
                   hint="Who is responsible for managing this risk?"
                   persistent-hint
+                  :rules="[(v) => !!v || 'Responsibility is required']"
+                  required
                 ></v-text-field>
               </v-col>
             </v-row>
           </v-col>
+
           <v-col cols="12" sm="6" md="4" class="pt-0 pt-sm-3">
             <v-select
               v-model="likelihood"
-              :items="likelihoods"
-              item-text="text"
+              :items="Object.keys(likelihoods)"
               label="Likelihood"
               persistent-hint
               return-object
               :hint="likelihood !== null ? likelihood.description : ''"
+              :rules="[(v) => !!v || 'Liklihood is required']"
+              required
             ></v-select>
 
             <v-select
               v-model="consequence"
-              :items="consequences"
-              item-text="text"
+              :items="Object.keys(consequences)"
               label="Consequence"
               persistent-hint
               return-object
               :hint="consequence !== null ? consequence.description : ''"
               class="mb-2"
+              :rules="[(v) => !!v || 'Consequence is required']"
+              required
             ></v-select>
 
             <p class="mb-0">{{ riskLevels[riskLevel] }}</p>
 
-            <v-checkbox label="Risk is acceptable" class="mt-2"></v-checkbox>
+            <v-checkbox
+              v-model="acceptable"
+              label="Risk is acceptable"
+              class="mt-2"
+            ></v-checkbox>
           </v-col>
         </v-row>
+
+        <Alert type="error" :message="error" dismissable class="mt-6" />
+
         <div
           class="d-flex justify-space-between flex-wrap mt-4"
           style="gap: 0.5rem 1rem"
@@ -128,9 +157,12 @@
 </template>
 
 <script>
+import Alert from "../../../components/Alert.vue";
 import { mdiArrowLeft, mdiClose, mdiPlus } from "@mdi/js";
 
 export default {
+  components: { Alert },
+
   data() {
     return {
       // Icons
@@ -138,73 +170,77 @@ export default {
       closeIcon: mdiClose,
       plusIcon: mdiPlus,
 
-      valid: false,
+      // Form
+      valid: null,
       loading: false,
-      categories: ["People", "Environment", "Equipment"],
+      error: null,
+
+      category: null,
+      hazard: null,
+      risk: null,
+      controls: null,
+      responsibility: null,
       likelihood: null,
-      likelihoods: [
-        {
-          text: "Almost certain",
+      consequence: null,
+      acceptable: null,
+
+      // Risk definitions
+      categories: ["People", "Environment", "Equipment"],
+
+      likelihoods: {
+        "Almost certain": {
           description:
             "Expected to occur at least once during the task or activity.",
           level: 5,
         },
-        {
-          text: "Highly likely",
+        "Highly likely": {
           description: "Could occur during the task or activity.",
           level: 4,
         },
-        {
-          text: "Likely",
+        Likely: {
           description:
             "It’s conceivable it could occur, but only expected infrequently.",
           level: 3,
         },
-        {
-          text: "Unlikely",
+        Unlikely: {
           description:
             "It’s conceivable that this could happen, although only in unusual circumstances.",
           level: 2,
         },
-        {
-          text: "Remote",
+        Remote: {
           description: "It’s not conceivable that this could occur",
           level: 1,
         },
-      ],
-      consequence: null,
-      consequences: [
-        {
-          text: "Catastrophic",
+      },
+
+      consequences: {
+        Catastrophic: {
           description:
             "One or more fatalities. Post-traumatic stress disorder. Long term counselling / therapy is likely to be required. Loss of facilities or equipment. Significant and widespread environmental, financial, reputational or operational impact.",
           level: 5,
         },
-        {
-          text: "Major",
+        Major: {
           description:
             "Serious injury or illness to one or more people, resulting in permanent disability. Therapy or counselling by a professional may be required. Sustained or extensive damage to facilities or equipment. Extensive environmental, financial, reputational or operational impact.",
           level: 4,
         },
-        {
-          text: "Serious",
+        Serious: {
           description:
             "Injury or illness that requires hospitalisation (with no permanent disability). Very distressed. Requires on-site counselling or support. Does not want to participate in activities. Damage to facilities or equipment resulting in temporary inability to use it. Localised environmental, financial, reputational, or operational impact.",
           level: 3,
         },
-        {
-          text: "Minor",
+        Minor: {
           description:
             "Injury or illness requiring only First Aid (No permanent disability). Stressed beyond comfort level. Wants to leave activity. Isolated and quickly repaired damage to facilities or equipment. Some environmental, financial, reputational, or operational impact.",
           level: 2,
         },
-        {
-          text: "Negligible",
+        Negligible: {
           description:
             "No injury or very minor injury or illness that does not require First Aid. Temporary stress or embarrassment. Minor or no damage to facilities or equipment. Little or no environmental, financial, reputational, or operational impact.",
           level: 1,
         },
-      ],
+      },
+
       riskLevels: {
         low: "The risk level is low. This means you can retain the risk but need to be vigilant that the risk level does not rise.",
         medium:
@@ -218,16 +254,12 @@ export default {
     dialog: Boolean,
   },
 
-  methods: {
-    createActivity() {
-      this.loading = true;
-    },
-  },
-
   computed: {
     riskLevel() {
       if (this.likelihood && this.consequence) {
-        const levelNumber = this.likelihood.level * this.consequence.level;
+        const levelNumber =
+          this.likelihoods[this.likelihood].level *
+          this.consequences[this.consequence].level;
 
         if (levelNumber < 6) {
           return "low";
@@ -239,6 +271,51 @@ export default {
       } else {
         return null;
       }
+    },
+    formData() {
+      return {
+        category: this.category,
+        hazard: this.hazard,
+        risk: this.risk,
+        controls: this.controls,
+        responsibility: this.responsibility,
+        likelihood: this.likelihood,
+        consequence: this.consequence,
+        acceptable: this.acceptable,
+      };
+    },
+  },
+
+  methods: {
+    updateRisk() {
+      // Display people info
+      this.loading = true;
+      this.error = null;
+
+      this.$functions
+        .httpsCallable("activityRAMSUpdate")({
+          id: this.$route.params.activityId,
+          ...this.formData,
+        })
+        .then((data) => {
+          // Success
+          this.loading = false;
+
+          this.$emit("updateObject", "risks", {
+            [data.data.id]: this.formData,
+          });
+
+          this.$emit("exitDialog");
+        })
+        .catch((error) => {
+          // Error
+          this.loading = false;
+
+          this.error =
+            error.message === "internal"
+              ? "An error occurred when connecting to the server."
+              : error.message;
+        });
     },
   },
 };

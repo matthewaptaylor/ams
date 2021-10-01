@@ -5,7 +5,6 @@ ARIA/a11y
 Run lighthouse
 Make universal dialog component
 When user is created search for peopleByEmail references and add them
-Emails when user is given access
 Deadline emails
 What if the assigned activity leader doesn't have an account? Means any editors can change people settings
 If you create an activity and aren't leading or assisting, you should be able to view
@@ -34,6 +33,7 @@ Make sure database rules are set correctly and are secure
 Add top negative margin to person remove icon on mobile? or just make it align somehow?
 Use v-avatar instead of the module that generates avatars
 When checking if error == "internal", should it be error == "INTERNAL"?
+What happens to a user's activities if they delete their account? PoepleByUid moved to peoplebyemail is a bad idea
 
 ===============
    Better UX

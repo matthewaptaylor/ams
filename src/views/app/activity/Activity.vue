@@ -40,7 +40,7 @@ import {
   mdiInformation,
   mdiAccountGroup,
   // mdiClipboardList,
-  // mdiAlert,
+  mdiAlert,
   // mdiCreditCard,
   // mdiCart,
   // mdiBagPersonal,
@@ -84,7 +84,7 @@ export default {
           icon: mdiAccountGroup,
         },
         // { title: "Plan", to: { name: "ActivityPlan" }, icon: mdiClipboardList },
-        // { title: "RAMS", to: { name: "ActivityRAMS" }, icon: mdiAlert },
+        { title: "RAMS", to: { name: "ActivityRAMS" }, icon: mdiAlert },
         // {
         //   title: "Budget",
         //   to: { name: "ActivityBudget" },

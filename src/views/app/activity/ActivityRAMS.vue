@@ -33,6 +33,8 @@
 
     <v-row>
       <v-col cols="12">
+        <Alert type="error" :message="error" class="mb-2" />
+
         <v-simple-table fixed-header style="overflow: auto">
           <template v-slot:default>
             <thead>
@@ -44,8 +46,34 @@
                 <th>Risk Level</th>
               </tr>
             </thead>
+
             <tbody class="can-select">
-              <tr v-for="risk in risks" :key="risk.id" class="pt-4">
+              <template v-if="loading">
+                <tr v-for="i in 2" :key="i">
+                  <td>
+                    <v-skeleton-loader
+                      type="text@3"
+                      class="mt-2"
+                    ></v-skeleton-loader>
+                  </td>
+
+                  <td>
+                    <v-skeleton-loader
+                      type="text@2"
+                      class="mt-2"
+                    ></v-skeleton-loader>
+                  </td>
+
+                  <td>
+                    <v-skeleton-loader
+                      type="text@3"
+                      class="mt-2"
+                    ></v-skeleton-loader>
+                  </td>
+                </tr>
+              </template>
+
+              <tr v-for="(risk, id) in risks" :key="id" class="pt-4" v-else>
                 <td>
                   <p class="mb-1">
                     <strong>Category:</strong> {{ risk.category }}
@@ -108,90 +136,67 @@ td {
 </style>
 
 <script>
+import Alert from "../../../components/Alert.vue";
 import { mdiPlus, mdiInformationOutline } from "@mdi/js";
 
 export default {
+  components: { Alert },
+
   data() {
     return {
       // Icons
       plusIcon: mdiPlus,
       informationOutlineIcon: mdiInformationOutline,
 
-      risks: [
-        {
-          id: 0,
-          category: "People",
-          hazard: "This is a sample hazard.",
-          risk: "This is a sample risk.",
-          controls: "This is how you will control the risk.",
-          responsibility: "This is the person who is responsible",
-          likelihood: "Almost certain",
-          consequence: "Negligible",
-          level: "Medium",
-          acceptable: true,
-        },
-        {
-          id: 1,
-          category: "People",
-          hazard: "This is a sample hazard.",
-          risk: "This is a sample risk.",
-          controls: "This is how you will control the risk.",
-          responsibility: "This is the person who is responsible",
-          likelihood: "Almost certain",
-          consequence: "Negligible",
-          level: "Medium",
-          acceptable: true,
-        },
-        {
-          id: 2,
-          category: "People",
-          hazard: "This is a sample hazard.",
-          risk: "This is a sample risk.",
-          controls: "This is how you will control the risk.",
-          responsibility: "This is the person who is responsible",
-          likelihood: "Almost certain",
-          consequence: "Negligible",
-          level: "Medium",
-          acceptable: true,
-        },
-        {
-          id: 3,
-          category: "People",
-          hazard: "This is a sample hazard.",
-          risk: "This is a sample risk.",
-          controls: "This is how you will control the risk.",
-          responsibility: "This is the person who is responsible",
-          likelihood: "Almost certain",
-          consequence: "Negligible",
-          level: "Medium",
-          acceptable: true,
-        },
-        {
-          id: 4,
-          category: "People",
-          hazard: "This is a sample hazard.",
-          risk: "This is a sample risk.",
-          controls: "This is how you will control the risk.",
-          responsibility: "This is the person who is responsible",
-          likelihood: "Almost certain",
-          consequence: "Negligible",
-          level: "Medium",
-          acceptable: true,
-        },
-        {
-          id: 5,
-          category: "People",
-          hazard: "This is a sample hazard.",
-          risk: "This is a sample risk.",
-          controls: "This is how you will control the risk.",
-          responsibility: "This is the person who is responsible",
-          likelihood: "Almost certain",
-          consequence: "Negligible",
-          level: "Medium",
-          acceptable: true,
-        },
-      ],
+      loading: false,
+      error: null,
+
+      risks: {},
     };
+  },
+
+  mounted() {
+    this.load();
+  },
+
+  methods: {
+    load() {
+      // Display activities
+      this.error = null;
+      this.loading = true;
+
+      this.$functions
+        .httpsCallable("activityRAMSGet")({
+          id: this.$route.params.activityId,
+        })
+        .then((data) => {
+          // Success
+          this.loading = false;
+
+          this.risks = data.data;
+        })
+        .catch((error) => {
+          // Error
+          this.loading = false;
+
+          this.error =
+            error.message === "internal"
+              ? "An error occurred when connecting to the server."
+              : error.message;
+        });
+    },
+
+    // Person has been updated
+    updateObject(fieldName, v) {
+      console.log(fieldName, v);
+      // Update new roles
+      this[fieldName] = { ...this[fieldName], ...v };
+
+      // Remove nullish values from object
+      Object.keys(v).forEach((key) => {
+        if (this[fieldName][key] == null) delete this[fieldName][key];
+      });
+    },
   },
 };
 </script>

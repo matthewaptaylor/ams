@@ -5,7 +5,12 @@
       v-if="$vuetify.breakpoint.mobile"
     >
       <v-toolbar dense color="primary" dark>
-        <v-btn icon @click="goBack" style="width: 40px; height: 40px">
+        <v-btn
+          icon
+          @click="goBack"
+          style="width: 40px; height: 40px"
+          v-if="emailVerified"
+        >
           <v-icon>{{ arrowLeftIcon }}</v-icon>
         </v-btn>
 
@@ -43,7 +48,9 @@
           style="max-width: 100%"
           :style="{
             'min-height': $vuetify.breakpoint.mobile
-              ? `calc(100vh - ${72 + (navItems ? 40 : 0)}px)`
+              ? `calc(100vh - ${
+                  72 + (navItems ? 40 : 0) + (emailVerified ? 0 : 88)
+                }px)`
               : null,
           }"
         >

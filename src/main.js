@@ -34,6 +34,9 @@ firebase.auth().onAuthStateChanged((user) => {
     // Initialise Vue
     Vue.config.productionTip = false;
 
+    // Refresh token
+    firebase.auth().currentUser?.getIdToken(true);
+
     // Setup functions
     Vue.prototype.$functions = firebase.app().functions("australia-southeast1");
     if (process.env.NODE_ENV === "development")
