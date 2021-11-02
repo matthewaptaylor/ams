@@ -72,42 +72,38 @@
               <v-icon>{{ deleteIcon }}</v-icon>
             </v-btn>
           </template>
+
           <span>Remove user</span>
         </v-tooltip>
       </v-list-item-action>
     </v-list-item>
 
-    <transition name="slide-y-transition">
-      <v-sheet
-        color="error"
-        dark
-        elevation="2"
-        rounded
-        class="pa-4 mb-2"
-        :class="{
-          'mt-2': $vuetify.breakpoint.name !== 'xs',
-        }"
-        v-if="showRemove"
-      >
-        <p>Are you sure you want to remove this person?</p>
+    <v-sheet
+      color="error"
+      dark
+      elevation="2"
+      rounded
+      class="pa-4 mb-2"
+      :class="{
+        'mt-2': $vuetify.breakpoint.name !== 'xs',
+      }"
+      v-if="showRemove"
+    >
+      <p>Are you sure you want to remove this person?</p>
 
-        <div
-          class="d-flex justify-end flex-wrap"
-          style="gap: 0.5rem 1rem; width: 100%"
+      <div class="d-flex flex-wrap" style="gap: 0.5rem 1rem; width: 100%">
+        <v-btn
+          outlined
+          @click="updatePerson(true)"
+          :loading="removeLoading"
+          :disabled="removeLoading"
         >
-          <v-btn plain @click="showRemove = false">Cancel</v-btn>
+          Delete
+        </v-btn>
 
-          <v-btn
-            outlined
-            @click="updatePerson(true)"
-            :loading="removeLoading"
-            :disabled="removeLoading"
-          >
-            Delete
-          </v-btn>
-        </div>
-      </v-sheet>
-    </transition>
+        <v-btn plain @click="showRemove = false">Cancel</v-btn>
+      </div>
+    </v-sheet>
 
     <Alert
       dismissable

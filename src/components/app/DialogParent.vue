@@ -28,23 +28,17 @@ export default {
   },
 
   mounted() {
-    // Determine the current URL path (excluding the dialog), adding in URL parameters
-    let currentPath = this.currentRoute.path;
-    Object.entries(this.$route.params).forEach(([param, value]) => {
-      currentPath = currentPath.replace(`:${param}`, value);
-    });
-
-    this.dialogPathArray = [
-      ...this.toArray(currentPath),
-      ...this.toArray(this.currentRoute.meta.dialogPath),
-    ];
+    const pathItems = this.$route.path.split("/").filter((x) => !!x);
 
     if (
-      this.arrayIsEqual(this.toArray(this.$route.path), this.dialogPathArray)
+      this.$route.params.dialogRoute !== undefined ||
+      pathItems[pathItems.length - 1] == this.$route.meta.dialogPath
     ) {
       // The current path is the same as the route's dialog path
       this.dialog = true;
       this.useBackToExit = false;
+
+      this.key++;
     } else {
       this.dialog = false;
       this.useBackToExit = true;
@@ -53,10 +47,11 @@ export default {
 
   beforeRouteUpdate(to, from, next) {
     // User action has caused move between default view and dialog
-    this.dialog = this.arrayIsEqual(
-      this.toArray(to.path),
-      this.dialogPathArray
-    );
+    const pathItems = to.path.split("/").filter((x) => !!x);
+
+    this.dialog =
+      to.params.dialogRoute !== undefined ||
+      pathItems[pathItems.length - 1] == to.meta.dialogPath;
 
     next(); // Proceed
   },
@@ -66,9 +61,25 @@ export default {
       this.$refs.page.updateObject(fieldName, v);
     },
 
-    showDialog() {
+    showDialog(dialogName) {
       // Shows the dialog
-      this.$router.push("/" + this.dialogPathArray.join("/"));
+
+      if (this.$route.meta.dialogPath) {
+        // Dislog display based on a static path
+        this.$router.push(
+          [
+            "",
+            ...this.$route.path.split("/").filter((x) => !!x),
+            this.$route.meta.dialogPath,
+          ].join("/")
+        );
+      } else {
+        // Dialog display based on dialogRoute parameter
+        this.$router.push({
+          name: this.$route.name,
+          params: { dialogRoute: dialogName },
+        });
+      }
 
       this.key++;
     },
@@ -83,21 +94,6 @@ export default {
 
         this.$router.replace({ name: this.currentRoute.name });
       }
-    },
-
-    toArray(x) {
-      // Takes a path string and splits it into an array, removing blank items
-      return x.split("/").filter((x) => x);
-    },
-
-    arrayIsEqual(a, b) {
-      // Checks if the items of a and b are equal
-      return (
-        Array.isArray(a) &&
-        Array.isArray(b) &&
-        a.length === b.length &&
-        a.every((val, index) => val === b[index])
-      );
     },
   },
 };

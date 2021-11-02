@@ -10,7 +10,7 @@
 
         <v-btn
           color="primary"
-          @click="$emit('showDialog')"
+          @click="$emit('showDialog', 'create')"
           v-if="$vuetify.breakpoint.name !== 'xs'"
         >
           <v-icon left dark>{{ plusIcon }}</v-icon>
@@ -24,7 +24,7 @@
           bottom
           right
           v-else
-          @click="$emit('showDialog')"
+          @click="$emit('showDialog', 'create')"
         >
           <v-icon>{{ plusIcon }}</v-icon>
         </v-btn>
@@ -39,82 +39,78 @@
           <template v-slot:default>
             <thead>
               <tr>
-                <th>Potential Incident</th>
+                <th class="px-1" style="width: 2.25rem"></th>
 
-                <th>Controls</th>
+                <th
+                  class="px-1"
+                  style="min-width: 12rem; width: calc(0.3 * (100% - 2.25rem))"
+                >
+                  Potential Incident
+                </th>
 
-                <th>Risk Level</th>
+                <th
+                  class="px-1"
+                  style="min-width: 16rem; width: calc(0.4 * (100% - 2.25rem))"
+                >
+                  Controls
+                </th>
+
+                <th
+                  class="px-1"
+                  style="min-width: 12rem; width: calc(0.3 * (100% - 2.25rem))"
+                >
+                  Risk Level
+                </th>
               </tr>
             </thead>
 
-            <tbody class="can-select">
-              <template v-if="loading">
-                <tr v-for="i in 2" :key="i">
-                  <td>
-                    <v-skeleton-loader
-                      type="text@3"
-                      class="mt-2"
-                    ></v-skeleton-loader>
-                  </td>
+            <tbody v-if="!loading">
+              <ActivityRAMSRow
+                :key="id"
+                :activityId="$route.params.activityId"
+                :riskId="id"
+                :risk="risk"
+                @showDialog="(id) => $emit('showDialog', id)"
+                @updateObject="updateObject"
+                v-for="(risk, id) in risks"
+              />
+            </tbody>
 
-                  <td>
-                    <v-skeleton-loader
-                      type="text@2"
-                      class="mt-2"
-                    ></v-skeleton-loader>
-                  </td>
-
-                  <td>
-                    <v-skeleton-loader
-                      type="text@3"
-                      class="mt-2"
-                    ></v-skeleton-loader>
-                  </td>
-                </tr>
-              </template>
-
-              <tr v-for="(risk, id) in risks" :key="id" class="pt-4" v-else>
-                <td>
-                  <p class="mb-1">
-                    <strong>Category:</strong> {{ risk.category }}
-                  </p>
-
-                  <p class="mb-1"><strong>Hazard:</strong> {{ risk.hazard }}</p>
-
-                  <p class="mb-0"><strong>Risk:</strong> {{ risk.risk }}</p>
+            <tbody v-if="loading">
+              <tr v-for="i in 2" :key="i">
+                <td class="px-1">
+                  <v-skeleton-loader
+                    type="text@3"
+                    class="mt-2"
+                  ></v-skeleton-loader>
                 </td>
 
-                <td>
-                  <p class="mb-1">
-                    <strong>Controls:</strong> {{ risk.controls }}
-                  </p>
-
-                  <p class="mb-0">
-                    <strong>Responsibility:</strong> {{ risk.responsibility }}
-                  </p>
+                <td class="px-1">
+                  <v-skeleton-loader
+                    type="text@2"
+                    class="mt-2"
+                  ></v-skeleton-loader>
                 </td>
 
-                <td>
-                  <p class="mb-1">
-                    <strong>Likelihood:</strong> {{ risk.likelihood }}
-                  </p>
+                <td class="px-1">
+                  <v-skeleton-loader
+                    type="text@3"
+                    class="mt-2"
+                  ></v-skeleton-loader>
+                </td>
 
-                  <p class="mb-1">
-                    <strong>Consequence:</strong> {{ risk.consequence }}
-                  </p>
+                <td></td>
+              </tr>
+            </tbody>
 
-                  <p class="mb-0">
-                    <strong>Risk level:</strong> {{ risk.level }}
-                  </p>
+            <tbody v-if="!loading && !Object.keys(risks).length">
+              <tr>
+                <td colspan="3" class="text-center py-3">
+                  <v-icon>{{ mapSearchIcon }}</v-icon>
 
-                  <p class="mb-0">
-                    This risk is
-                    <strong>
-                      {{
-                        risk.acceptable ? "acceptable" : "not acceptable"
-                      }} </strong
-                    >.
-                  </p>
+                  <v-list-item-title class="text-wrap text--secondary">
+                    We searched all over, but there's nothing here.
+                  </v-list-item-title>
                 </td>
               </tr>
             </tbody>
@@ -131,22 +127,32 @@ th {
 }
 td {
   vertical-align: top;
-  padding: 0.25rem 1rem !important;
 }
 </style>
 
 <script>
+import {
+  mdiPlus,
+  mdiInformationOutline,
+  mdiMapSearch,
+  mdiDelete,
+  mdiPencil,
+} from "@mdi/js";
+
 import Alert from "../../../components/Alert.vue";
-import { mdiPlus, mdiInformationOutline } from "@mdi/js";
+import ActivityRAMSRow from "../../../components/app/ActivityRAMSRow.vue";
 
 export default {
-  components: { Alert },
+  components: { Alert, ActivityRAMSRow },
 
   data() {
     return {
       // Icons
       plusIcon: mdiPlus,
       informationOutlineIcon: mdiInformationOutline,
+      mapSearchIcon: mdiMapSearch,
+      deleteIcon: mdiDelete,
+      pencilIcon: mdiPencil,
 
       loading: false,
       error: null,
@@ -186,9 +192,8 @@ export default {
         });
     },
 
-    // Person has been updated
+    // RAMS has been updated
     updateObject(fieldName, v) {
-      console.log(fieldName, v);
       // Update new roles
       this[fieldName] = { ...this[fieldName], ...v };
 

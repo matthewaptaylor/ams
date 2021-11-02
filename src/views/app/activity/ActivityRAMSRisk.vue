@@ -22,7 +22,10 @@
           <v-icon>{{ arrowLeftIcon }}</v-icon>
         </v-btn>
 
-        <v-toolbar-title class="pl-md-0">Add Risk</v-toolbar-title>
+        <v-toolbar-title
+          class="pl-md-0"
+          v-text="addMode ? 'Add Risk' : 'Edit Risk'"
+        />
 
         <v-spacer />
 
@@ -43,7 +46,14 @@
             : null,
         }"
       >
-        <v-row>
+        <Alert
+          type="error"
+          :message="loadError"
+          :action="{ text: 'Retry', callback: load }"
+          class="mb-2"
+        />
+
+        <v-row v-if="!loadError">
           <v-col cols="12" sm="6" md="8" class="pb-0 pb-sm-3">
             <v-row>
               <v-col cols="12" md="6" class="pb-0 pb-md-1">
@@ -53,7 +63,16 @@
                   label="Category"
                   :rules="[(v) => !!v || 'Category is required']"
                   required
+                  v-if="!loadLoading"
                 ></v-select>
+
+                <v-skeleton-loader
+                  type="custom"
+                  height="74.5px"
+                  width="100%"
+                  style="padding-top: 4px; padding-bottom: 27px"
+                  v-else
+                />
 
                 <v-textarea
                   v-model="hazard"
@@ -63,7 +82,16 @@
                   persistent-hint
                   :rules="[(v) => !!v || 'Hazard is required']"
                   required
+                  v-if="!loadLoading"
                 ></v-textarea>
+
+                <v-skeleton-loader
+                  type="custom"
+                  height="100.222px"
+                  width="100%"
+                  style="padding-top: 4px; padding-bottom: 21px"
+                  v-else
+                />
 
                 <v-textarea
                   v-model="risk"
@@ -73,7 +101,16 @@
                   persistent-hint
                   :rules="[(v) => !!v || 'Risk is required']"
                   required
+                  v-if="!loadLoading"
                 ></v-textarea>
+
+                <v-skeleton-loader
+                  type="custom"
+                  height="100.222px"
+                  width="100%"
+                  style="padding-top: 4px; padding-bottom: 21px"
+                  v-else
+                />
               </v-col>
 
               <v-col cols="12" md="6" class="pt-0 pt-md-1">
@@ -85,7 +122,16 @@
                   persistent-hint
                   :rules="[(v) => !!v || 'Controls is required']"
                   required
+                  v-if="!loadLoading"
                 ></v-textarea>
+
+                <v-skeleton-loader
+                  type="custom"
+                  height="100.222px"
+                  width="100%"
+                  style="padding-top: 4px; padding-bottom: 21px"
+                  v-else
+                />
 
                 <v-text-field
                   v-model="responsibility"
@@ -94,7 +140,16 @@
                   persistent-hint
                   :rules="[(v) => !!v || 'Responsibility is required']"
                   required
+                  v-if="!loadLoading"
                 ></v-text-field>
+
+                <v-skeleton-loader
+                  type="custom"
+                  height="70px"
+                  width="100%"
+                  style="padding-top: 4px; padding-bottom: 21px"
+                  v-else
+                />
               </v-col>
             </v-row>
           </v-col>
@@ -106,10 +161,23 @@
               label="Likelihood"
               persistent-hint
               return-object
-              :hint="likelihood !== null ? likelihood.description : ''"
+              :hint="
+                likelihood == undefined
+                  ? ''
+                  : likelihoods[likelihood].description
+              "
               :rules="[(v) => !!v || 'Liklihood is required']"
               required
+              v-if="!loadLoading"
             ></v-select>
+
+            <v-skeleton-loader
+              type="custom"
+              height="74.5px"
+              width="100%"
+              style="padding-top: 4px; padding-bottom: 27px"
+              v-else
+            />
 
             <v-select
               v-model="consequence"
@@ -117,11 +185,24 @@
               label="Consequence"
               persistent-hint
               return-object
-              :hint="consequence !== null ? consequence.description : ''"
+              :hint="
+                consequence == undefined
+                  ? ''
+                  : consequences[consequence].description
+              "
               class="mb-2"
               :rules="[(v) => !!v || 'Consequence is required']"
               required
+              v-if="!loadLoading"
             ></v-select>
+
+            <v-skeleton-loader
+              type="custom"
+              height="74.5px"
+              width="100%"
+              style="padding-top: 4px; padding-bottom: 27px"
+              v-else
+            />
 
             <p class="mb-0">{{ riskLevels[riskLevel] }}</p>
 
@@ -129,7 +210,16 @@
               v-model="acceptable"
               label="Risk is acceptable"
               class="mt-2"
+              v-if="!loadLoading"
             ></v-checkbox>
+
+            <v-skeleton-loader
+              type="custom"
+              height="58px"
+              width="100%"
+              style="padding-top: 8px; padding-bottom: 21px"
+              v-else
+            />
           </v-col>
         </v-row>
 
@@ -144,11 +234,13 @@
           <v-btn
             color="primary"
             type="submit"
-            :disabled="!valid || loading"
+            :disabled="!valid || loadError || loading || loadLoading"
             :loading="loading"
           >
-            <v-icon left dark>{{ plusIcon }}</v-icon>
-            Add risk
+            <v-icon left dark>{{
+              addMode ? plusIcon : contentSaveIcon
+            }}</v-icon>
+            {{ addMode ? "Add risk" : "Save" }}
           </v-btn>
         </div>
       </v-form>
@@ -158,7 +250,7 @@
 
 <script>
 import Alert from "../../../components/Alert.vue";
-import { mdiArrowLeft, mdiClose, mdiPlus } from "@mdi/js";
+import { mdiArrowLeft, mdiClose, mdiPlus, mdiContentSave } from "@mdi/js";
 
 export default {
   components: { Alert },
@@ -169,6 +261,12 @@ export default {
       arrowLeftIcon: mdiArrowLeft,
       closeIcon: mdiClose,
       plusIcon: mdiPlus,
+      contentSaveIcon: mdiContentSave,
+
+      // Preexisting data
+      addMode: this.$route.params.dialogRoute === "create",
+      loadLoading: false,
+      loadError: null,
 
       // Form
       valid: null,
@@ -208,7 +306,7 @@ export default {
           level: 2,
         },
         Remote: {
-          description: "It’s not conceivable that this could occur",
+          description: "It’s not conceivable that this could occur.",
           level: 1,
         },
       },
@@ -254,6 +352,12 @@ export default {
     dialog: Boolean,
   },
 
+  mounted() {
+    if (this.dialog && !this.addMode) {
+      this.load();
+    }
+  },
+
   computed: {
     riskLevel() {
       if (this.likelihood && this.consequence) {
@@ -272,6 +376,7 @@ export default {
         return null;
       }
     },
+
     formData() {
       return {
         category: this.category,
@@ -287,6 +392,40 @@ export default {
   },
 
   methods: {
+    load() {
+      // Display activities
+      this.loadError = null;
+      this.loadLoading = true;
+
+      this.$functions
+        .httpsCallable("activityRAMSGet")({
+          id: this.$route.params.activityId,
+          riskId: this.$route.params.dialogRoute,
+        })
+        .then((data) => {
+          // Success
+          this.loadLoading = false;
+
+          this.category = data.data.category;
+          this.hazard = data.data.hazard;
+          this.risk = data.data.risk;
+          this.controls = data.data.controls;
+          this.responsibility = data.data.responsibility;
+          this.likelihood = data.data.likelihood;
+          this.consequence = data.data.consequence;
+          this.acceptable = data.data.acceptable;
+        })
+        .catch((error) => {
+          // Error
+          this.loadLoading = false;
+
+          this.loadError =
+            error.message === "internal"
+              ? "An error occurred when connecting to the server."
+              : error.message;
+        });
+    },
+
     updateRisk() {
       // Display people info
       this.loading = true;
@@ -295,6 +434,7 @@ export default {
       this.$functions
         .httpsCallable("activityRAMSUpdate")({
           id: this.$route.params.activityId,
+          [this.addMode ? undefined : "riskId"]: this.$route.params.dialogRoute,
           ...this.formData,
         })
         .then((data) => {

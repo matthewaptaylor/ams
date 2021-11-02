@@ -114,14 +114,12 @@ const routes = [
             component: ActivityPlan,
           },
           {
-            path: "rams",
+            path: "rams/:dialogRoute?", // Ensure the dialog path routes back to here
             name: "ActivityRAMS",
             component: DialogParent,
-            alias: "rams/risk", // Ensure the dialog path routes back to here
             meta: {
               default: ActivityRAMS,
               dialog: ActivityRAMSRisk,
-              dialogPath: "risk", // Path that will open the dialog
             },
           },
           {

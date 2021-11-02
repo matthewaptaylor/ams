@@ -84,7 +84,11 @@ export default {
           icon: mdiAccountGroup,
         },
         // { title: "Plan", to: { name: "ActivityPlan" }, icon: mdiClipboardList },
-        { title: "RAMS", to: { name: "ActivityRAMS" }, icon: mdiAlert },
+        {
+          title: "RAMS",
+          to: { name: "ActivityRAMS" },
+          icon: mdiAlert,
+        },
         // {
         //   title: "Budget",
         //   to: { name: "ActivityBudget" },
@@ -100,7 +104,11 @@ export default {
         //   to: { name: "ActivityGearList" },
         //   icon: mdiBagPersonal,
         // },
-        // { title: "AIF", to: { name: "ActivityAIF" }, icon: mdiFormSelect },
+        // {
+        //   title: "Activity Intention Form",
+        //   to: { name: "ActivityAIF" },
+        //   icon: mdiFormSelect,
+        // },
       ],
     };
   },

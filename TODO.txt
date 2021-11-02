@@ -21,6 +21,7 @@ Nothing stopping >1Activity Leader being set - how wil lthis work with AIF gener
 ===============
   Minor Fixes
 ===============
+Scrollbar for firefox and edge
 Ensure firestore client/frontend web sdk can't be accessed by anyone - security risk
 Delete user, change all UIDs back to email
 Privacy data laws, terms of service
@@ -34,6 +35,7 @@ Add top negative margin to person remove icon on mobile? or just make it align s
 Use v-avatar instead of the module that generates avatars
 When checking if error == "internal", should it be error == "INTERNAL"?
 What happens to a user's activities if they delete their account? PoepleByUid moved to peoplebyemail is a bad idea
+Delete account, delete all UserByUid records and turn into UserByEmial
 
 ===============
    Better UX
@@ -53,6 +55,7 @@ transition on v-if for autosave
 Transitions on alert component
 Use email link for reauthentication
 Test all functions, vulnerabilities, make sure dates are valid, etc
+All dropdowns/menu appear below select input field
 
 ===============
  Nice Features
