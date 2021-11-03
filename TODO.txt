@@ -40,6 +40,7 @@ Delete account, delete all UserByUid records and turn into UserByEmial
 ===============
    Better UX
 ===============
+Sticky/always visible sidebar when scrolling on desktop
 Delete activities
 Preload fonts and images
 Chunk vendors to only load needed views initially

@@ -44,7 +44,7 @@ import {
   // mdiCreditCard,
   // mdiCart,
   // mdiBagPersonal,
-  // mdiFormSelect,
+  mdiFormSelect,
 } from "@mdi/js";
 import Alert from "../../../components/Alert";
 import ChildPage from "../../../components/app/ChildPage.vue";
@@ -104,11 +104,11 @@ export default {
         //   to: { name: "ActivityGearList" },
         //   icon: mdiBagPersonal,
         // },
-        // {
-        //   title: "Activity Intention Form",
-        //   to: { name: "ActivityAIF" },
-        //   icon: mdiFormSelect,
-        // },
+        {
+          title: "Activity Intention Form",
+          to: { name: "ActivityAIF" },
+          icon: mdiFormSelect,
+        },
       ],
     };
   },

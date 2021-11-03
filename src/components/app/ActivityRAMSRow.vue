@@ -35,7 +35,7 @@
       </div>
     </td>
 
-    <td colspan="3" class="pa-1" v-if="showRemove">
+    <td colspan="3" class="pa-1 pr-2" v-if="showRemove">
       <v-sheet color="error" dark elevation="2" rounded class="pa-4 my-1">
         <p style="font-size: 1rem; line-height: 1.15">
           Are you sure you want to remove this risk?

@@ -78,6 +78,8 @@
 
             <tbody v-if="loading">
               <tr v-for="i in 2" :key="i">
+                <td></td>
+
                 <td class="px-1">
                   <v-skeleton-loader
                     type="text@3"
@@ -98,14 +100,12 @@
                     class="mt-2"
                   ></v-skeleton-loader>
                 </td>
-
-                <td></td>
               </tr>
             </tbody>
 
             <tbody v-if="!loading && !Object.keys(risks).length">
               <tr>
-                <td colspan="3" class="text-center py-3">
+                <td colspan="4" class="text-center py-3">
                   <v-icon>{{ mapSearchIcon }}</v-icon>
 
                   <v-list-item-title class="text-wrap text--secondary">
