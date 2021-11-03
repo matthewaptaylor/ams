@@ -8,48 +8,70 @@
 
     <v-row>
       <v-col cols="12">
-        <v-row dense>
-          <iframe
-            ref="pdf"
-            style="border: none; width: 100%; height: 40rem"
-          ></iframe>
-        </v-row>
+        <p>This feature is still in development.</p>
+
+        <iframe
+          ref="pdf"
+          style="border: none; width: 100%; height: 40rem"
+        ></iframe>
       </v-col>
     </v-row>
   </v-container>
 </template>
 
 <script>
-import { degrees, PDFDocument, rgb, StandardFonts } from "pdf-lib";
+import { PDFDocument } from "pdf-lib";
 
 export default {
+  props: {
+    activityName: String,
+    location: String,
+    startDate: String,
+    startTime: String,
+    endDate: String,
+    endTime: String,
+  },
+
   async mounted() {
-    const url = "/aif.pdf";
-    const existingPdfBytes = await fetch(url).then((res) => res.arrayBuffer());
-
-    const pdfDoc = await PDFDocument.load(existingPdfBytes);
-    const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica);
-
-    const pages = pdfDoc.getPages();
-    const firstPage = pages[0];
-
-    // eslint-disable-next-line no-unused-vars
-    const { width, height } = firstPage.getSize();
-
-    firstPage.drawText(
-      "Yeet yeet AIF generation is hard to code\n\nhttps://www.youtube.com/watch?v=dQw4w9WgXcQ",
-      {
-        x: 50,
-        y: height / 2 + 300,
-        size: 35,
-        font: helveticaFont,
-        color: rgb(0.95, 0.1, 0.1),
-        rotate: degrees(-45),
-      }
+    this.$refs.pdf.setAttribute(
+      "src",
+      await this.generateAIF({
+        Activity: this.activityName,
+        "Activity Name 2": this.activityName,
+        "Activity Name 3": this.activityName,
+        "Activity Name 4": this.activityName,
+        "Location of the activity": this.location,
+        "Start date": this.startDate,
+        "Start time": this.startTime,
+        "End date": this.endDate,
+        "End time": this.endTime,
+      })
     );
+  },
 
-    const pdfDataUri = await pdfDoc.saveAsBase64({ dataUri: true });
-    this.$refs.pdf.src = pdfDataUri;
+  methods: {
+    // Generate the AIF PDF
+    async generateAIF(fields) {
+      // Get template
+      const url = "/aif.pdf";
+      const existingPdfBytes = await fetch(url).then((res) =>
+        res.arrayBuffer()
+      );
+
+      // Fill form
+      const pdfDoc = await PDFDocument.load(existingPdfBytes);
+      const form = pdfDoc.getForm();
+
+      // Fill form fields
+      Object.entries(fields).forEach((field) => {
+        form.getTextField(field[0]).setText(field[1]);
+      });
+      form.getFields().forEach((field) => {
+        console.log(field.getName());
+      });
+
+      return await pdfDoc.saveAsBase64({ dataUri: true });
+    },
   },
 };
 </script>
