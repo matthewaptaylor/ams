@@ -25,7 +25,10 @@ import { PDFDocument } from "pdf-lib";
 export default {
   props: {
     activityName: String,
+    description: String,
     location: String,
+    scoutGroup: String,
+    scoutZoneRegion: String,
     startDate: String,
     startTime: String,
     endDate: String,
@@ -33,6 +36,7 @@ export default {
   },
 
   async mounted() {
+    // Display AIF
     this.$refs.pdf.setAttribute(
       "src",
       await this.generateAIF({
@@ -40,11 +44,16 @@ export default {
         "Activity Name 2": this.activityName,
         "Activity Name 3": this.activityName,
         "Activity Name 4": this.activityName,
+        "Scout Group": this.scoutGroup,
+        "Scout Zone/Region": this.scoutZoneRegion,
+        "Description A": this.description,
+        "Description B": this.description,
         "Location of the activity": this.location,
         "Start date": this.startDate,
         "Start time": this.startTime,
         "End date": this.endDate,
         "End time": this.endTime,
+        "Activity Leader Name": "Scouts Aotearoa",
       })
     );
   },
@@ -60,9 +69,15 @@ export default {
 
       // Fill form
       const pdfDoc = await PDFDocument.load(existingPdfBytes);
+      pdfDoc.setTitle(`${fields.Activity} - Activity Intention Form`);
+      pdfDoc.setAuthor(fields["Activity Leader Name"]);
+      pdfDoc.setCreator("Activity Management System");
+      pdfDoc.setProducer(
+        "AMS - Scouts Aotearoa (https://ams.matthewtaylor.codes)"
+      );
       const form = pdfDoc.getForm();
 
-      // Fill form fields
+      // Loop form fields
       Object.entries(fields).forEach((field) => {
         form.getTextField(field[0]).setText(field[1]);
       });

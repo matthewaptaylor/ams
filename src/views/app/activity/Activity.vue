@@ -24,6 +24,9 @@
 
     <router-view
       :activityName="name"
+      :scoutGroup="scoutGroup"
+      :scoutZoneRegion="scoutZoneRegion"
+      :description="description"
       :location="location"
       :startDate="startDate"
       :startTime="startTime"
@@ -63,6 +66,9 @@ export default {
 
       // Overview
       name: "Activity",
+      scoutGroup: null,
+      scoutZoneRegion: null,
+      description: null,
       location: null,
       startDate: null,
       startTime: null,
@@ -147,7 +153,10 @@ export default {
           this.loading = false;
 
           this.name = data.data.name;
+          this.description = data.data.description;
           this.location = data.data.location;
+          this.scoutGroup = data.data.scoutGroup;
+          this.scoutZoneRegion = data.data.scoutZoneRegion;
           this.startDate = data.data.startDate;
           this.startTime = data.data.startTime;
           this.endDate = data.data.endDate;

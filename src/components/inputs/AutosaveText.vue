@@ -9,9 +9,11 @@
       />
 
       <v-form @submit.prevent="save" v-else>
-        <v-text-field
+        <component
+          :is="type == 'combobox' ? vCombobox : vTextField"
           :label="label"
           type="text"
+          :items="comboboxItems"
           v-model="currentValue"
           :autocomplete="autocomplete"
           :rules="rules"
@@ -54,7 +56,7 @@
               </v-tooltip>
             </div>
           </template>
-        </v-text-field>
+        </component>
 
         <Alert
           dismissable
@@ -107,15 +109,20 @@
 import { mdiContentSave, mdiCheckCircle } from "@mdi/js";
 import Alert from "../Alert.vue";
 import PickerDialog from "./PickerDialog.vue";
+import { VTextField, VCombobox } from "vuetify/lib";
 
 export default {
-  components: { Alert, PickerDialog },
+  components: { Alert, PickerDialog, VTextField },
 
   data() {
     return {
       // Icons
       contentSaveIcon: mdiContentSave,
       checkCircleIcon: mdiCheckCircle,
+
+      // Components
+      vTextField: VTextField,
+      vCombobox: VCombobox,
 
       // Track the current inputted value
       currentValue: this.value,
@@ -137,6 +144,7 @@ export default {
     label: String, // Label to show to the user
     type: String, // input type, e.g. "text"
     value: String, // The value saved on the server
+    comboboxItems: Array, // Autocomplete items
     autocomplete: String, // The field's autocomplete attribute
     rules: Array, // Input validation rules
     required: Boolean,
