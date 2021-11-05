@@ -7,9 +7,9 @@
     </v-row>
 
     <v-row>
-      <v-col cols="12" sm="6" md="8" lg="6">
+      <v-col cols="12" lg="8" xl="6">
         <v-row dense>
-          <v-col>
+          <v-col cols="12">
             <AutosaveText
               label="Activity name"
               type="text"

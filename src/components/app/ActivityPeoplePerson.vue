@@ -29,7 +29,9 @@
           (email === $currentUser.email ? " (You)" : "")
         }}</v-list-item-title>
 
-        <v-list-item-subtitle v-text="email"></v-list-item-subtitle>
+        <v-list-item-subtitle
+          v-text="email.replace(/\&period;/g, '.')"
+        ></v-list-item-subtitle>
       </v-list-item-content>
 
       <v-list-item-action

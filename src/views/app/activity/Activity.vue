@@ -32,6 +32,8 @@
       :startTime="startTime"
       :endDate="endDate"
       :endTime="endTime"
+      :activityLeader="activityLeader"
+      :contact="contact"
       @update="update"
       v-else
     ></router-view>
@@ -74,6 +76,8 @@ export default {
       startTime: null,
       endDate: null,
       endTime: null,
+      activityLeader: {},
+      contact: {},
 
       // User data
       role: null,
@@ -111,7 +115,7 @@ export default {
         //   icon: mdiBagPersonal,
         // },
         {
-          title: "Activity Intention Form",
+          title: "Activity Intention",
           to: { name: "ActivityAIF" },
           icon: mdiFormSelect,
         },
@@ -162,6 +166,8 @@ export default {
           this.endDate = data.data.endDate;
           this.endTime = data.data.endTime;
           this.role = data.data.role;
+          this.activityLeader = data.data.activityLeader;
+          this.contact = data.data.contact;
         })
         .catch((error) => {
           // Error
@@ -176,7 +182,13 @@ export default {
 
     // Overview value has been updated
     update(fieldName, v) {
-      this[fieldName] = v;
+      const fieldPath = fieldName.split("."); // e.g. if fieldName is activityLeader.name, split into ["activityLeader", "name"]
+
+      if (fieldPath.length == 2) {
+        this[fieldPath[0]] = { ...this[fieldPath[0]], [fieldPath[1]]: v };
+      } else {
+        this[fieldName] = v;
+      }
     },
   },
 };

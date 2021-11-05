@@ -10,12 +10,19 @@
 
       <v-form @submit.prevent="save" v-else>
         <component
-          :is="type == 'combobox' ? vCombobox : vTextField"
+          :is="
+            type == 'combobox'
+              ? vCombobox
+              : type == 'textarea'
+              ? vTextarea
+              : vTextField
+          "
           :label="label"
-          type="text"
+          :type="type == 'number' ? 'number' : 'text'"
           :items="comboboxItems"
           v-model="currentValue"
           :autocomplete="autocomplete"
+          :rows="type == 'textarea' ? 2 : null"
           :rules="rules"
           :required="required"
           :prepend-icon="icon"
@@ -109,7 +116,7 @@
 import { mdiContentSave, mdiCheckCircle } from "@mdi/js";
 import Alert from "../Alert.vue";
 import PickerDialog from "./PickerDialog.vue";
-import { VTextField, VCombobox } from "vuetify/lib";
+import { VTextField, VCombobox, VTextarea } from "vuetify/lib";
 
 export default {
   components: { Alert, PickerDialog, VTextField },
@@ -123,6 +130,7 @@ export default {
       // Components
       vTextField: VTextField,
       vCombobox: VCombobox,
+      vTextarea: VTextarea,
 
       // Track the current inputted value
       currentValue: this.value,
