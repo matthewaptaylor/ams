@@ -24,6 +24,8 @@
 
     <router-view
       :activityName="name"
+      :requiresAIF="requiresAIF"
+      :requiresRAMS="requiresRAMS"
       :scoutGroup="scoutGroup"
       :scoutZoneRegion="scoutZoneRegion"
       :description="description"
@@ -68,6 +70,8 @@ export default {
 
       // Overview
       name: "Activity",
+      requiresAIF: null,
+      requiresRAMS: null,
       scoutGroup: null,
       scoutZoneRegion: null,
       description: null,
@@ -81,8 +85,12 @@ export default {
 
       // User data
       role: null,
+    };
+  },
 
-      navItems: [
+  computed: {
+    navItems() {
+      let items = [
         {
           title: "Overview",
           to: { name: "ActivityOverview" },
@@ -94,11 +102,6 @@ export default {
           icon: mdiAccountGroup,
         },
         // { title: "Plan", to: { name: "ActivityPlan" }, icon: mdiClipboardList },
-        {
-          title: "RAMS",
-          to: { name: "ActivityRAMS" },
-          icon: mdiAlert,
-        },
         // {
         //   title: "Budget",
         //   to: { name: "ActivityBudget" },
@@ -114,16 +117,27 @@ export default {
         //   to: { name: "ActivityGearList" },
         //   icon: mdiBagPersonal,
         // },
-        {
+      ];
+
+      if (this.requiresAIF) {
+        items.push({
           title: "Activity Intention",
           to: { name: "ActivityAIF" },
           icon: mdiFormSelect,
-        },
-      ],
-    };
-  },
+        });
+      }
 
-  computed: {
+      if (this.requiresRAMS) {
+        items.push({
+          title: "RAMS",
+          to: { name: "ActivityRAMS" },
+          icon: mdiAlert,
+        });
+      }
+
+      return items;
+    },
+
     breadcrumbItems() {
       return [
         {
@@ -157,6 +171,8 @@ export default {
           this.loading = false;
 
           this.name = data.data.name;
+          this.requiresAIF = data.data.requiresAIF;
+          this.requiresRAMS = data.data.requiresRAMS;
           this.description = data.data.description;
           this.location = data.data.location;
           this.scoutGroup = data.data.scoutGroup;

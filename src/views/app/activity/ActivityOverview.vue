@@ -21,6 +21,32 @@
             />
           </v-col>
 
+          <v-col cols="12" sm="6">
+            <AutosaveSwitch
+              labelLeft="Activity"
+              labelTrue="requires"
+              labelFalse="does not require"
+              labelRight="an AIF"
+              :disabled="requiresAIF"
+              :value="requiresAIF"
+              :error="requiresAIFError"
+              @save="(v) => update(v, 'requiresAIF', 'requiresAIFError')"
+            />
+          </v-col>
+
+          <v-col cols="12" sm="6">
+            <AutosaveSwitch
+              labelLeft="Activity"
+              labelTrue="requires"
+              labelFalse="does not require"
+              labelRight="a RAMS form"
+              :disabled="requiresRAMS"
+              :value="requiresRAMS"
+              :error="requiresRAMSError"
+              @save="(v) => update(v, 'requiresRAMS', 'requiresRAMSError')"
+            />
+          </v-col>
+
           <v-col cols="12">
             <AutosaveText
               label="Description"
@@ -118,12 +144,15 @@
 <script>
 import { mdiCalendar, mdiClock, mdiContentSave } from "@mdi/js";
 import AutosaveText from "../../../components/inputs/AutosaveText.vue";
+import AutosaveSwitch from "../../../components/inputs/AutosaveSwitch.vue";
 
 export default {
-  components: { AutosaveText },
+  components: { AutosaveText, AutosaveSwitch },
 
   props: {
     activityName: String,
+    requiresAIF: Boolean,
+    requiresRAMS: Boolean,
     description: String,
     location: String,
     scoutGroup: String,
@@ -176,6 +205,8 @@ export default {
 
       // Fields
       nameError: null,
+      requiresAIFError: null,
+      requiresRAMSError: null,
       descriptionError: null,
       locationError: null,
       scoutGroupError: null,
