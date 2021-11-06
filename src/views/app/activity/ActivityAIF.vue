@@ -7,6 +7,117 @@
     </v-row>
 
     <v-row>
+      <v-col cols="12" xl="6">
+        <v-row dense>
+          <v-col cols="12">
+            <AutosaveRadio
+              label="Activity category"
+              :categories="categoryOptions"
+              :value="category"
+              :error="categoryError"
+              @save="(v) => update(v, 'category', 'categoryError')"
+            />
+          </v-col>
+        </v-row>
+      </v-col>
+
+      <v-col cols="12">
+        <v-row dense>
+          <v-col cols="12">
+            <h2 class="text-h5">Numbers</h2>
+          </v-col>
+        </v-row>
+
+        <v-row dense>
+          <v-col cols="12" xl="6">
+            <v-row dense>
+              <v-col cols="6" sm="3">
+                <AutosaveText
+                  label="Keas"
+                  type="number"
+                  :value="numbers.keas ? numbers.keas.toString() : null"
+                  :error="numbersKeasError"
+                  @save="(v) => update(v, 'numbers.keas', 'numbersKeasError')"
+                />
+              </v-col>
+
+              <v-col cols="6" sm="3">
+                <AutosaveText
+                  label="Cubs"
+                  type="number"
+                  :value="numbers.cubs ? numbers.cubs.toString() : null"
+                  :error="numbersCubsError"
+                  @save="(v) => update(v, 'numbers.cubs', 'numbersCubsError')"
+                />
+              </v-col>
+
+              <v-col cols="6" sm="3">
+                <AutosaveText
+                  label="Scouts"
+                  type="number"
+                  :value="numbers.scouts ? numbers.scouts.toString() : null"
+                  :error="numbersScoutsError"
+                  @save="
+                    (v) => update(v, 'numbers.scouts', 'numbersScoutsError')
+                  "
+                />
+              </v-col>
+
+              <v-col cols="6" sm="3">
+                <AutosaveText
+                  label="Venturers"
+                  type="number"
+                  :value="
+                    numbers.venturers ? numbers.venturers.toString() : null
+                  "
+                  :error="numbersVenturersError"
+                  @save="
+                    (v) =>
+                      update(v, 'numbers.venturers', 'numbersVenturersError')
+                  "
+                />
+              </v-col>
+
+              <v-col cols="4">
+                <AutosaveText
+                  label="Rovers"
+                  type="number"
+                  :value="numbers.rovers ? numbers.rovers.toString() : null"
+                  :error="numbersRoversError"
+                  @save="
+                    (v) => update(v, 'numbers.rovers', 'numbersRoversError')
+                  "
+                />
+              </v-col>
+
+              <v-col cols="4">
+                <AutosaveText
+                  label="Leaders"
+                  type="number"
+                  :value="numbers.leaders ? numbers.leaders.toString() : null"
+                  :error="numbersLeadersError"
+                  @save="
+                    (v) => update(v, 'numbers.leaders', 'numbersLeadersError')
+                  "
+                />
+              </v-col>
+
+              <v-col cols="4">
+                <AutosaveText
+                  label="Others"
+                  type="number"
+                  :value="numbers.others ? numbers.others.toString() : null"
+                  :error="numbersOthersError"
+                  @save="
+                    (v) => update(v, 'numbers.others', 'numbersOthersError')
+                  "
+                />
+              </v-col>
+            </v-row>
+          </v-col>
+        </v-row>
+      </v-col>
+
       <v-col cols="12">
         <v-row dense>
           <v-col cols="12">
@@ -15,13 +126,13 @@
         </v-row>
 
         <v-row dense>
-          <v-col cols="12" lg="8" xl="6">
+          <v-col cols="12" xl="6">
             <v-row dense>
-              <v-col cols="12">
+              <v-col cols="12" lg="8">
                 <AutosaveText
                   label="Name"
                   type="text"
-                  :value="activityLeader ? activityLeader.name : null"
+                  :value="activityLeader.name"
                   :error="activityLeaderNameError"
                   @save="
                     (v) =>
@@ -34,11 +145,11 @@
                 />
               </v-col>
 
-              <v-col cols="12" sm="6">
+              <v-col cols="12" sm="6" lg="4">
                 <AutosaveText
                   label="Age"
                   type="number"
-                  :value="activityLeader ? activityLeader.age : null"
+                  :value="activityLeader.age"
                   :error="activityLeaderAgeError"
                   @save="
                     (v) =>
@@ -47,11 +158,11 @@
                 />
               </v-col>
 
-              <v-col cols="12" sm="6">
+              <v-col cols="12" sm="6" lg="4">
                 <AutosaveText
                   label="Home phone"
                   type="text"
-                  :value="activityLeader ? activityLeader.home : null"
+                  :value="activityLeader.home"
                   :error="activityLeaderHomeError"
                   @save="
                     (v) =>
@@ -64,11 +175,11 @@
                 />
               </v-col>
 
-              <v-col cols="12" sm="6">
+              <v-col cols="12" sm="6" lg="4">
                 <AutosaveText
                   label="Work phone"
                   type="text"
-                  :value="activityLeader ? activityLeader.work : null"
+                  :value="activityLeader.work"
                   :error="activityLeaderWorkError"
                   @save="
                     (v) =>
@@ -81,11 +192,11 @@
                 />
               </v-col>
 
-              <v-col cols="12" sm="6">
+              <v-col cols="12" sm="6" lg="4">
                 <AutosaveText
                   label="Cell phone"
                   type="text"
-                  :value="activityLeader ? activityLeader.cell : null"
+                  :value="activityLeader.cell"
                   :error="activityLeaderCellError"
                   @save="
                     (v) =>
@@ -102,7 +213,7 @@
                 <AutosaveText
                   label="Address"
                   type="textarea"
-                  :value="activityLeader ? activityLeader.address : null"
+                  :value="activityLeader.address"
                   :error="activityLeaderAddressError"
                   @save="
                     (v) =>
@@ -127,43 +238,43 @@
         </v-row>
 
         <v-row dense>
-          <v-col cols="12" lg="8" xl="6">
+          <v-col cols="12" xl="6">
             <v-row dense>
               <v-col cols="12">
                 <AutosaveText
                   label="Name"
                   type="text"
-                  :value="contact ? contact.name : null"
+                  :value="contact.name"
                   :error="contactNameError"
                   @save="(v) => update(v, 'contact.name', 'contactNameError')"
                 />
               </v-col>
 
-              <v-col cols="12" sm="6">
+              <v-col cols="12" sm="6" lg="4">
                 <AutosaveText
                   label="Home phone"
                   type="text"
-                  :value="contact ? contact.home : null"
+                  :value="contact.home"
                   :error="contactHomeError"
                   @save="(v) => update(v, 'contact.home', 'contactHomeError')"
                 />
               </v-col>
 
-              <v-col cols="12" sm="6">
+              <v-col cols="12" sm="6" lg="4">
                 <AutosaveText
                   label="Work phone"
                   type="text"
-                  :value="contact ? contact.work : null"
+                  :value="contact.work"
                   :error="contactWorkError"
                   @save="(v) => update(v, 'contact.work', 'contactWorkError')"
                 />
               </v-col>
 
-              <v-col cols="12">
+              <v-col cols="12" lg="4">
                 <AutosaveText
                   label="Cell phone"
                   type="text"
-                  :value="contact ? contact.cell : null"
+                  :value="contact.cell"
                   :error="contactCellError"
                   @save="(v) => update(v, 'contact.cell', 'contactCellError')"
                 />
@@ -173,7 +284,7 @@
                 <AutosaveText
                   label="Address"
                   type="textarea"
-                  :value="contact ? contact.address : null"
+                  :value="contact.address"
                   :error="contactAddressError"
                   @save="
                     (v) => update(v, 'contact.address', 'contactAddressError')
@@ -207,15 +318,27 @@
 
 <script>
 import { PDFDocument } from "pdf-lib";
+import AutosaveRadio from "../../../components/inputs/AutosaveRadio.vue";
 import AutosaveText from "../../../components/inputs/AutosaveText.vue";
 
 export default {
   components: {
+    AutosaveRadio,
     AutosaveText,
   },
   data() {
     return {
       // Fields
+      categoryError: null,
+
+      numbersKeasError: null,
+      numbersCubsError: null,
+      numbersScoutsError: null,
+      numbersVenturersError: null,
+      numbersRoversError: null,
+      numbersLeadersError: null,
+      numbersOthersError: null,
+
       activityLeaderNameError: null,
       activityLeaderAgeError: null,
       activityLeaderHomeError: null,
@@ -228,11 +351,37 @@ export default {
       contactWorkError: null,
       contactCellError: null,
       contactAddressError: null,
+
+      categoryOptions: {
+        "Type A - Low Risk": [
+          "Group event",
+          "Zone event",
+          "Region event",
+          "National event",
+          "Picnic",
+          "Walk",
+          "Visit to town",
+          "Visit a Group",
+          "Other A",
+        ],
+        "Type B - High Risk": [
+          "Abseiling",
+          "Air activity",
+          "Camping",
+          "Caving",
+          "Day hike",
+          "Patrol activity",
+          "Tramping",
+          "Water activity",
+          "Other B",
+        ],
+      },
     };
   },
 
   props: {
     activityName: String,
+    category: String,
     description: String,
     location: String,
     scoutGroup: String,
@@ -241,6 +390,7 @@ export default {
     startTime: String,
     endDate: String,
     endTime: String,
+    numbers: Object,
     activityLeader: Object,
     contact: Object,
   },
@@ -252,6 +402,14 @@ export default {
 
   watch: {
     // Update PDF when values updated on page
+    category() {
+      this.generateAIF();
+    },
+
+    numbers() {
+      this.generateAIF();
+    },
+
     activityLeader() {
       this.generateAIF();
     },
@@ -283,67 +441,100 @@ export default {
 
     async generateAIF() {
       // Generate the AIF PDF
-      const fields = {
-        Activity: this.activityName,
-        "Activity Name 2": this.activityName,
-        "Activity Name 3": this.activityName,
-        "Activity Name 4": this.activityName,
-        "Scout Group": this.scoutGroup,
-        "Scout Zone/Region": this.scoutZoneRegion,
-        "Description A": this.description,
-        "Description B": this.description,
-        "Location of the activity": this.location,
-        "Start date": this.startDate,
-        "Start time": this.startTime,
-        "End date": this.endDate,
-        "End time": this.endTime,
+      if (this.$refs.pdf) {
+        const fields = {
+          Activity: this.activityName,
+          "Activity Name 2": this.activityName,
+          "Activity Name 3": this.activityName,
+          "Activity Name 4": this.activityName,
+          "Scout Group": this.scoutGroup,
+          "Scout Zone/Region": this.scoutZoneRegion,
 
-        "Activity Leader Name": this.activityLeader?.name,
-        "Activity Leader Age": this.activityLeader?.age,
-        "Activity Leader Home Phone": this.activityLeader?.home,
-        "Activity Leader Work Phone": this.activityLeader?.work,
-        "Activity Leader Cell Phone": this.activityLeader?.cell,
-        "Activity Leader Address": this.activityLeader?.address,
+          "Kea numbers": this.numbers.keas
+            ? this.numbers.keas.toString()
+            : null,
+          "Cub numbers": this.numbers.cubs
+            ? this.numbers.cubs.toString()
+            : null,
+          "Scout numbers": this.numbers.scouts
+            ? this.numbers.scouts.toString()
+            : null,
+          "Venturer numbers": this.numbers.venturers
+            ? this.numbers.venturers.toString()
+            : null,
+          "Rover numbers": this.numbers.rovers
+            ? this.numbers.rovers.toString()
+            : null,
+          "Leader numbers": this.numbers.leaders
+            ? this.numbers.leaders.toString()
+            : null,
+          "Other numbers": this.numbers.others
+            ? this.numbers.others.toString()
+            : null,
+          "Total numbers": Object.values(this.numbers)
+            .reduce((prev, item) => prev + item, 0)
+            .toString(),
 
-        "Contact Person Name": this.contact?.name,
-        "Contact Person Home Phone": this.contact?.home,
-        "Contact Person Work Phone": this.contact?.work,
-        "Contact Person Cell Phone": this.contact?.cell,
-        "Contact Person Address": this.contact?.address,
-      };
+          "Description A": this.description,
+          "Description B": this.description,
 
-      // Get template
-      const url = "/aif.pdf";
-      const existingPdfBytes = await fetch(url).then((res) =>
-        res.arrayBuffer()
-      );
+          "Location of the activity": this.location,
+          "Start date": this.startDate,
+          "Start time": this.startTime,
+          "End date": this.endDate,
+          "End time": this.endTime,
 
-      // Fill form
-      const pdfDoc = await PDFDocument.load(existingPdfBytes);
-      pdfDoc.setTitle(`${fields.Activity} - Activity Intention Form`);
-      pdfDoc.setAuthor(
-        fields["Activity Leader Name"]
-          ? fields["Activity Leader Name"]
-          : "Scouts Aotearoa"
-      );
-      pdfDoc.setCreator("Activity Management System");
-      pdfDoc.setProducer(
-        "AMS - Scouts Aotearoa (https://ams.matthewtaylor.codes)"
-      );
-      const form = pdfDoc.getForm();
+          "Activity Leader Name": this.activityLeader.name,
+          "Activity Leader Age": this.activityLeader.age,
+          "Activity Leader Home Phone": this.activityLeader.home,
+          "Activity Leader Work Phone": this.activityLeader.work,
+          "Activity Leader Cell Phone": this.activityLeader.cell,
+          "Activity Leader Address": this.activityLeader.address,
 
-      // Loop form fields
-      Object.entries(fields).forEach((field) => {
-        form.getTextField(field[0]).setText(field[1] ? field[1] : "");
-      });
-      form.getFields().forEach((field) => {
-        console.log(field.getName());
-      });
+          "Contact Person Name": this.contact.name,
+          "Contact Person Home Phone": this.contact.home,
+          "Contact Person Work Phone": this.contact.work,
+          "Contact Person Cell Phone": this.contact.cell,
+          "Contact Person Address": this.contact.address,
+        };
 
-      this.$refs.pdf.setAttribute(
-        "src",
-        await pdfDoc.saveAsBase64({ dataUri: true })
-      );
+        // Get template
+        const url = "/aif.pdf";
+        const existingPdfBytes = await fetch(url).then((res) =>
+          res.arrayBuffer()
+        );
+
+        // Fill form
+        const pdfDoc = await PDFDocument.load(existingPdfBytes);
+        pdfDoc.setTitle(`${fields.Activity} - Activity Intention Form`);
+        pdfDoc.setAuthor(
+          fields["Activity Leader Name"]
+            ? fields["Activity Leader Name"]
+            : "Scouts Aotearoa"
+        );
+        pdfDoc.setCreator("Activity Management System");
+        pdfDoc.setProducer(
+          "AMS - Scouts Aotearoa (https://ams.matthewtaylor.codes)"
+        );
+        const form = pdfDoc.getForm();
+
+        // Loop form text fields
+        Object.entries(fields).forEach((field) => {
+          form.getTextField(field[0]).setText(field[1] ? field[1] : "");
+        });
+
+        // Check activity category
+        form.getCheckBox(this.category).check();
+
+        form.getFields().forEach((field) => {
+          console.log(field.getName());
+        });
+
+        this.$refs.pdf.setAttribute(
+          "src",
+          await pdfDoc.saveAsBase64({ dataUri: true })
+        );
+      }
     },
   },
 };

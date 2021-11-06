@@ -20,9 +20,16 @@
           :label="label"
           :type="type == 'number' ? 'number' : 'text'"
           :items="comboboxItems"
+          :min="type == 'number' ? '1' : null"
+          :step="type == 'number' ? '1' : null"
+          :onkeypress="
+            type == 'number'
+              ? 'return event.charCode >= 48 && event.charCode <= 57'
+              : null
+          "
           v-model="currentValue"
           :autocomplete="autocomplete"
-          :rows="type == 'textarea' ? 2 : null"
+          :rows="type == 'textarea' ? 3 : null"
           :rules="rules"
           :required="required"
           :prepend-icon="icon"
@@ -197,7 +204,12 @@ export default {
       if (this.value !== this.currentValue && !this.currentlySaving) {
         if (this.$refs.input.valid) {
           // Fire save event if not already currently saving
-          this.$emit("save", this.currentValue);
+          this.$emit(
+            "save",
+            this.type == "number"
+              ? parseInt(this.currentValue)
+              : this.currentValue
+          );
           this.currentlySaving = true;
         }
       }

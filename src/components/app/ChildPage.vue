@@ -17,7 +17,7 @@
         <v-toolbar-title>{{ title }}</v-toolbar-title>
       </v-toolbar>
 
-      <NavMobile :title="title" :items="navItems" v-if="navItems" />
+      <NavMobile :items="navItems" v-if="navItems" />
     </div>
 
     <v-container class="pa-2 px-md-4">

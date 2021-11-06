@@ -7,7 +7,7 @@
     </v-row>
 
     <v-row>
-      <v-col cols="12" sm="6" md="8" lg="6">
+      <v-col cols="12" xl="6">
         <v-form v-model="valid" ref="form" @submit.prevent="resetPassword">
           <v-row dense>
             <v-col cols="12">
@@ -22,7 +22,7 @@
               ></v-text-field>
             </v-col>
 
-            <v-col cols="12">
+            <v-col cols="12" lg="6">
               <v-text-field
                 v-model="password"
                 :rules="passwordRules"
@@ -37,7 +37,7 @@
               ></v-text-field>
             </v-col>
 
-            <v-col cols="12">
+            <v-col cols="12" lg="6">
               <v-text-field
                 v-model="confirmPassword"
                 :rules="confirmPasswordRules"

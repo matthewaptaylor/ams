@@ -7,7 +7,7 @@
     </v-row>
 
     <v-row>
-      <v-col cols="12" lg="8" xl="6">
+      <v-col cols="12" xl="6">
         <v-row dense>
           <v-col cols="12">
             <AutosaveText
@@ -27,7 +27,6 @@
               labelTrue="requires"
               labelFalse="does not require"
               labelRight="an AIF"
-              :disabled="requiresAIF"
               :value="requiresAIF"
               :error="requiresAIFError"
               @save="(v) => update(v, 'requiresAIF', 'requiresAIFError')"
@@ -40,14 +39,13 @@
               labelTrue="requires"
               labelFalse="does not require"
               labelRight="a RAMS form"
-              :disabled="requiresRAMS"
               :value="requiresRAMS"
               :error="requiresRAMSError"
               @save="(v) => update(v, 'requiresRAMS', 'requiresRAMSError')"
             />
           </v-col>
 
-          <v-col cols="12">
+          <v-col cols="12" lg="6">
             <AutosaveText
               label="Description"
               type="text"
@@ -57,7 +55,7 @@
             />
           </v-col>
 
-          <v-col cols="12">
+          <v-col cols="12" lg="6">
             <AutosaveText
               label="Location"
               type="text"
@@ -67,7 +65,7 @@
             />
           </v-col>
 
-          <v-col cols="12">
+          <v-col cols="12" lg="6">
             <AutosaveText
               label="Scout Group"
               type="combobox"
@@ -78,7 +76,7 @@
             />
           </v-col>
 
-          <v-col cols="12">
+          <v-col cols="12" lg="6">
             <AutosaveText
               label="Scout Zone/Region"
               type="combobox"

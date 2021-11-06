@@ -40,6 +40,7 @@
             ? 'calc(100vh - 144px)'
             : null,
         }"
+        v-model="valid"
         @submit.prevent="submit"
         ref="form"
       >
@@ -80,7 +81,7 @@
                   <v-expansion-panel-content>
                     <p>
                       Most Groups require an Activity Intention Form (AIF) for
-                      all activities that aren't in their Scout Hall, as well as
+                      all activities away from their Scout Hall, as well as
                       overnight stays. However, as set out in the
                       <a
                         href="https://drive.google.com/file/d/1-DY987ykeLa1Oy9UzlS1b6_2h9HsdIXv/view"
@@ -124,6 +125,46 @@
                 </v-expansion-panel>
               </v-expansion-panels>
             </v-card>
+          </v-col>
+
+          <v-col cols="12" v-if="requiresAIF">
+            <v-radio-group v-model="category" hide-details="auto">
+              <template v-slot:label>
+                <span style="line-height: 2rem">Activity category</span>
+              </template>
+
+              <div class="d-flex flex-column" style="gap: 0.75rem">
+                <div>
+                  <p class="text--secondary mb-2">Type A - Low Risk</p>
+
+                  <div class="d-flex flex-wrap" style="column-gap: 1rem">
+                    <v-radio
+                      v-for="category in categoryA"
+                      :key="category"
+                      :value="category"
+                      :label="category"
+                      style="width: 7rem"
+                      class="mb-1"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <p class="text--secondary mb-2">Type B - Low Risk</p>
+
+                  <div class="d-flex flex-wrap" style="column-gap: 1rem">
+                    <v-radio
+                      v-for="category in categoryB"
+                      :key="category"
+                      :value="category"
+                      :label="category"
+                      style="width: 7rem"
+                      class="mb-1"
+                    />
+                  </div>
+                </div>
+              </div>
+            </v-radio-group>
           </v-col>
 
           <v-col cols="12">
@@ -178,7 +219,7 @@
               <v-btn
                 color="primary"
                 type="submit"
-                :disabled="loading"
+                :disabled="loading || !valid"
                 :loading="loading"
               >
                 <v-icon left dark>{{ plusIcon }}</v-icon>
@@ -217,8 +258,33 @@ export default {
       loading: false,
       error: null,
 
+      categoryA: [
+        "Group event",
+        "Zone event",
+        "Region event",
+        "National event",
+        "Picnic",
+        "Walk",
+        "Visit to town",
+        "Visit a Group",
+        "Other A",
+      ],
+
+      categoryB: [
+        "Abseiling",
+        "Air activity",
+        "Camping",
+        "Caving",
+        "Day hike",
+        "Patrol activity",
+        "Tramping",
+        "Water activity",
+        "Other B",
+      ],
+
       name: "",
       requiresAIF: false,
+      category: null,
       requiresRAMS: false,
 
       // Hints
@@ -251,6 +317,7 @@ export default {
           .httpsCallable("activityPlannerCreateActivity")({
             name: this.name,
             requiresAIF: this.requiresAIF,
+            category: this.category,
             requiresRAMS: this.requiresRAMS,
           })
           .then((data) => {

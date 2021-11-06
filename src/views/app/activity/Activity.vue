@@ -26,6 +26,7 @@
       :activityName="name"
       :requiresAIF="requiresAIF"
       :requiresRAMS="requiresRAMS"
+      :category="category"
       :scoutGroup="scoutGroup"
       :scoutZoneRegion="scoutZoneRegion"
       :description="description"
@@ -34,6 +35,7 @@
       :startTime="startTime"
       :endDate="endDate"
       :endTime="endTime"
+      :numbers="numbers"
       :activityLeader="activityLeader"
       :contact="contact"
       @update="update"
@@ -72,6 +74,7 @@ export default {
       name: "Activity",
       requiresAIF: null,
       requiresRAMS: null,
+      category: null,
       scoutGroup: null,
       scoutZoneRegion: null,
       description: null,
@@ -80,6 +83,7 @@ export default {
       startTime: null,
       endDate: null,
       endTime: null,
+      numbers: {},
       activityLeader: {},
       contact: {},
 
@@ -119,19 +123,19 @@ export default {
         // },
       ];
 
-      if (this.requiresAIF) {
-        items.push({
-          title: "Activity Intention",
-          to: { name: "ActivityAIF" },
-          icon: mdiFormSelect,
-        });
-      }
-
       if (this.requiresRAMS) {
         items.push({
           title: "RAMS",
           to: { name: "ActivityRAMS" },
           icon: mdiAlert,
+        });
+      }
+
+      if (this.requiresAIF) {
+        items.push({
+          title: "Activity Intention",
+          to: { name: "ActivityAIF" },
+          icon: mdiFormSelect,
         });
       }
 
@@ -173,6 +177,7 @@ export default {
           this.name = data.data.name;
           this.requiresAIF = data.data.requiresAIF;
           this.requiresRAMS = data.data.requiresRAMS;
+          this.category = data.data.category;
           this.description = data.data.description;
           this.location = data.data.location;
           this.scoutGroup = data.data.scoutGroup;
@@ -182,6 +187,7 @@ export default {
           this.endDate = data.data.endDate;
           this.endTime = data.data.endTime;
           this.role = data.data.role;
+          this.numbers = data.data.numbers;
           this.activityLeader = data.data.activityLeader;
           this.contact = data.data.contact;
         })

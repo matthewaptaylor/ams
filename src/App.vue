@@ -145,6 +145,11 @@ html {
   margin-top: 0.25rem;
 }
 
+.v-textarea textarea {
+  padding: 0.5rem 0 !important;
+  line-height: 1.15 !important;
+}
+
 .firebase-emulator-warning {
   display: none;
 }

@@ -15,7 +15,7 @@
         </v-row>
 
         <v-row dense>
-          <v-col cols="12" sm="6" md="8" lg="6">
+          <v-col cols="12" xl="6">
             <p class="mb-2">Your email address hasn't been verified.</p>
 
             <v-btn
@@ -53,7 +53,7 @@
         </v-row>
 
         <v-row dense>
-          <v-col cols="12" sm="6" md="8" lg="6">
+          <v-col cols="12" xl="6">
             <AutosaveText
               label="Email"
               type="email"
@@ -76,7 +76,7 @@
             </p>
           </v-col>
 
-          <v-col cols="12" sm="6" md="8" lg="6" dense v-if="passwordProvider">
+          <v-col cols="12" xl="6" dense v-if="passwordProvider">
             <v-text-field
               value="        "
               label="Password"
@@ -97,7 +97,7 @@
         </v-row>
 
         <v-row dense>
-          <v-col cols="12" sm="6" md="8" lg="6">
+          <v-col cols="12" xl="6">
             <template v-if="!googleProvider">
               <p>You're not linked with a Google account.</p>
 
