@@ -291,6 +291,35 @@
                   "
                 />
               </v-col>
+
+              <v-col cols="12">
+                <p class="mb-0">
+                  The contact person is to inform the Group Leader and the
+                  Police if the party has not made contact by:
+                </p>
+              </v-col>
+
+              <v-col cols="12" sm="6">
+                <AutosaveText
+                  label="Time"
+                  type="time"
+                  :value="contact.time"
+                  :icon="clockIcon"
+                  :error="contactTimeError"
+                  @save="(v) => update(v, 'contact.time', 'contactTimeError')"
+                />
+              </v-col>
+
+              <v-col cols="12" sm="6">
+                <AutosaveText
+                  label="Date"
+                  type="date"
+                  :value="contact.date"
+                  :icon="calendarIcon"
+                  :error="contactDateError"
+                  @save="(v) => update(v, 'contact.date', 'contactDateError')"
+                />
+              </v-col>
             </v-row>
           </v-col>
         </v-row>
@@ -317,6 +346,7 @@
 </template>
 
 <script>
+import { mdiCalendar, mdiClock } from "@mdi/js";
 import { PDFDocument } from "pdf-lib";
 import AutosaveRadio from "../../../components/inputs/AutosaveRadio.vue";
 import AutosaveText from "../../../components/inputs/AutosaveText.vue";
@@ -328,6 +358,10 @@ export default {
   },
   data() {
     return {
+      // Icons
+      calendarIcon: mdiCalendar,
+      clockIcon: mdiClock,
+
       // Fields
       categoryError: null,
 
@@ -351,6 +385,8 @@ export default {
       contactWorkError: null,
       contactCellError: null,
       contactAddressError: null,
+      contactTimeError: null,
+      contactDateError: null,
 
       categoryOptions: {
         "Type A - Low Risk": [
@@ -496,6 +532,8 @@ export default {
           "Contact Person Work Phone": this.contact.work,
           "Contact Person Cell Phone": this.contact.cell,
           "Contact Person Address": this.contact.address,
+          "Emergency Call Time": this.contact.time,
+          "Emergency Call Date": this.contact.date,
         };
 
         // Get template
@@ -524,11 +562,19 @@ export default {
         });
 
         // Check activity category
-        form.getCheckBox(this.category).check();
+        if (this.category) form.getCheckBox(this.category).check();
 
-        form.getFields().forEach((field) => {
-          console.log(field.getName());
-        });
+        // Remove all but first page if Type A
+        console.log(this.categoryOptions["Type A - Low Risk"], this.category);
+        if (this.categoryOptions["Type A - Low Risk"].includes(this.category)) {
+          pdfDoc.removePage(3);
+          pdfDoc.removePage(2);
+          pdfDoc.removePage(1);
+        }
+
+        // form.getFields().forEach((field) => {
+        //   console.log(field.getName());
+        // });
 
         this.$refs.pdf.setAttribute(
           "src",

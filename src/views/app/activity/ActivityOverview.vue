@@ -140,7 +140,7 @@
 </template>
 
 <script>
-import { mdiCalendar, mdiClock, mdiContentSave } from "@mdi/js";
+import { mdiCalendar, mdiClock } from "@mdi/js";
 import AutosaveText from "../../../components/inputs/AutosaveText.vue";
 import AutosaveSwitch from "../../../components/inputs/AutosaveSwitch.vue";
 
@@ -199,7 +199,6 @@ export default {
       // Icons
       calendarIcon: mdiCalendar,
       clockIcon: mdiClock,
-      contentSaveIcon: mdiContentSave,
 
       // Fields
       nameError: null,
