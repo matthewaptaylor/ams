@@ -120,20 +120,71 @@
 
       <v-col cols="12">
         <v-row dense>
-          <v-col cols="12">
+          <v-col
+            cols="12"
+            class="d-flex justify-space-between align-center flex-wrap"
+            style="column-gap: 1rem; row-gap: 0.5rem"
+          >
             <h2 class="text-h5">Activity Leader</h2>
+
+            <v-btn
+              color="primary"
+              :disabled="defaultActivityLeaderLoading"
+              :loading="defaultActivityLeaderLoading"
+              @click="loadDefault('Activity Leader')"
+              v-if="activityLeaderUID === $currentUser.uid"
+            >
+              <v-icon left dark>{{ formatColorFillIcon }}</v-icon>
+              Use my Default
+            </v-btn>
           </v-col>
         </v-row>
 
         <v-row dense>
           <v-col cols="12" xl="6">
+            <Alert
+              type="error"
+              fullWidth
+              :message="defaultActivityLeaderError"
+              :action="{
+                text: 'Retry',
+                callback: () => loadDefault('Activity Leader'),
+              }"
+              dismissable
+              class="mb-2"
+            />
+
             <v-row dense>
+              <v-col cols="12" lg="8">
+                <p class="mb-0" v-if="activityLeaderUID === $currentUser.uid">
+                  You're the Activity Leader, so only you can change this. If
+                  you'd like to set default contact information for the future,
+                  you can do so in
+                  <router-link :to="{ name: 'AccountProfile' }">
+                    Profile</router-link
+                  >.
+                </p>
+
+                <p class="mb-0" v-else>
+                  Only the Activity Leader can change this. See more in
+                  <router-link
+                    :to="{ name: 'ActivityPeople', params: $route.params }"
+                  >
+                    People </router-link
+                  >.
+                </p>
+              </v-col>
+
               <v-col cols="12" lg="8">
                 <AutosaveText
                   label="Name"
                   type="text"
                   :value="activityLeader.name"
                   :error="activityLeaderNameError"
+                  :disabled="
+                    activityLeaderUID !== $currentUser.uid ||
+                    defaultActivityLeaderLoading
+                  "
                   @save="
                     (v) =>
                       update(
@@ -149,8 +200,14 @@
                 <AutosaveText
                   label="Age"
                   type="number"
-                  :value="activityLeader.age"
+                  :value="
+                    activityLeader.age ? activityLeader.age.toString() : null
+                  "
                   :error="activityLeaderAgeError"
+                  :disabled="
+                    activityLeaderUID !== $currentUser.uid ||
+                    defaultActivityLeaderLoading
+                  "
                   @save="
                     (v) =>
                       update(v, 'activityLeader.age', 'activityLeaderAgeError')
@@ -164,6 +221,10 @@
                   type="text"
                   :value="activityLeader.home"
                   :error="activityLeaderHomeError"
+                  :disabled="
+                    activityLeaderUID !== $currentUser.uid ||
+                    defaultActivityLeaderLoading
+                  "
                   @save="
                     (v) =>
                       update(
@@ -181,6 +242,10 @@
                   type="text"
                   :value="activityLeader.work"
                   :error="activityLeaderWorkError"
+                  :disabled="
+                    activityLeaderUID !== $currentUser.uid ||
+                    defaultActivityLeaderLoading
+                  "
                   @save="
                     (v) =>
                       update(
@@ -198,6 +263,10 @@
                   type="text"
                   :value="activityLeader.cell"
                   :error="activityLeaderCellError"
+                  :disabled="
+                    activityLeaderUID !== $currentUser.uid ||
+                    defaultActivityLeaderLoading
+                  "
                   @save="
                     (v) =>
                       update(
@@ -215,6 +284,10 @@
                   type="textarea"
                   :value="activityLeader.address"
                   :error="activityLeaderAddressError"
+                  :disabled="
+                    activityLeaderUID !== $currentUser.uid ||
+                    defaultActivityLeaderLoading
+                  "
                   @save="
                     (v) =>
                       update(
@@ -232,13 +305,46 @@
 
       <v-col cols="12">
         <v-row dense>
-          <v-col cols="12">
+          <v-col
+            cols="12"
+            class="d-flex justify-space-between align-center flex-wrap"
+            style="column-gap: 1rem; row-gap: 0.5rem"
+          >
             <h2 class="text-h5">Contact Person</h2>
+
+            <v-btn
+              color="primary"
+              :disabled="defaultContactPersonLoading"
+              :loading="defaultContactPersonLoading"
+              @click="loadDefault('Contact Person')"
+            >
+              <v-icon left dark>{{ formatColorFillIcon }}</v-icon>
+              Use my Default
+            </v-btn>
           </v-col>
         </v-row>
 
         <v-row dense>
+          <p class="mb-0">
+            If you'd like to set default contact information for the future, you
+            can do so in
+            <router-link :to="{ name: 'AccountProfile' }"> Profile</router-link
+            >.
+          </p>
+
           <v-col cols="12" xl="6">
+            <Alert
+              type="error"
+              fullWidth
+              :message="defaultContactPersonError"
+              :action="{
+                text: 'Retry',
+                callback: () => loadDefault('Contact Person'),
+              }"
+              dismissable
+              class="mb-2"
+            />
+
             <v-row dense>
               <v-col cols="12">
                 <AutosaveText
@@ -246,6 +352,7 @@
                   type="text"
                   :value="contact.name"
                   :error="contactNameError"
+                  :disabled="defaultContactPersonLoading"
                   @save="(v) => update(v, 'contact.name', 'contactNameError')"
                 />
               </v-col>
@@ -256,6 +363,7 @@
                   type="text"
                   :value="contact.home"
                   :error="contactHomeError"
+                  :disabled="defaultContactPersonLoading"
                   @save="(v) => update(v, 'contact.home', 'contactHomeError')"
                 />
               </v-col>
@@ -266,6 +374,7 @@
                   type="text"
                   :value="contact.work"
                   :error="contactWorkError"
+                  :disabled="defaultContactPersonLoading"
                   @save="(v) => update(v, 'contact.work', 'contactWorkError')"
                 />
               </v-col>
@@ -276,6 +385,7 @@
                   type="text"
                   :value="contact.cell"
                   :error="contactCellError"
+                  :disabled="defaultContactPersonLoading"
                   @save="(v) => update(v, 'contact.cell', 'contactCellError')"
                 />
               </v-col>
@@ -286,6 +396,7 @@
                   type="textarea"
                   :value="contact.address"
                   :error="contactAddressError"
+                  :disabled="defaultContactPersonLoading"
                   @save="
                     (v) => update(v, 'contact.address', 'contactAddressError')
                   "
@@ -342,25 +453,51 @@
         </v-row>
       </v-col>
     </v-row>
+
+    <VueSignaturePad
+      width="500px"
+      height="500px"
+      ref="signaturePad"
+    ></VueSignaturePad>
   </v-container>
 </template>
 
 <script>
-import { mdiCalendar, mdiClock } from "@mdi/js";
+import { mdiFormatColorFill, mdiCalendar, mdiClock } from "@mdi/js";
 import { PDFDocument } from "pdf-lib";
+import Alert from "../../../components/Alert";
 import AutosaveRadio from "../../../components/inputs/AutosaveRadio.vue";
 import AutosaveText from "../../../components/inputs/AutosaveText.vue";
+import VueSignaturePad from "vue-signature-pad";
 
 export default {
   components: {
+    Alert,
     AutosaveRadio,
     AutosaveText,
+    VueSignaturePad,
   },
+
   data() {
     return {
       // Icons
+      formatColorFillIcon: mdiFormatColorFill,
       calendarIcon: mdiCalendar,
       clockIcon: mdiClock,
+
+      // Default activity leader/contact person fields
+      defaultLoaded: false,
+      defaultContact: null,
+      defaultBirthDate: null,
+      defaultHome: null,
+      defaultWork: null,
+      defaultCell: null,
+      defaultAddress: null,
+
+      defaultActivityLeaderLoading: false,
+      defaultContactPersonLoading: false,
+      defaultActivityLeaderError: null,
+      defaultContactPersonError: null,
 
       // Fields
       categoryError: null,
@@ -429,6 +566,7 @@ export default {
     numbers: Object,
     activityLeader: Object,
     contact: Object,
+    activityLeaderUID: String,
   },
 
   async mounted() {
@@ -456,6 +594,110 @@ export default {
   },
 
   methods: {
+    // Loads the user's default values for the activity leader/contact person
+    async loadDefault(person) {
+      // Get user defaults
+      const loadingVar =
+        person === "Activity Leader"
+          ? "defaultActivityLeaderLoading"
+          : "defaultContactPersonLoading";
+      const errorVar =
+        person === "Activity Leader"
+          ? "defaultActivityLeaderError"
+          : "defaultContactPersonError";
+
+      this[errorVar] = null;
+      this[loadingVar] = true;
+
+      // Get user defaults if not already loaded
+      if (!this.defaultLoaded) {
+        await this.$functions
+          .httpsCallable("userGet")()
+          .then((data) => {
+            // Success
+            this.defaultLoaded = true;
+
+            this.defaultBirthDate = data.data.birthDate;
+            this.defaultHome = data.data.home;
+            this.defaultWork = data.data.work;
+            this.defaultCell = data.data.cell;
+            this.defaultAddress = data.data.address;
+            this.defaultContact = data.data.contact;
+          })
+          .catch((error) => {
+            // Error
+            this[loadingVar] = false;
+
+            this[errorVar] =
+              error.message === "internal"
+                ? "An error occurred when connecting to the server."
+                : error.message;
+          });
+      }
+
+      if (!this[errorVar]) {
+        // Fill fields
+        let params;
+
+        if (person === "Activity Leader") {
+          // Activity leader
+
+          // Determine age
+          let age;
+          if (this.defaultBirthDate) {
+            const dateParts = this.defaultBirthDate.split("-");
+            const timeSinceBirth =
+              new Date().getTime() -
+              new Date(dateParts[0], dateParts[1], dateParts[2]).getTime();
+            age = Math.abs(new Date(timeSinceBirth).getUTCFullYear() - 1970);
+          }
+
+          params = {
+            "activityLeader.name": this.$currentUser.displayName,
+            "activityLeader.age": age,
+            "activityLeader.home": this.defaultHome,
+            "activityLeader.work": this.defaultWork,
+            "activityLeader.cell": this.defaultCell,
+            "activityLeader.address": this.defaultAddress,
+          };
+        } else {
+          // Contact person
+
+          params = {
+            "contact.name": this.defaultContact.name,
+            "contact.home": this.defaultContact.home,
+            "contact.work": this.defaultContact.work,
+            "contact.cell": this.defaultContact.cell,
+            "contact.address": this.defaultContact.address,
+          };
+        }
+
+        this.$functions
+          .httpsCallable("activityOverviewSet")({
+            id: this.$route.params.activityId,
+            ...params,
+          })
+          .then(() => {
+            // Success
+            this[loadingVar] = false;
+
+            // Update fields
+            Object.entries(params).forEach(([fieldName, v]) => {
+              this.$emit("update", fieldName, v);
+            });
+          })
+          .catch((error) => {
+            // Error
+            this[loadingVar] = false;
+
+            this[errorVar] =
+              error.message === "internal"
+                ? "An error occurred when connecting to the server."
+                : error.message;
+          });
+      }
+    },
+
     update(v, fieldName, errorName) {
       // Display activities
       this[errorName] = null;
@@ -521,7 +763,9 @@ export default {
           "End time": this.endTime,
 
           "Activity Leader Name": this.activityLeader.name,
-          "Activity Leader Age": this.activityLeader.age,
+          "Activity Leader Age": this.activityLeader.age
+            ? this.activityLeader.age.toString()
+            : null,
           "Activity Leader Home Phone": this.activityLeader.home,
           "Activity Leader Work Phone": this.activityLeader.work,
           "Activity Leader Cell Phone": this.activityLeader.cell,
@@ -565,7 +809,6 @@ export default {
         if (this.category) form.getCheckBox(this.category).check();
 
         // Remove all but first page if Type A
-        console.log(this.categoryOptions["Type A - Low Risk"], this.category);
         if (this.categoryOptions["Type A - Low Risk"].includes(this.category)) {
           pdfDoc.removePage(3);
           pdfDoc.removePage(2);

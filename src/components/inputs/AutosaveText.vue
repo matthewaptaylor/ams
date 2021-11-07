@@ -28,6 +28,7 @@
               : null
           "
           v-model="currentValue"
+          :disabled="disabled"
           :autocomplete="autocomplete"
           :rows="type == 'textarea' ? 3 : null"
           :rules="rules"
@@ -166,6 +167,7 @@ export default {
     icon: String, // An icon to prepend to the input
     error: Object, // An error to display to the user relating to the field
     loading: Boolean, // Whether to display a skeleton loader
+    disabled: Boolean, // Whether to display a skeleton loader
   },
 
   watch: {

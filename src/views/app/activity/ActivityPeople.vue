@@ -136,6 +136,12 @@ export default {
       // Update new roles
       this[fieldName] = { ...this[fieldName], ...v };
 
+      // Update Activity Leader UID
+      const UID = Object.entries(this.peopleByUID).find(
+        (person) => person[1] == "Activity Leader"
+      )?.[0];
+      this.$emit("update", "activityLeaderUID", UID);
+
       // Remove nullish values from object
       Object.keys(v).forEach((key) => {
         if (this[fieldName][key] == null) delete this[fieldName][key];

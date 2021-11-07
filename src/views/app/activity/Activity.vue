@@ -38,6 +38,7 @@
       :numbers="numbers"
       :activityLeader="activityLeader"
       :contact="contact"
+      :activityLeaderUID="activityLeaderUID"
       @update="update"
       v-else
     ></router-view>
@@ -86,6 +87,7 @@ export default {
       numbers: {},
       activityLeader: {},
       contact: {},
+      activityLeaderUID: null,
 
       // User data
       role: null,
@@ -186,10 +188,11 @@ export default {
           this.startTime = data.data.startTime;
           this.endDate = data.data.endDate;
           this.endTime = data.data.endTime;
-          this.role = data.data.role;
           this.numbers = data.data.numbers;
           this.activityLeader = data.data.activityLeader;
           this.contact = data.data.contact;
+          this.role = data.data.role;
+          this.activityLeaderUID = data.data.activityLeaderUID;
         })
         .catch((error) => {
           // Error
