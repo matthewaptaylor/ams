@@ -5,10 +5,18 @@
       @exitDialog="exitDialog"
       :dialog="dialog"
       :key="key"
+      @update="(fieldName, v) => $emit('update', fieldName, v)"
       @updateObject="updateObject"
     />
 
-    <component :is="$route.meta.default" @showDialog="showDialog" ref="page" />
+    <component
+      :is="$route.meta.default"
+      v-bind="$props"
+      :dialog="dialog"
+      @showDialog="showDialog"
+      @update="(fieldName, v) => $emit('update', fieldName, v)"
+      ref="page"
+    />
   </div>
 </template>
 
@@ -25,6 +33,24 @@ export default {
 
       key: 0, // Increment to force rerender of dialog on reopen
     };
+  },
+
+  props: {
+    activityName: String,
+    category: String,
+    description: String,
+    location: String,
+    scoutGroup: String,
+    scoutZoneRegion: String,
+    startDate: String,
+    startTime: String,
+    endDate: String,
+    endTime: String,
+    numbers: Object,
+    activityLeader: Object,
+    contact: Object,
+    signatures: Object,
+    activityLeaderUID: String,
   },
 
   mounted() {

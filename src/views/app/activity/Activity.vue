@@ -38,6 +38,7 @@
       :numbers="numbers"
       :activityLeader="activityLeader"
       :contact="contact"
+      :signatures="signatures"
       :activityLeaderUID="activityLeaderUID"
       @update="update"
       v-else
@@ -87,6 +88,7 @@ export default {
       numbers: {},
       activityLeader: {},
       contact: {},
+      signatures: {},
       activityLeaderUID: null,
 
       // User data
@@ -191,6 +193,7 @@ export default {
           this.numbers = data.data.numbers;
           this.activityLeader = data.data.activityLeader;
           this.contact = data.data.contact;
+          this.signatures = data.data.signatures;
           this.role = data.data.role;
           this.activityLeaderUID = data.data.activityLeaderUID;
         })

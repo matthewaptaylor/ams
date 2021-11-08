@@ -298,6 +298,15 @@
                   "
                 />
               </v-col>
+
+              <ActivityAIFShowSignature
+                :signature="signatures['Activity Leader']"
+                :image="activityLeaderImage"
+                :disabled="activityLeaderUID !== $currentUser.uid"
+                @changeSignature="
+                  () => $emit('showDialog', 'activityleadersignature')
+                "
+              />
             </v-row>
           </v-col>
         </v-row>
@@ -325,13 +334,6 @@
         </v-row>
 
         <v-row dense>
-          <p class="mb-0">
-            If you'd like to set default contact information for the future, you
-            can do so in
-            <router-link :to="{ name: 'AccountProfile' }"> Profile</router-link
-            >.
-          </p>
-
           <v-col cols="12" xl="6">
             <Alert
               type="error"
@@ -346,6 +348,16 @@
             />
 
             <v-row dense>
+              <v-col cols="12">
+                <p class="mb-0">
+                  If you'd like to set default contact information for the
+                  future, you can do so in
+                  <router-link :to="{ name: 'AccountProfile' }">
+                    Profile</router-link
+                  >.
+                </p>
+              </v-col>
+
               <v-col cols="12">
                 <AutosaveText
                   label="Name"
@@ -436,6 +448,37 @@
         </v-row>
       </v-col>
 
+      <v-col
+        cols="12"
+        v-for="(value, key) in {
+          sectionLeader: 'Section Leader',
+          groupLeader: 'Group Leader',
+        }"
+        :key="key"
+      >
+        <v-row dense>
+          <v-col cols="12">
+            <h2 class="text-h5">{{ value }}</h2>
+          </v-col>
+        </v-row>
+
+        <v-row dense>
+          <v-col cols="12" xl="6">
+            <v-row dense>
+              <ActivityAIFShowSignature
+                :signature="signatures[value]"
+                :image="
+                  key == 'sectionLeader' ? sectionLeaderImage : groupLeaderImage
+                "
+                @changeSignature="
+                  () => $emit('showDialog', `${key.toLowerCase()}signature`)
+                "
+              />
+            </v-row>
+          </v-col>
+        </v-row>
+      </v-col>
+
       <v-col cols="12">
         <v-row dense>
           <v-col cols="12">
@@ -454,10 +497,12 @@
       </v-col>
     </v-row>
 
+    <!-- Hidden signature pad to render signature images -->
     <VueSignaturePad
       width="500px"
-      height="500px"
+      height="100px"
       ref="signaturePad"
+      style="visibility: hidden"
     ></VueSignaturePad>
   </v-container>
 </template>
@@ -468,6 +513,7 @@ import { PDFDocument } from "pdf-lib";
 import Alert from "../../../components/Alert";
 import AutosaveRadio from "../../../components/inputs/AutosaveRadio.vue";
 import AutosaveText from "../../../components/inputs/AutosaveText.vue";
+import ActivityAIFShowSignature from "../../../components/app/ActivityAIFShowSignature.vue";
 import VueSignaturePad from "vue-signature-pad";
 
 export default {
@@ -475,6 +521,7 @@ export default {
     Alert,
     AutosaveRadio,
     AutosaveText,
+    ActivityAIFShowSignature,
     VueSignaturePad,
   },
 
@@ -549,10 +596,16 @@ export default {
           "Other B",
         ],
       },
+
+      // Signatures
+      activityLeaderImage: null,
+      sectionLeaderImage: null,
+      groupLeaderImage: null,
     };
   },
 
   props: {
+    dialog: Boolean,
     activityName: String,
     category: String,
     description: String,
@@ -566,16 +619,26 @@ export default {
     numbers: Object,
     activityLeader: Object,
     contact: Object,
+    signatures: Object,
     activityLeaderUID: String,
   },
 
   async mounted() {
     // Display AIF
+    this.loadSignatures();
     this.generateAIF();
   },
 
   watch: {
     // Update PDF when values updated on page
+    dialog(v) {
+      if (!v) {
+        // Update signatures whenever dialog is hidden
+        this.loadSignatures();
+        this.generateAIF();
+      }
+    },
+
     category() {
       this.generateAIF();
     },
@@ -594,6 +657,40 @@ export default {
   },
 
   methods: {
+    // Load signatures
+    loadSignatures() {
+      // Display signatures
+      Object.entries(this.signatures).forEach(([role, info]) => {
+        const decodedData = info.signature.map((line) => ({
+          color: "black",
+          points: Object.values(line).map((point) => ({
+            time: point[0],
+            x: point[1],
+            y: point[2],
+          })),
+        }));
+
+        const padRef = this.$refs.signaturePad;
+        padRef.clearSignature();
+        padRef.fromData(decodedData);
+
+        // Set correct image variable
+        let imageVar;
+        switch (role) {
+          case "Activity Leader":
+            imageVar = "activityLeaderImage";
+            break;
+          case "Section Leader":
+            imageVar = "sectionLeaderImage";
+            break;
+          case "Group Leader":
+            imageVar = "groupLeaderImage";
+            break;
+        }
+        this[imageVar] = padRef.saveSignature().data;
+      });
+    },
+
     // Loads the user's default values for the activity leader/contact person
     async loadDefault(person) {
       // Get user defaults
@@ -719,106 +816,133 @@ export default {
 
     async generateAIF() {
       // Generate the AIF PDF
-      if (this.$refs.pdf) {
-        const fields = {
-          Activity: this.activityName,
-          "Activity Name 2": this.activityName,
-          "Activity Name 3": this.activityName,
-          "Activity Name 4": this.activityName,
-          "Scout Group": this.scoutGroup,
-          "Scout Zone/Region": this.scoutZoneRegion,
+      const fields = {
+        Activity: this.activityName,
+        "Activity Name 2": this.activityName,
+        "Activity Name 3": this.activityName,
+        "Activity Name 4": this.activityName,
+        "Scout Group": this.scoutGroup,
+        "Scout Zone/Region": this.scoutZoneRegion,
 
-          "Kea numbers": this.numbers.keas
-            ? this.numbers.keas.toString()
-            : null,
-          "Cub numbers": this.numbers.cubs
-            ? this.numbers.cubs.toString()
-            : null,
-          "Scout numbers": this.numbers.scouts
-            ? this.numbers.scouts.toString()
-            : null,
-          "Venturer numbers": this.numbers.venturers
-            ? this.numbers.venturers.toString()
-            : null,
-          "Rover numbers": this.numbers.rovers
-            ? this.numbers.rovers.toString()
-            : null,
-          "Leader numbers": this.numbers.leaders
-            ? this.numbers.leaders.toString()
-            : null,
-          "Other numbers": this.numbers.others
-            ? this.numbers.others.toString()
-            : null,
-          "Total numbers": Object.values(this.numbers)
-            .reduce((prev, item) => prev + item, 0)
-            .toString(),
+        "Kea numbers": this.numbers.keas ? this.numbers.keas.toString() : null,
+        "Cub numbers": this.numbers.cubs ? this.numbers.cubs.toString() : null,
+        "Scout numbers": this.numbers.scouts
+          ? this.numbers.scouts.toString()
+          : null,
+        "Venturer numbers": this.numbers.venturers
+          ? this.numbers.venturers.toString()
+          : null,
+        "Rover numbers": this.numbers.rovers
+          ? this.numbers.rovers.toString()
+          : null,
+        "Leader numbers": this.numbers.leaders
+          ? this.numbers.leaders.toString()
+          : null,
+        "Other numbers": this.numbers.others
+          ? this.numbers.others.toString()
+          : null,
+        "Total numbers": Object.values(this.numbers)
+          .reduce((prev, item) => prev + item, 0)
+          .toString(),
 
-          "Description A": this.description,
-          "Description B": this.description,
+        "Description A": this.description,
+        "Description B": this.description,
 
-          "Location of the activity": this.location,
-          "Start date": this.startDate,
-          "Start time": this.startTime,
-          "End date": this.endDate,
-          "End time": this.endTime,
+        "Location of the activity": this.location,
+        "Start date": this.startDate,
+        "Start time": this.startTime,
+        "End date": this.endDate,
+        "End time": this.endTime,
 
-          "Activity Leader Name": this.activityLeader.name,
-          "Activity Leader Age": this.activityLeader.age
-            ? this.activityLeader.age.toString()
-            : null,
-          "Activity Leader Home Phone": this.activityLeader.home,
-          "Activity Leader Work Phone": this.activityLeader.work,
-          "Activity Leader Cell Phone": this.activityLeader.cell,
-          "Activity Leader Address": this.activityLeader.address,
+        "Activity Leader Name": this.activityLeader.name,
+        "Activity Leader Age": this.activityLeader.age
+          ? this.activityLeader.age.toString()
+          : null,
+        "Activity Leader Home Phone": this.activityLeader.home,
+        "Activity Leader Work Phone": this.activityLeader.work,
+        "Activity Leader Cell Phone": this.activityLeader.cell,
+        "Activity Leader Address": this.activityLeader.address,
 
-          "Contact Person Name": this.contact.name,
-          "Contact Person Home Phone": this.contact.home,
-          "Contact Person Work Phone": this.contact.work,
-          "Contact Person Cell Phone": this.contact.cell,
-          "Contact Person Address": this.contact.address,
-          "Emergency Call Time": this.contact.time,
-          "Emergency Call Date": this.contact.date,
-        };
+        "Contact Person Name": this.contact.name,
+        "Contact Person Home Phone": this.contact.home,
+        "Contact Person Work Phone": this.contact.work,
+        "Contact Person Cell Phone": this.contact.cell,
+        "Contact Person Address": this.contact.address,
+        "Emergency Call Time": this.contact.time,
+        "Emergency Call Date": this.contact.date,
 
-        // Get template
-        const url = "/aif.pdf";
-        const existingPdfBytes = await fetch(url).then((res) =>
-          res.arrayBuffer()
-        );
+        "Activity Leader Date": this.signatures["Activity Leader"]
+          ? this.signatures["Activity Leader"].date
+          : null,
+        "Section Leader Date": this.signatures["Section Leader"]
+          ? this.signatures["Section Leader"].date
+          : null,
+        "Group Leader Date": this.signatures["Group Leader"]
+          ? this.signatures["Group Leader"].date
+          : null,
+      };
 
-        // Fill form
-        const pdfDoc = await PDFDocument.load(existingPdfBytes);
-        pdfDoc.setTitle(`${fields.Activity} - Activity Intention Form`);
-        pdfDoc.setAuthor(
-          fields["Activity Leader Name"]
-            ? fields["Activity Leader Name"]
-            : "Scouts Aotearoa"
-        );
-        pdfDoc.setCreator("Activity Management System");
-        pdfDoc.setProducer(
-          "AMS - Scouts Aotearoa (https://ams.matthewtaylor.codes)"
-        );
-        const form = pdfDoc.getForm();
+      // Get template
+      const url = "/aif.pdf";
+      const existingPdfBytes = await fetch(url).then((res) =>
+        res.arrayBuffer()
+      );
 
-        // Loop form text fields
-        Object.entries(fields).forEach((field) => {
-          form.getTextField(field[0]).setText(field[1] ? field[1] : "");
-        });
+      // Fill form
+      const pdfDoc = await PDFDocument.load(existingPdfBytes);
+      pdfDoc.setTitle(`${fields.Activity} - Activity Intention Form`);
+      pdfDoc.setAuthor(
+        fields["Activity Leader Name"]
+          ? fields["Activity Leader Name"]
+          : "Scouts Aotearoa"
+      );
+      pdfDoc.setCreator("Activity Management System");
+      pdfDoc.setProducer(
+        "AMS - Scouts Aotearoa (https://ams.matthewtaylor.codes)"
+      );
+      const form = pdfDoc.getForm();
 
-        // Check activity category
-        if (this.category) form.getCheckBox(this.category).check();
+      // Loop form text fields
+      Object.entries(fields).forEach((field) => {
+        form.getTextField(field[0]).setText(field[1] ? field[1] : "");
+      });
 
-        // Remove all but first page if Type A
-        if (this.categoryOptions["Type A - Low Risk"].includes(this.category)) {
-          pdfDoc.removePage(3);
-          pdfDoc.removePage(2);
-          pdfDoc.removePage(1);
+      // Check activity category
+      if (this.category) form.getCheckBox(this.category).check();
+
+      // Add signatures
+      const firstPage = pdfDoc.getPages()[0];
+      [
+        { image: this.activityLeaderImage, x: 394, y: 470 },
+        { image: this.sectionLeaderImage, x: 394, y: 408 },
+        { image: this.groupLeaderImage, x: 394, y: 346 },
+      ].forEach(async ({ image, x, y }) => {
+        if (image) {
+          const embed = await pdfDoc.embedPng(image);
+          const dims = embed.scale(0.28);
+
+          // Add image
+          firstPage.drawImage(embed, {
+            x: x,
+            y: y,
+            width: dims.width,
+            height: dims.height,
+          });
         }
+      });
 
-        // form.getFields().forEach((field) => {
-        //   console.log(field.getName());
-        // });
+      // Remove all but first page if Type A
+      if (this.categoryOptions["Type A - Low Risk"].includes(this.category)) {
+        pdfDoc.removePage(3);
+        pdfDoc.removePage(2);
+        pdfDoc.removePage(1);
+      }
 
+      // form.getFields().forEach((field) => {
+      //   console.log(field.getName());
+      // });
+
+      if (this.$refs.pdf) {
         this.$refs.pdf.setAttribute(
           "src",
           await pdfDoc.saveAsBase64({ dataUri: true })

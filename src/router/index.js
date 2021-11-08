@@ -30,6 +30,7 @@ import ActivityBudget from "../views/app/activity/ActivityBudget.vue";
 import ActivityShoppingList from "../views/app/activity/ActivityShoppingList.vue";
 import ActivityGearList from "../views/app/activity/ActivityGearList.vue";
 import ActivityAIF from "../views/app/activity/ActivityAIF.vue";
+import ActivityAIFSignature from "../views/app/activity/ActivityAIFSignature.vue";
 
 Vue.use(VueRouter);
 
@@ -138,9 +139,13 @@ const routes = [
             component: ActivityGearList,
           },
           {
-            path: "aif",
+            path: "aif/:dialogRoute?", // Ensure the dialog path routes back to here
             name: "ActivityAIF",
-            component: ActivityAIF,
+            component: DialogParent,
+            meta: {
+              default: ActivityAIF,
+              dialog: ActivityAIFSignature,
+            },
           },
         ],
       },
