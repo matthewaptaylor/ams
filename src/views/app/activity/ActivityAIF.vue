@@ -900,7 +900,7 @@ export default {
       ].forEach(async ({ image, x, y }) => {
         if (image) {
           const embed = await pdfDoc.embedPng(image);
-          const dims = embed.scale(0.28);
+          const dims = embed.scale(28 / embed.height);
 
           // Add image
           firstPage.drawImage(embed, {
