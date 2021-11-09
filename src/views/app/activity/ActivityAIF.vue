@@ -1,8 +1,18 @@
 <template>
   <v-container fluid class="pa-4">
     <v-row>
-      <v-col cols="12">
+      <v-col
+        cols="12"
+        class="d-flex justify-space-between align-center flex-wrap"
+        style="column-gap: 1rem; row-gap: 0.5rem"
+      >
         <h1 class="text-h4">Activity Intention</h1>
+
+        <v-btn outlined color="success" @click="downloadAIF">
+          <v-icon left dark>{{ downloadIcon }}</v-icon>
+
+          Download
+        </v-btn>
       </v-col>
     </v-row>
 
@@ -458,7 +468,7 @@
       >
         <v-row dense>
           <v-col cols="12">
-            <h2 class="text-h5">{{ value }}</h2>
+            <h2 class="text-h5">{{ value }} Approval</h2>
           </v-col>
         </v-row>
 
@@ -478,23 +488,6 @@
           </v-col>
         </v-row>
       </v-col>
-
-      <v-col cols="12">
-        <v-row dense>
-          <v-col cols="12">
-            <h2 class="text-h5">Activity Intention Form</h2>
-          </v-col>
-        </v-row>
-
-        <v-row dense>
-          <v-col cols="12">
-            <iframe
-              ref="pdf"
-              style="border: none; width: 100%; height: 40rem"
-            ></iframe>
-          </v-col>
-        </v-row>
-      </v-col>
     </v-row>
 
     <!-- Hidden signature pad to render signature images -->
@@ -502,13 +495,18 @@
       width="500px"
       height="100px"
       ref="signaturePad"
-      style="visibility: hidden"
+      style="max-width: 100%; visibility: hidden"
     ></VueSignaturePad>
   </v-container>
 </template>
 
 <script>
-import { mdiFormatColorFill, mdiCalendar, mdiClock } from "@mdi/js";
+import {
+  mdiDownload,
+  mdiFormatColorFill,
+  mdiCalendar,
+  mdiClock,
+} from "@mdi/js";
 import { PDFDocument } from "pdf-lib";
 import Alert from "../../../components/Alert";
 import AutosaveRadio from "../../../components/inputs/AutosaveRadio.vue";
@@ -528,6 +526,7 @@ export default {
   data() {
     return {
       // Icons
+      downloadIcon: mdiDownload,
       formatColorFillIcon: mdiFormatColorFill,
       calendarIcon: mdiCalendar,
       clockIcon: mdiClock,
@@ -626,7 +625,6 @@ export default {
   async mounted() {
     // Display AIF
     this.loadSignatures();
-    this.generateAIF();
   },
 
   watch: {
@@ -635,24 +633,7 @@ export default {
       if (!v) {
         // Update signatures whenever dialog is hidden
         this.loadSignatures();
-        this.generateAIF();
       }
-    },
-
-    category() {
-      this.generateAIF();
-    },
-
-    numbers() {
-      this.generateAIF();
-    },
-
-    activityLeader() {
-      this.generateAIF();
-    },
-
-    contact() {
-      this.generateAIF();
     },
   },
 
@@ -814,7 +795,7 @@ export default {
         });
     },
 
-    async generateAIF() {
+    async downloadAIF() {
       // Generate the AIF PDF
       const fields = {
         Activity: this.activityName,
@@ -942,12 +923,14 @@ export default {
       //   console.log(field.getName());
       // });
 
-      if (this.$refs.pdf) {
-        this.$refs.pdf.setAttribute(
-          "src",
-          await pdfDoc.saveAsBase64({ dataUri: true })
-        );
-      }
+      // Download AIF
+      var blob = new Blob([await pdfDoc.save()], {
+        type: "application/pdf",
+      });
+      var link = document.createElement("a");
+      link.href = window.URL.createObjectURL(blob);
+      link.download = "AIF";
+      link.click();
     },
   },
 };
