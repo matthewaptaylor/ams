@@ -55,6 +55,7 @@ import {
   // mdiCreditCard,
   // mdiCart,
   // mdiBagPersonal,
+  mdiRoutes,
   mdiFormSelect,
 } from "@mdi/js";
 import Alert from "../../../components/Alert";
@@ -125,6 +126,11 @@ export default {
         //   to: { name: "ActivityGearList" },
         //   icon: mdiBagPersonal,
         // },
+        {
+          title: "Route",
+          to: { name: "ActivityRoute" },
+          icon: mdiRoutes,
+        },
       ];
 
       if (this.requiresRAMS) {

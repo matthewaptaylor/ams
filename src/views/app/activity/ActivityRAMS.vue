@@ -36,85 +36,83 @@
         <Alert type="error" :message="error" class="mb-2" />
 
         <v-simple-table fixed-header style="overflow: auto">
-          <template v-slot:default>
-            <thead>
-              <tr>
-                <th class="px-1" style="width: 2.25rem"></th>
+          <thead>
+            <tr>
+              <th class="px-1" style="width: 2.25rem"></th>
 
-                <th
-                  class="px-1"
-                  style="min-width: 12rem; width: calc(0.3 * (100% - 2.25rem))"
-                >
-                  Potential Incident
-                </th>
+              <th
+                class="px-1"
+                style="min-width: 12rem; width: calc(0.3 * (100% - 2.25rem))"
+              >
+                Potential Incident
+              </th>
 
-                <th
-                  class="px-1"
-                  style="min-width: 16rem; width: calc(0.4 * (100% - 2.25rem))"
-                >
-                  Controls
-                </th>
+              <th
+                class="px-1"
+                style="min-width: 16rem; width: calc(0.4 * (100% - 2.25rem))"
+              >
+                Controls
+              </th>
 
-                <th
-                  class="px-1"
-                  style="min-width: 12rem; width: calc(0.3 * (100% - 2.25rem))"
-                >
-                  Risk Level
-                </th>
-              </tr>
-            </thead>
+              <th
+                class="px-1"
+                style="min-width: 12rem; width: calc(0.3 * (100% - 2.25rem))"
+              >
+                Risk Level
+              </th>
+            </tr>
+          </thead>
 
-            <tbody v-if="!loading">
-              <ActivityRAMSRow
-                :key="id"
-                :activityId="$route.params.activityId"
-                :riskId="id"
-                :risk="risk"
-                @showDialog="(id) => $emit('showDialog', id)"
-                @updateObject="updateObject"
-                v-for="(risk, id) in risks"
-              />
-            </tbody>
+          <tbody v-if="!loading">
+            <ActivityRAMSRow
+              :key="id"
+              :activityId="$route.params.activityId"
+              :riskId="id"
+              :risk="risk"
+              @showDialog="(id) => $emit('showDialog', id)"
+              @updateObject="updateObject"
+              v-for="(risk, id) in risks"
+            />
+          </tbody>
 
-            <tbody v-if="loading">
-              <tr v-for="i in 2" :key="i">
-                <td></td>
+          <tbody v-if="loading">
+            <tr v-for="i in 2" :key="i">
+              <td></td>
 
-                <td class="px-1">
-                  <v-skeleton-loader
-                    type="text@3"
-                    class="mt-2"
-                  ></v-skeleton-loader>
-                </td>
+              <td class="px-1">
+                <v-skeleton-loader
+                  type="text@3"
+                  class="mt-2"
+                ></v-skeleton-loader>
+              </td>
 
-                <td class="px-1">
-                  <v-skeleton-loader
-                    type="text@2"
-                    class="mt-2"
-                  ></v-skeleton-loader>
-                </td>
+              <td class="px-1">
+                <v-skeleton-loader
+                  type="text@2"
+                  class="mt-2"
+                ></v-skeleton-loader>
+              </td>
 
-                <td class="px-1">
-                  <v-skeleton-loader
-                    type="text@3"
-                    class="mt-2"
-                  ></v-skeleton-loader>
-                </td>
-              </tr>
-            </tbody>
+              <td class="px-1">
+                <v-skeleton-loader
+                  type="text@3"
+                  class="mt-2"
+                ></v-skeleton-loader>
+              </td>
+            </tr>
+          </tbody>
 
-            <tbody v-if="!loading && !Object.keys(risks).length">
-              <tr>
-                <td colspan="4" class="text-center py-3">
-                  <v-icon>{{ mapSearchIcon }}</v-icon>
+          <tbody v-if="!loading && !Object.keys(risks).length">
+            <tr>
+              <td colspan="4" class="text-center py-3">
+                <v-icon>{{ mapSearchIcon }}</v-icon>
 
-                  <v-list-item-title class="text-wrap text--secondary">
-                    We searched all over, but there's nothing here.
-                  </v-list-item-title>
-                </td>
-              </tr>
-            </tbody>
-          </template>
+                <v-list-item-title class="text-wrap text--secondary">
+                  We searched all over, but there's nothing here.
+                </v-list-item-title>
+              </td>
+            </tr>
+          </tbody>
         </v-simple-table>
       </v-col>
     </v-row>

@@ -929,7 +929,7 @@ export default {
       });
       var link = document.createElement("a");
       link.href = window.URL.createObjectURL(blob);
-      link.download = "AIF";
+      link.download = `${fields.Activity} - Activity Intention Form`;
       link.click();
     },
   },

@@ -6,9 +6,7 @@ Run lighthouse
 Make universal dialog component
 When user is created search for peopleByEmail references and add them
 Deadline emails
-What if the assigned activity leader doesn't have an account? Means any editors can change people settings
-If you create an activity and aren't leading or assisting, you should be able to view
-Run through caniuse
+Run through caniuse/polyfills
 If you delete yourself when on activity create, the redirect won't work
 Prevent abuse with App Check firebase
 Convert firestore/everything else to production mode
@@ -16,7 +14,6 @@ Test on other browsers
 Address security vulnerabilities
 Stop navigation away from page if something is still submitting
 Make view only users work
-Nothing stopping >1 Activity Leader being set - how wil lthis work with AIF generation?
 Skeleton loader on menu items, grey out instead of hiding AIF/RAMS
 
 ===============
@@ -37,6 +34,7 @@ Use v-avatar instead of the module that generates avatars
 When checking if error == "internal", should it be error == "INTERNAL"?
 What happens to a user's activities if they delete their account? PoepleByUid moved to peoplebyemail is a bad idea
 Delete account, delete all UserByUid records and turn into UserByEmial
+Signature server time zone with new Date()
 
 ===============
    Better UX
@@ -62,6 +60,7 @@ Skeleton loaders for autosave don't line up, look at AccountProfile
 Reload button
 Combobox enter key
 Can still go on AIF or RAMS page if disabled
+Data iterators instead of table for RAMS
 
 ===============
  Nice Features
@@ -73,3 +72,5 @@ Add plan, do, review collaborative feature - and add ability for the best activi
 Swipe between views on mobile e.g. swipe left to get from overview to plan
 Document everything
 Customise firebase emails
+Add help dropdowns/text to everything, like create activity
+Toggle sidebar size

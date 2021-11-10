@@ -13,6 +13,7 @@
             alt="Signature"
             class="d-block"
             style="width: 100%"
+            draggable="false"
           />
         </v-sheet>
       </v-col>

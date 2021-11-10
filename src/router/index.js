@@ -24,6 +24,7 @@ import Activity from "../views/app/activity/Activity.vue";
 import ActivityOverview from "../views/app/activity/ActivityOverview.vue";
 import ActivityPeople from "../views/app/activity/ActivityPeople.vue";
 import ActivityPlan from "../views/app/activity/ActivityPlan.vue";
+import ActivityRoute from "../views/app/activity/ActivityRoute.vue";
 import ActivityRAMS from "../views/app/activity/ActivityRAMS.vue";
 import ActivityRAMSRisk from "../views/app/activity/ActivityRAMSRisk.vue";
 import ActivityBudget from "../views/app/activity/ActivityBudget.vue";
@@ -113,6 +114,11 @@ const routes = [
             path: "plan",
             name: "ActivityPlan",
             component: ActivityPlan,
+          },
+          {
+            path: "route",
+            name: "ActivityRoute",
+            component: ActivityRoute,
           },
           {
             path: "rams/:dialogRoute?", // Ensure the dialog path routes back to here
