@@ -76,7 +76,7 @@
           </tbody>
 
           <tbody v-if="loading">
-            <tr v-for="i in 2" :key="i">
+            <tr class="hideHover" v-for="i in 2" :key="i">
               <td></td>
 
               <td class="px-1">
@@ -103,7 +103,7 @@
           </tbody>
 
           <tbody v-if="!loading && !Object.keys(risks).length">
-            <tr>
+            <tr class="hideHover">
               <td colspan="4" class="text-center py-3">
                 <v-icon>{{ mapSearchIcon }}</v-icon>
 
@@ -125,6 +125,9 @@ th {
 }
 td {
   vertical-align: top;
+}
+.hideHover:hover {
+  background: none !important;
 }
 </style>
 

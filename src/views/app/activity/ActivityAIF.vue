@@ -18,6 +18,8 @@
 
     <v-row>
       <v-col cols="12" xl="6">
+        <Alert type="error" :message="tableError" class="mb-2" dismissable />
+
         <v-row dense>
           <v-col cols="12">
             <AutosaveRadio
@@ -531,6 +533,8 @@ export default {
       calendarIcon: mdiCalendar,
       clockIcon: mdiClock,
 
+      tableError: null,
+
       // Default activity leader/contact person fields
       defaultLoaded: false,
       defaultContact: null,
@@ -912,11 +916,71 @@ export default {
         }
       });
 
-      // Remove all but first page if Type A
       if (this.categoryOptions["Type A - Low Risk"].includes(this.category)) {
+        // Remove all but first page if Type A
         pdfDoc.removePage(3);
         pdfDoc.removePage(2);
         pdfDoc.removePage(1);
+      } else {
+        // Fill in others
+        const tables = await new Promise((resolve, reject) => {
+          // Get data from the route, emergencyRoute and participants tables
+          let tables = { route: null, emergencyRoute: null };
+          this.tableError = null;
+
+          Object.keys(tables).forEach((table) => {
+            this.$functions
+              .httpsCallable("activityTableGet")({
+                id: this.$route.params.activityId,
+                tableId: table,
+              })
+              .then((data) => {
+                // Success
+                tables[table] = data.data.rows;
+
+                // Check if can resolve
+                if (
+                  Object.values(tables).every((tableData) => tableData !== null)
+                ) {
+                  resolve(tables);
+                }
+              })
+              .catch((error) => {
+                // Error
+                this.tableError =
+                  error.message === "internal"
+                    ? "An error occurred when connecting to the server."
+                    : error.message;
+
+                reject();
+              });
+          });
+        });
+
+        // Fill in page 2 tables
+        const tableNames = {
+          "Activity Plans Map type and no Date Route Description Overnight at map referenceRow":
+            tables.route,
+          "Alternate  Emergency Plans Map type and no Date Route Description Overnight at map referenceRow":
+            tables.emergencyRoute,
+        };
+
+        Object.entries(tableNames).forEach(([field, data]) => {
+          let rowIndex = 1;
+
+          Object.keys(data)
+            .sort()
+            .slice(0, 8)
+            .forEach((index) => {
+              const row = data[index];
+
+              form.getTextField(`${field}${rowIndex}`).setText(row[0]);
+              form.getTextField(`${field}${rowIndex}_2`).setText(row[1]);
+              form.getTextField(`${field}${rowIndex}_3`).setText(row[2]);
+
+              rowIndex++;
+            });
+        });
       }
 
       // form.getFields().forEach((field) => {

@@ -53,7 +53,7 @@
           flat
           dense
           background-color="#fafafa"
-          v-model="currentRow[name]"
+          v-model="currentRow[Object.keys(columns).indexOf(name)]"
           :placeholder="name"
           hide-details="auto"
         ></v-text-field>
@@ -78,7 +78,7 @@ export default {
 
   props: {
     columns: Object,
-    row: Object,
+    row: Array,
   },
 
   data() {
@@ -92,21 +92,26 @@ export default {
       removeError: null,
 
       // Track user inputs
-      currentRow: { ...this.row },
+      currentRow: [...this.row],
     };
   },
 
   watch: {
+    row(v) {
+      // Check if new row is same as currentRow
+      if (v.every((v, i) => v === this.currentRow[i])) {
+        this.$emit("update", null);
+      }
+    },
+
     currentRow: {
       deep: true,
 
       handler(v) {
         // Check if currentRow and row are the same
-        const rowKeys = Object.keys(this.row);
-        let equals = rowKeys.length === Object.keys(v).length;
-        Object.entries(v).forEach(([row, value]) => {
-          if (!rowKeys.includes(row) || this.row[row] !== value) equals = false;
-        });
+        let equals =
+          this.row.length === v.length &&
+          this.row.every((data, index) => data === v[index]);
 
         this.$emit("update", equals ? null : v);
       },
