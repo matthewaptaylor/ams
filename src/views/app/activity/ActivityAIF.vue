@@ -364,8 +364,8 @@
                 <p class="mb-0">
                   If you'd like to set default contact information for the
                   future, you can do so in
-                  <router-link :to="{ name: 'AccountProfile' }">
-                    Profile</router-link
+                  <router-link :to="{ name: 'AccountProfile' }"
+                    >Profile </router-link
                   >.
                 </p>
               </v-col>
@@ -936,7 +936,7 @@ export default {
               })
               .then((data) => {
                 // Success
-                tables[table] = data.data.rows;
+                tables[table] = data.data ? data.data.rows : {};
 
                 // Check if can resolve
                 if (

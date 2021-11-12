@@ -10,19 +10,16 @@
       <v-col cols="12">
         <v-row dense>
           <v-col cols="12">
-            <Editor />
+            <p class="mb-0">
+              Go through your activity, step by step. What needs to happen, and
+              when? What equipment will you need? Who's job is it to run? You
+              may find it useful to brainstorm potential risks that you can
+              refer to later when filling out your RAMS form.
+            </p>
           </v-col>
 
-          <v-col cols="12" class="mt-2">
-            <v-btn
-              color="primary"
-              :disabled="loading"
-              :loading="loading"
-              @click="save"
-            >
-              <v-icon left dark>{{ contentSaveIcon }}</v-icon>
-              Save
-            </v-btn>
+          <v-col cols="12">
+            <AutosaveTable name="plan" :columns="columns" />
           </v-col>
         </v-row>
       </v-col>
@@ -31,19 +28,36 @@
 </template>
 
 <script>
-import { mdiContentSave } from "@mdi/js";
-import Editor from "../../../components/inputs/Editor.vue";
+import AutosaveTable from "../../../components/inputs/AutosaveTable.vue";
 
 export default {
-  components: { Editor },
+  components: {
+    AutosaveTable,
+  },
+
   data() {
     return {
-      contentSaveIcon: mdiContentSave,
-      loading: false,
+      columns: {
+        When: {
+          minWidth: "8rem",
+        },
+        Description: {
+          minWidth: "12rem",
+          rows: 2,
+        },
+        Equipment: {
+          minWidth: "8rem",
+          rows: 2,
+        },
+        Responsibility: {
+          minWidth: "8rem",
+        },
+        "Potential Risks": {
+          minWidth: "8rem",
+          rows: 2,
+        },
+      },
     };
-  },
-  methods: {
-    save() {},
   },
 };
 </script>

@@ -2,9 +2,14 @@
   <v-simple-table fixed-header style="overflow: auto">
     <thead>
       <tr>
-        <th class="px-1" style="width: 2.25rem"></th>
+        <th class="px-1" style="min-width: 44px"></th>
 
-        <th v-for="(data, name) in columns" :key="name" class="text-left">
+        <th
+          v-for="(data, name) in columns"
+          :key="name"
+          class="text-left"
+          :style="{ 'min-width': data.minWidth }"
+        >
           {{ name }}
         </th>
       </tr>
@@ -12,12 +17,8 @@
 
     <tbody>
       <tr class="hideHover">
-        <td :colspan="columnNum + 1" class="pa-1">
-          <div
-            class="d-flex align-center"
-            style="gap: 0.5rem"
-            v-if="!loading && !error"
-          >
+        <td :colspan="columnNum + 1" class="pa-1" v-if="!loading">
+          <div class="d-flex align-center" style="gap: 0.5rem" v-if="!error">
             <v-tooltip bottom>
               <template v-slot:activator="{ on }">
                 <div v-on="on">
@@ -124,6 +125,7 @@ export default {
       allSaved: true,
       savedInterval: null,
       timeSinceSaved: null,
+      lastSaved: null,
 
       // Data
       columnNum: Object.keys(this.columns).length,
@@ -141,7 +143,7 @@ export default {
     allSaved(v) {
       if (!v && !this.savedInterval) {
         // Track time since last saved
-        const lastSaved = new Date().getTime();
+        this.lastSaved = new Date().getTime();
         this.timeSinceSaved = 0;
 
         this.savedInterval = setInterval(() => {
@@ -150,7 +152,7 @@ export default {
             this.savedInterval = null;
           } else {
             this.timeSinceSaved = Math.floor(
-              (new Date().getTime() - lastSaved) / 1000
+              (new Date().getTime() - this.lastSaved) / 1000
             );
           }
         }, 1000);
@@ -271,9 +273,10 @@ export default {
         (Object.keys(this.rowChanges).length ||
           Object.keys(this.removedRows).length)
       ) {
+        const startTime = new Date().getTime();
         this.saveLoading = true;
         this.saveError = null;
-        const sentChanges = this.rowChanges;
+        const sentChanges = JSON.parse(JSON.stringify(this.rowChanges));
 
         this.$functions
           .httpsCallable("activityTableSet")({
@@ -285,6 +288,7 @@ export default {
           .then(() => {
             // Success
             this.saveLoading = false;
+            this.lastSaved = startTime;
 
             this.rows = JSON.parse(
               JSON.stringify(Object.assign(this.rows, sentChanges))

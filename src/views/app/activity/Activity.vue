@@ -50,7 +50,7 @@
 import {
   mdiInformation,
   mdiAccountGroup,
-  // mdiClipboardList,
+  mdiClipboardList,
   mdiAlert,
   // mdiCreditCard,
   // mdiCart,
@@ -110,21 +110,11 @@ export default {
           to: { name: "ActivityPeople" },
           icon: mdiAccountGroup,
         },
-        // { title: "Plan", to: { name: "ActivityPlan" }, icon: mdiClipboardList },
+        { title: "Plan", to: { name: "ActivityPlan" }, icon: mdiClipboardList },
         // {
         //   title: "Budget",
         //   to: { name: "ActivityBudget" },
         //   icon: mdiCreditCard,
-        // },
-        // {
-        //   title: "Shopping List",
-        //   to: { name: "ActivityShoppingList" },
-        //   icon: mdiCart,
-        // },
-        // {
-        //   title: "Gear List",
-        //   to: { name: "ActivityGearList" },
-        //   icon: mdiBagPersonal,
         // },
         {
           title: "Route",

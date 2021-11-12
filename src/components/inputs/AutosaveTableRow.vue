@@ -1,6 +1,6 @@
 <template>
   <tr class="pt-4 can-select">
-    <td class="pa-1" style="width: 2.25rem">
+    <td class="py-2 px-1" style="width: 2.25rem">
       <v-tooltip right>
         <template v-slot:activator="{ on, attrs }">
           <v-btn
@@ -48,6 +48,18 @@
 
     <template v-if="!showRemove">
       <td v-for="(data, name) in columns" :key="name">
+        <v-textarea
+          solo
+          flat
+          dense
+          background-color="#fafafa"
+          v-model="currentRow[Object.keys(columns).indexOf(name)]"
+          :placeholder="name"
+          hide-details="auto"
+          :rows="data.rows"
+          v-if="data.rows > 1"
+        ></v-textarea>
+
         <v-text-field
           solo
           flat
@@ -56,6 +68,7 @@
           v-model="currentRow[Object.keys(columns).indexOf(name)]"
           :placeholder="name"
           hide-details="auto"
+          v-else
         ></v-text-field>
       </td>
     </template>
@@ -64,7 +77,7 @@
 
 <style scoped>
 td {
-  padding: 4px 4px 3px 4px !important;
+  padding: 8px 4px 7px 4px !important;
   vertical-align: top;
 }
 </style>
