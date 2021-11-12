@@ -10,15 +10,18 @@
       <v-col>
         <v-row dense>
           <v-col cols="12">
-            The <strong>Activity Leader</strong> accepts responsibility for the
-            running of the activity, and confirms this by signing an AIF when
-            needed. If they are a youth member, the activity would count towards
-            a "Lead" in the Award Scheme. People <strong>Assisting</strong> are
-            typically people who are helping run the activity, under the
-            Activity Leader's direction. <strong>Editors</strong> are generally
-            people in a supervision role, such as a Group Leader, and
-            <strong>Viewers</strong> are anyone who you want to be able to see
-            the activity's paperwork, but not change it.
+            <p class="mb-0">
+              The <strong>Activity Leader</strong> accepts responsibility for
+              the running of the activity, and confirms this by signing an AIF
+              when needed. If they are a youth member, the activity would count
+              towards a "Lead" in the Award Scheme. People
+              <strong>Assisting</strong> are typically people who are helping
+              run the activity, under the Activity Leader's direction.
+              <strong>Editors</strong> are generally people in a supervision
+              role, such as a Section Group Leader (as they need to sign your
+              AIF), and <strong>Viewers</strong> are anyone who you want to be
+              able to see the activity's paperwork, but not change it.
+            </p>
           </v-col>
 
           <v-col cols="12" v-if="error || loading">
