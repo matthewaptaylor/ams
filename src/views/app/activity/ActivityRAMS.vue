@@ -6,7 +6,17 @@
         class="d-flex justify-space-between align-center flex-wrap"
         style="column-gap: 1rem; row-gap: 0.5rem"
       >
-        <h1 class="text-h4">RAMS</h1>
+        <h1 class="text-h4 flex-grow-1">RAMS</h1>
+
+        <v-btn
+          outlined
+          color="success"
+          @click="downloadRAMS"
+          :disabled="loading"
+        >
+          <v-icon left dark>{{ downloadIcon }}</v-icon>
+          Download
+        </v-btn>
 
         <v-btn
           color="primary"
@@ -84,7 +94,7 @@
                         You could remove the hazard of rocks and uneven ground
                         by avoiding those routes. You could also minimise the
                         risk by making sure everybody wears strong and sturdy
-                        shows.
+                        shoes.
                       </li>
 
                       <li>
@@ -257,13 +267,19 @@ td {
 
 <script>
 import {
+  mdiDownload,
   mdiPlus,
   mdiInformationOutline,
   mdiMapSearch,
   mdiDelete,
   mdiPencil,
 } from "@mdi/js";
-
+import {
+  PDFDocument,
+  PageSizes,
+  StandardFonts,
+  layoutMultilineText,
+} from "pdf-lib";
 import Alert from "../../../components/Alert.vue";
 import ActivityRAMSRow from "../../../components/app/ActivityRAMSRow.vue";
 
@@ -273,6 +289,7 @@ export default {
   data() {
     return {
       // Icons
+      downloadIcon: mdiDownload,
       plusIcon: mdiPlus,
       informationOutlineIcon: mdiInformationOutline,
       mapSearchIcon: mdiMapSearch,
@@ -315,6 +332,201 @@ export default {
               ? "An error occurred when connecting to the server."
               : error.message;
         });
+    },
+
+    async downloadRAMS() {
+      // Create document
+      const pdfDoc = await PDFDocument.create();
+      pdfDoc.setTitle(
+        `${this.$attrs.activityName} - Risk Analysis and Management System`
+      );
+      pdfDoc.setAuthor(
+        this.$attrs.activityLeader.name
+          ? this.$attrs.activityLeader.name
+          : "Scouts Aotearoa"
+      );
+      pdfDoc.setCreator("Activity Management System");
+      pdfDoc.setProducer(
+        "AMS - Scouts Aotearoa (https://ams.matthewtaylor.codes)"
+      );
+
+      // Add first page
+      const page = pdfDoc.addPage(PageSizes.A4);
+      const { width, height } = page.getSize();
+
+      // Set constants
+      const margin = width * (25.4 / 210);
+      const midMargin = width / 21;
+      const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica);
+      const helveticaBoldFont = await pdfDoc.embedFont(
+        StandardFonts.HelveticaBold
+      );
+      const fontSize = 12;
+      const lineHeight = fontSize * 1.2;
+      const startLeft = margin;
+      const endLeft = midMargin / 2 + width * 0.25;
+      const startRight = endLeft + midMargin;
+      const endRight = width - margin;
+      const linesInPage = Math.floor((height - margin * 2) / lineHeight);
+
+      // Calculate the lines needed for a risk
+      const calculateRisk = (risk) => {
+        // Store the left and right side of the risk display
+        let leftLines = [];
+        let rightLines = [];
+
+        // Add lines to the left and right side of the risk
+        [
+          "Category:",
+          risk.category,
+          "Risk:",
+          risk.risk,
+          "Hazard:",
+          risk.hazard,
+        ].forEach((prop) =>
+          leftLines.push(...calculateParagraph(prop, endLeft - startLeft))
+        );
+        [
+          "Controls:",
+          risk.controls,
+          "Responsibility:",
+          risk.responsibility,
+          "Risk Level:",
+          `Occurrence is ${risk.likelihood.toLowerCase()}, with ${risk.consequence.toLowerCase()} consequences. Therefore, this risk is ${
+            risk.acceptable ? "acceptable" : "not acceptable"
+          }.`,
+        ].forEach((prop) =>
+          rightLines.push(...calculateParagraph(prop, endRight - startRight))
+        );
+
+        return { leftLines, rightLines };
+      };
+
+      // Split a paragraph into lines based on available space
+      const calculateParagraph = (text, width) => {
+        const { lines } = layoutMultilineText(text, {
+          alignment: "left",
+          font: helveticaFont,
+          fontSize: fontSize,
+          lineHeight: lineHeight,
+          bounds: {
+            width: width,
+            height: Infinity,
+          },
+        });
+
+        return lines.map((line) => line.text);
+      };
+
+      const risks = Object.values(this.risks);
+
+      let currentLine = 0; // Store the number of lines written to track page breaks
+
+      risks.forEach((risk) => {
+        const { leftLines, rightLines } = calculateRisk(risk);
+
+        // Loop through the lines needed for this risk
+        const maxLine =
+          currentLine + Math.max(leftLines.length, rightLines.length) + 3;
+        let riskLine = 0;
+        while (currentLine < maxLine) {
+          // Calculate page and position
+          const pageIndex = Math.floor(currentLine / linesInPage);
+          const pages = pdfDoc.getPages();
+          let currentPage;
+
+          if (pages.length <= pageIndex) {
+            // Add a new page if needed
+            currentPage = pdfDoc.addPage(PageSizes.A4);
+          } else {
+            // Use current last page
+            currentPage = pages[pageIndex];
+          }
+
+          // Calculate position on page
+          const y = height - margin - (currentLine % linesInPage) * lineHeight;
+
+          if (currentLine + 3 >= maxLine) {
+            // Last three lines, add seperator
+            if (currentLine + 2 === maxLine) {
+              // Add line
+              currentPage.drawLine({
+                start: { x: startLeft, y: y - 0.5 + lineHeight / 2 },
+                end: { x: endRight, y: y - 0.5 + lineHeight / 2 },
+                thickness: 0.5,
+                opacity: 0.25,
+              });
+            }
+          } else {
+            // Line to add
+            if (leftLines[riskLine]) {
+              currentPage.drawText(leftLines[riskLine], {
+                font: ["Category:", "Risk:", "Hazard:"].includes(
+                  leftLines[riskLine]
+                )
+                  ? helveticaBoldFont
+                  : helveticaFont,
+                size: fontSize,
+                x: startLeft,
+                y: y,
+              });
+            }
+
+            if (rightLines[riskLine]) {
+              currentPage.drawText(rightLines[riskLine], {
+                font: ["Controls:", "Responsibility:", "Risk Level:"].includes(
+                  rightLines[riskLine]
+                )
+                  ? helveticaBoldFont
+                  : helveticaFont,
+                size: fontSize,
+                x: startRight,
+                y: y,
+              });
+            }
+          }
+
+          // Increment line counters
+          riskLine++;
+          currentLine++;
+        }
+
+        linesInPage;
+      });
+
+      // Add margin comments
+      pdfDoc.getPages().forEach((page, index) => {
+        page.drawText(
+          calculateParagraph(
+            `${this.$attrs.activityName} - Risk Analysis and Management System`,
+            endRight - startLeft
+          )[0],
+          {
+            font: helveticaFont,
+            size: fontSize,
+            x: margin,
+            y: height - margin / 2,
+            opacity: 0.5,
+          }
+        );
+
+        page.drawText("Page " + (index + 1), {
+          font: helveticaFont,
+          size: fontSize,
+          x: margin,
+          y: margin / 2,
+          opacity: 0.5,
+        });
+      });
+
+      // Download AIF
+      var blob = new Blob([await pdfDoc.save()], {
+        type: "application/pdf",
+      });
+      var link = document.createElement("a");
+      link.href = window.URL.createObjectURL(blob);
+      link.download = `${this.$attrs.activityName} - Risk Analysis and Management System`;
+      link.click();
     },
 
     // RAMS has been updated

@@ -983,10 +983,6 @@ export default {
         });
       }
 
-      // form.getFields().forEach((field) => {
-      //   console.log(field.getName());
-      // });
-
       // Download AIF
       var blob = new Blob([await pdfDoc.save()], {
         type: "application/pdf",

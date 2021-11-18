@@ -1,6 +1,11 @@
 ===============
       MVP
 ===============
+CC in people who share activities with others in the email
+Replyto for sharing email
+Check if in peopleByEmail when accessing activity
+Download RAMS
+Make view only users work
 ARIA/a11y
 Run lighthouse
 Make universal dialog component
@@ -13,7 +18,6 @@ Convert firestore/everything else to production mode
 Test on other browsers
 Address security vulnerabilities
 Stop navigation away from page if something is still submitting
-Make view only users work
 Skeleton loader on menu items, grey out instead of hiding AIF/RAMS
 Autosave table, if edit while saving, registers as being up to date
 Remove tiptap and planOld?
@@ -21,6 +25,9 @@ Remove tiptap and planOld?
 ===============
   Minor Fixes
 ===============
+Loading soinner for download buttons
+Warning if default AL info/ contact info isn't set
+Autosave aif numbers when 0 keep on loading firefox
 Scrollbar for firefox and edge
 Ensure firestore client/frontend web sdk can't be accessed by anyone - security risk
 Delete user, change all UIDs back to email
