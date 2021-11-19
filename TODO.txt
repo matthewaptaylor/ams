@@ -1,9 +1,6 @@
 ===============
       MVP
 ===============
-CC in people who share activities with others in the email
-Replyto for sharing email
-Check if in peopleByEmail when accessing activity
 Make view only users work
 Run lighthouse
 Make universal dialog component
@@ -16,7 +13,6 @@ Address security vulnerabilities
 Stop navigation away from page if something is still submitting
 Skeleton loader on menu items, grey out instead of hiding AIF/RAMS
 Autosave table, if edit while saving, registers as being up to date
-Remove tiptap and planOld?
 
 ===============
   Minor Fixes
