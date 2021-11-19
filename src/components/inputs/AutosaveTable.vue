@@ -75,7 +75,7 @@
         :row="rows[index]"
         @update="(v) => update(index, v)"
         @remove="() => remove(index)"
-        v-for="index in Object.keys(rows).sort()"
+        v-for="index in Object.keys(rows ? rows : {}).sort()"
         :key="index"
       />
     </tbody>
@@ -179,7 +179,7 @@ export default {
     },
 
     newRow() {
-      const rowEntries = Object.entries(this.rows);
+      const rowEntries = Object.entries(this.rows ? this.rows : {});
       const lastRow = rowEntries[rowEntries.length - 1];
 
       if (
@@ -195,7 +195,7 @@ export default {
         do {
           key = new Date().getTime() + i;
           i++;
-        } while (Object.keys(this.rows).includes(key));
+        } while (Object.keys(this.rows ? this.rows : {}).includes(key));
 
         // Add new blank row
         this.rows = { ...this.rows, [key]: new Array(this.columnNum).fill("") };
@@ -226,7 +226,7 @@ export default {
 
       // Remove row from current storage
       this.rows = Object.fromEntries(
-        Object.entries(this.rows).filter((_, i) => i !== index)
+        Object.entries(this.rows ? this.rows : {}).filter((_, i) => i !== index)
       );
       delete this.rowChanges[index];
 
@@ -291,7 +291,9 @@ export default {
             this.lastSaved = startTime;
 
             this.rows = JSON.parse(
-              JSON.stringify(Object.assign(this.rows, sentChanges))
+              JSON.stringify(
+                Object.assign(this.rows ? this.rows : {}, sentChanges)
+              )
             ); // Avoid JS shallow cloning "feature"
 
             this.removedRows = [];

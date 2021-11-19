@@ -4,15 +4,11 @@
 CC in people who share activities with others in the email
 Replyto for sharing email
 Check if in peopleByEmail when accessing activity
-Download RAMS
 Make view only users work
-ARIA/a11y
 Run lighthouse
 Make universal dialog component
-When user is created search for peopleByEmail references and add them
 Deadline emails
 Run through caniuse/polyfills
-If you delete yourself when on activity create, the redirect won't work
 Prevent abuse with App Check firebase
 Convert firestore/everything else to production mode
 Test on other browsers
@@ -30,20 +26,16 @@ Warning if default AL info/ contact info isn't set
 Autosave aif numbers when 0 keep on loading firefox
 Scrollbar for firefox and edge
 Ensure firestore client/frontend web sdk can't be accessed by anyone - security risk
-Delete user, change all UIDs back to email
-Privacy data laws, terms of service
 Press enter to open dialog when tabbed onto date picker, or even when focused
 Implement ma of 100 users because firebase.auth.getusers has max of 100?
 Stop context menu appearing on installed app on long tap
 XSS vulnerabilities in date stored in firestore and other firebase auth things like displayname
 Click sign out button if not connected to server
 Make sure database rules are set correctly and are secure
-Add top negative margin to person remove icon on mobile? or just make it align somehow?
 Use v-avatar instead of the module that generates avatars
 When checking if error == "internal", should it be error == "INTERNAL"?
 What happens to a user's activities if they delete their account? PoepleByUid moved to peoplebyemail is a bad idea
-Delete account, delete all UserByUid records and turn into UserByEmial
-Signature server time zone with new Date()
+Signature server time zone wrong with new Date()
 
 ===============
    Better UX
@@ -52,34 +44,24 @@ Sticky/always visible sidebar when scrolling on desktop
 Delete activities
 Preload fonts and images
 Chunk vendors to only load needed views initially
-Add logo and customise google login screen
-When animating bolile view stack, scrollbars appear
 Pull to refresh
 Implement reload page/get data from server again (refresh icon button that appears in sidebar item? What about desktop nav?)
 Organise activities by date
-Change add activity so the conversion to {email: role} is done on the front end and only checked on the backend
+Search for activities
 If redirected to login, redirect to correct page after login. Do the same with reauthentication, so we can enable email link reauth?
-Implement document title changing
+Implement webpage html title changing
 transition on v-if for autosave
-Transitions on alert component
 Use email link for reauthentication
 Test all functions, vulnerabilities, make sure dates are valid, etc
 All dropdowns/menu appear below select input field
 Skeleton loaders for autosave don't line up, look at AccountProfile
-Reload button
-Combobox enter key
+Combobox autosave enter key
 Can still go on AIF or RAMS page if disabled
-Data iterators instead of table for RAMS
 
 ===============
  Nice Features
 ===============
-Add claims for authentication first, and if token too big then check db? Do tokens only update every hour?
 v-autocomplete for searching emails to change activity leader
 Dark mode
-Add plan, do, review collaborative feature - and add ability for the best activities to be shared to a public page for ideas
 Swipe between views on mobile e.g. swipe left to get from overview to plan
-Document everything
-Customise firebase emails
-Add help dropdowns/text to everything, like create activity
 Toggle sidebar size
