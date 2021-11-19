@@ -17,7 +17,7 @@
         <v-toolbar-title>{{ title }}</v-toolbar-title>
       </v-toolbar>
 
-      <NavMobile :items="navItems" v-if="navItems" />
+      <NavMobile :items="navItems" v-if="navItems" :loading="loading" />
     </div>
 
     <v-container class="pa-2 px-md-4">
@@ -39,6 +39,7 @@
           :subtitle="subtitle"
           :items="navItems"
           v-if="!$vuetify.breakpoint.mobile && navItems"
+          :loading="loading"
         />
 
         <v-sheet
@@ -93,6 +94,7 @@ export default {
     subtitle: String,
     breadcrumbItems: Array,
     navItems: Array,
+    loading: Boolean,
   },
 
   created() {

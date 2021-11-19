@@ -6,6 +6,7 @@
           <v-list-item-title class="text-h6">
             {{ title }}
           </v-list-item-title>
+
           <v-list-item-subtitle v-if="subtitle">
             {{ subtitle }}
           </v-list-item-subtitle>
@@ -16,15 +17,27 @@
 
       <v-list dense nav>
         <v-list-item-group color="primary">
+          <template v-if="loading">
+            <div v-for="i in 2" :key="i">
+              <v-skeleton-loader
+                style="height: 40px"
+                class="mb-1"
+                type="image"
+              ></v-skeleton-loader>
+            </div>
+          </template>
+
           <v-list-item
             v-for="item in items"
             :to="item.to"
             :key="item.title"
             link
+            v-else
           >
             <v-list-item-icon>
               <v-icon>{{ item.icon }}</v-icon>
             </v-list-item-icon>
+
             <v-list-item-content>
               <v-list-item-title>{{ item.title }}</v-list-item-title>
             </v-list-item-content>
@@ -34,13 +47,14 @@
     </v-navigation-drawer>
   </v-sheet>
 </template>
-<style scoped></style>
+
 <script>
 export default {
   props: {
     title: String,
     subtitle: String,
     items: Array,
+    loading: Boolean,
   },
 };
 </script>

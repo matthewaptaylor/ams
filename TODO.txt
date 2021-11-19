@@ -11,7 +11,6 @@ Convert firestore/everything else to production mode
 Test on other browsers
 Address security vulnerabilities
 Stop navigation away from page if something is still submitting
-Skeleton loader on menu items, grey out instead of hiding AIF/RAMS
 Autosave table, if edit while saving, registers as being up to date
 
 ===============

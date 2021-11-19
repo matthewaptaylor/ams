@@ -3,6 +3,7 @@
     :title="name"
     :breadcrumbItems="breadcrumbItems"
     :navItems="navItems"
+    :loading="loading"
   >
     <div
       class="d-flex justify-center align-center pa-4 fill-height"
