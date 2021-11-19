@@ -12,7 +12,8 @@
           outlined
           color="success"
           @click="downloadRAMS"
-          :disabled="loading"
+          :disabled="loading || downloadLoading"
+          :loading="downloadLoading"
         >
           <v-icon left dark>{{ downloadIcon }}</v-icon>
           Download
@@ -296,6 +297,8 @@ export default {
       deleteIcon: mdiDelete,
       pencilIcon: mdiPencil,
 
+      downloadLoading: false,
+
       loading: false,
       error: null,
 
@@ -336,6 +339,8 @@ export default {
 
     async downloadRAMS() {
       // Create document
+      this.downloadLoading = true;
+
       const pdfDoc = await PDFDocument.create();
       pdfDoc.setTitle(
         `${this.$attrs.activityName} - Risk Analysis and Management System`
@@ -526,6 +531,7 @@ export default {
       var link = document.createElement("a");
       link.href = window.URL.createObjectURL(blob);
       link.download = `${this.$attrs.activityName} - Risk Analysis and Management System`;
+      this.downloadLoading = false;
       link.click();
     },
 

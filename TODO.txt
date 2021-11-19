@@ -21,7 +21,6 @@ Remove tiptap and planOld?
 ===============
   Minor Fixes
 ===============
-Loading soinner for download buttons
 Warning if default AL info/ contact info isn't set
 Autosave aif numbers when 0 keep on loading firefox
 Scrollbar for firefox and edge

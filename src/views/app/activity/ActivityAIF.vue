@@ -8,7 +8,13 @@
       >
         <h1 class="text-h4">Activity Intention</h1>
 
-        <v-btn outlined color="success" @click="downloadAIF">
+        <v-btn
+          outlined
+          color="success"
+          @click="downloadAIF"
+          :disabled="downloadLoading"
+          :loading="downloadLoading"
+        >
           <v-icon left dark>{{ downloadIcon }}</v-icon>
 
           Download
@@ -534,6 +540,7 @@ export default {
       clockIcon: mdiClock,
 
       tableError: null,
+      downloadLoading: false,
 
       // Default activity leader/contact person fields
       defaultLoaded: false,
@@ -801,6 +808,8 @@ export default {
 
     async downloadAIF() {
       // Generate the AIF PDF
+      this.downloadLoading = true;
+
       const fields = {
         Activity: this.activityName,
         "Activity Name 2": this.activityName,
@@ -990,6 +999,7 @@ export default {
       var link = document.createElement("a");
       link.href = window.URL.createObjectURL(blob);
       link.download = `${fields.Activity} - Activity Intention Form`;
+      this.downloadLoading = false;
       link.click();
     },
   },
