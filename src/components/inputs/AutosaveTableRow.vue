@@ -58,7 +58,21 @@
           hide-details="auto"
           :rows="data.rows"
           v-if="data.rows > 1"
+          :disabled="!!data.computed"
         ></v-textarea>
+
+        <v-text-field
+          solo
+          flat
+          dense
+          background-color="#fafafa"
+          v-model.number="currentRow[Object.keys(columns).indexOf(name)]"
+          :placeholder="name"
+          type="number"
+          hide-details="auto"
+          :disabled="!!data.computed"
+          v-if="data.rows <= 1 && data.type === 'number'"
+        ></v-text-field>
 
         <v-text-field
           solo
@@ -68,7 +82,21 @@
           v-model="currentRow[Object.keys(columns).indexOf(name)]"
           :placeholder="name"
           hide-details="auto"
-          v-else
+          :disabled="!!data.computed"
+          v-if="data.rows <= 1 && data.type !== 'number'"
+        ></v-text-field>
+      </td>
+
+      <td v-for="(data, name) in computedColumns" :key="name">
+        <v-text-field
+          solo
+          flat
+          dense
+          background-color="#fafafa"
+          v-model="computedValues[Object.keys(computedColumns).indexOf(name)]"
+          :placeholder="name"
+          hide-details="auto"
+          disabled
         ></v-text-field>
       </td>
     </template>
@@ -91,6 +119,7 @@ export default {
 
   props: {
     columns: Object,
+    computedColumns: Object,
     row: Array,
   },
 
@@ -106,6 +135,7 @@ export default {
 
       // Track user inputs
       currentRow: [...this.row],
+      computedValues: Array(Object.keys(this.computedColumns).keys).fill(""),
     };
   },
 
@@ -127,6 +157,11 @@ export default {
           this.row.every((data, index) => data === v[index]);
 
         this.$emit("update", equals ? null : v);
+
+        // Recalculate any computed rows
+        Object.values(this.computedColumns).forEach((column, columnIndex) => {
+          this.computedValues[columnIndex] = column.calculation(v);
+        });
       },
     },
   },

@@ -2,10 +2,10 @@
   <v-simple-table fixed-header style="overflow: auto">
     <thead>
       <tr>
-        <th class="px-1" style="min-width: 44px"></th>
+        <th class="px-1" style="min-width: 44px; max-width: 44px"></th>
 
         <th
-          v-for="(data, name) in columns"
+          v-for="(data, name) in { ...columns, ...computedColumns }"
           :key="name"
           class="text-left"
           :style="{ 'min-width': data.minWidth }"
@@ -54,7 +54,7 @@
             class="mt-1"
           />
 
-          <Alert type="error" :message="saveError" class="mt-1" />
+          <Alert type="error" :message="saveError" class="mt-1" dismissable />
         </td>
       </tr>
     </tbody>
@@ -72,6 +72,7 @@
     <tbody>
       <AutosaveTableRow
         :columns="columns"
+        :computedColumns="computedColumns"
         :row="rows[index]"
         @update="(v) => update(index, v)"
         @remove="() => remove(index)"
@@ -105,6 +106,7 @@ export default {
   props: {
     name: String,
     columns: Object,
+    computedColumns: Object,
   },
 
   data() {
@@ -128,7 +130,9 @@ export default {
       lastSaved: null,
 
       // Data
-      columnNum: Object.keys(this.columns).length,
+      columnNum:
+        Object.keys(this.columns).length +
+        Object.keys(this.computedColumns).length,
       rows: {},
       rowChanges: {}, // Row is array, but rowChanges may skip some indexes
       removedRows: [],
@@ -198,7 +202,10 @@ export default {
         } while (Object.keys(this.rows ? this.rows : {}).includes(key));
 
         // Add new blank row
-        this.rows = { ...this.rows, [key]: new Array(this.columnNum).fill("") };
+        this.rows = {
+          ...this.rows,
+          [key]: new Array(Object.keys(this.columns).length).fill(""),
+        };
       }
     },
 

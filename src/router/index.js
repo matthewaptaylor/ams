@@ -28,8 +28,6 @@ import ActivityRoute from "../views/app/activity/ActivityRoute.vue";
 import ActivityRAMS from "../views/app/activity/ActivityRAMS.vue";
 import ActivityRAMSRisk from "../views/app/activity/ActivityRAMSRisk.vue";
 import ActivityBudget from "../views/app/activity/ActivityBudget.vue";
-import ActivityShoppingList from "../views/app/activity/ActivityShoppingList.vue";
-import ActivityGearList from "../views/app/activity/ActivityGearList.vue";
 import ActivityAIF from "../views/app/activity/ActivityAIF.vue";
 import ActivityAIFSignature from "../views/app/activity/ActivityAIFSignature.vue";
 
@@ -133,16 +131,6 @@ const routes = [
             path: "budget",
             name: "ActivityBudget",
             component: ActivityBudget,
-          },
-          {
-            path: "shoppinglist",
-            name: "ActivityShoppingList",
-            component: ActivityShoppingList,
-          },
-          {
-            path: "gearlist",
-            name: "ActivityGearList",
-            component: ActivityGearList,
           },
           {
             path: "aif/:dialogRoute?", // Ensure the dialog path routes back to here

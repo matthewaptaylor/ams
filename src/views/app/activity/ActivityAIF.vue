@@ -3,6 +3,7 @@
     <v-row>
       <v-col
         cols="12"
+        xl="6"
         class="d-flex justify-space-between align-center flex-wrap"
         style="column-gap: 1rem; row-gap: 0.5rem"
       >
@@ -140,6 +141,7 @@
         <v-row dense>
           <v-col
             cols="12"
+            xl="6"
             class="d-flex justify-space-between align-center flex-wrap"
             style="column-gap: 1rem; row-gap: 0.5rem"
           >
@@ -334,6 +336,7 @@
         <v-row dense>
           <v-col
             cols="12"
+            xl="6"
             class="d-flex justify-space-between align-center flex-wrap"
             style="column-gap: 1rem; row-gap: 0.5rem"
           >

@@ -53,7 +53,7 @@ import {
   mdiAccountGroup,
   mdiClipboardList,
   mdiAlert,
-  // mdiCreditCard,
+  mdiCreditCard,
   // mdiCart,
   // mdiBagPersonal,
   mdiRoutes,
@@ -112,11 +112,11 @@ export default {
           icon: mdiAccountGroup,
         },
         { title: "Plan", to: { name: "ActivityPlan" }, icon: mdiClipboardList },
-        // {
-        //   title: "Budget",
-        //   to: { name: "ActivityBudget" },
-        //   icon: mdiCreditCard,
-        // },
+        {
+          title: "Budget",
+          to: { name: "ActivityBudget" },
+          icon: mdiCreditCard,
+        },
       ];
 
       if (this.requiresAIF) {

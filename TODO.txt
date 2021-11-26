@@ -1,6 +1,8 @@
 ===============
       MVP
 ===============
+Budgets
+Better autosave search algorithm
 Make view only users work
 Run lighthouse
 Make universal dialog component
