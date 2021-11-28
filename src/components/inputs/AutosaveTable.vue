@@ -5,7 +5,10 @@
         <th class="px-1" style="min-width: 44px; max-width: 44px"></th>
 
         <th
-          v-for="(data, name) in { ...columns, ...computedColumns }"
+          v-for="(data, name) in {
+            ...columns,
+            ...(computedColumns ? computedColumns : {}),
+          }"
           :key="name"
           class="text-left"
           :style="{ 'min-width': data.minWidth }"
@@ -72,7 +75,7 @@
     <tbody>
       <AutosaveTableRow
         :columns="columns"
-        :computedColumns="computedColumns"
+        :computedColumns="computedColumns ? computedColumns : {}"
         :row="rows[index]"
         @update="(v) => update(index, v)"
         @remove="() => remove(index)"
@@ -132,7 +135,7 @@ export default {
       // Data
       columnNum:
         Object.keys(this.columns).length +
-        Object.keys(this.computedColumns).length,
+        Object.keys(this.computedColumns ? this.computedColumns : {}).length,
       rows: {},
       rowChanges: {}, // Row is array, but rowChanges may skip some indexes
       removedRows: [],
@@ -161,6 +164,14 @@ export default {
           }
         }, 1000);
       }
+    },
+
+    rows: {
+      deep: true,
+
+      handler(v) {
+        this.$emit("savedRows", v);
+      },
     },
   },
 

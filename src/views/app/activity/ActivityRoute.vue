@@ -87,9 +87,18 @@ export default {
   data() {
     return {
       columns: {
-        Date: {},
-        "Route Description": {},
-        "Overnight at Map Reference": {},
+        Date: {
+          minWidth: "8rem",
+          rows: 1,
+        },
+        "Route Description": {
+          minWidth: "18rem",
+          rows: 1,
+        },
+        "Overnight at Map Reference": {
+          minWidth: "12rem",
+          rows: 1,
+        },
       },
     };
   },

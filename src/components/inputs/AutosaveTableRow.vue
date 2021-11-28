@@ -57,6 +57,7 @@
           :placeholder="name"
           hide-details="auto"
           :rows="data.rows"
+          :prepend-inner-icon="data.prependInnerIcon"
           v-if="data.rows > 1"
           :disabled="!!data.computed"
         ></v-textarea>
@@ -71,6 +72,7 @@
           type="number"
           hide-details="auto"
           :disabled="!!data.computed"
+          :prepend-inner-icon="data.prependInnerIcon"
           v-if="data.rows <= 1 && data.type === 'number'"
         ></v-text-field>
 
@@ -83,6 +85,7 @@
           :placeholder="name"
           hide-details="auto"
           :disabled="!!data.computed"
+          :prepend-inner-icon="data.prependInnerIcon"
           v-if="data.rows <= 1 && data.type !== 'number'"
         ></v-text-field>
       </td>
@@ -96,6 +99,7 @@
           v-model="computedValues[Object.keys(computedColumns).indexOf(name)]"
           :placeholder="name"
           hide-details="auto"
+          :prepend-inner-icon="data.prependInnerIcon"
           disabled
         ></v-text-field>
       </td>
@@ -158,17 +162,26 @@ export default {
 
         this.$emit("update", equals ? null : v);
 
-        // Recalculate any computed rows
-        Object.values(this.computedColumns).forEach((column, columnIndex) => {
-          this.computedValues[columnIndex] = column.calculation(v);
-        });
+        this.calculateComputed();
       },
     },
+  },
+
+  mounted() {
+    this.calculateComputed();
+    this.$forceUpdate();
   },
 
   methods: {
     remove() {
       this.$emit("remove");
+    },
+
+    // Recalculate any computed rows
+    calculateComputed() {
+      Object.values(this.computedColumns).forEach((column, columnIndex) => {
+        this.computedValues[columnIndex] = column.calculation(this.currentRow);
+      });
     },
   },
 };

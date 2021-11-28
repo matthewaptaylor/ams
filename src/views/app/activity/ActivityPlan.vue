@@ -40,6 +40,7 @@ export default {
       columns: {
         When: {
           minWidth: "8rem",
+          rows: 1,
         },
         Description: {
           minWidth: "12rem",
@@ -51,6 +52,7 @@ export default {
         },
         Responsibility: {
           minWidth: "8rem",
+          rows: 1,
         },
         "Potential Risks": {
           minWidth: "8rem",
