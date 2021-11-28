@@ -41,6 +41,7 @@
       :contact="contact"
       :signatures="signatures"
       :activityLeaderUID="activityLeaderUID"
+      :viewer="role === 'Viewer'"
       @update="update"
       v-else
     ></router-view>

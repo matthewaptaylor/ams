@@ -42,6 +42,7 @@
               :columns="columns"
               :computedColumns="computedColumns"
               @savedRows="updateHeaderTable"
+              :disabled="viewer"
             />
           </v-col>
         </v-row>
@@ -57,6 +58,10 @@ import AutosaveTable from "../../../components/inputs/AutosaveTable.vue";
 export default {
   components: {
     AutosaveTable,
+  },
+
+  props: {
+    viewer: Boolean,
   },
 
   data() {

@@ -51,6 +51,7 @@ export default {
     contact: Object,
     signatures: Object,
     activityLeaderUID: String,
+    viewer: Boolean,
   },
 
   mounted() {

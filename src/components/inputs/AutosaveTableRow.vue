@@ -1,6 +1,6 @@
 <template>
   <tr class="pt-4 can-select">
-    <td class="py-2 px-1" style="width: 2.25rem">
+    <td class="py-2 px-1" style="width: 2.25rem" v-if="!disabled">
       <v-tooltip right>
         <template v-slot:activator="{ on, attrs }">
           <v-btn
@@ -59,7 +59,7 @@
           :rows="data.rows"
           :prepend-inner-icon="data.prependInnerIcon"
           v-if="data.rows > 1"
-          :disabled="!!data.computed"
+          :disabled="!!data.computed || disabled"
         ></v-textarea>
 
         <v-text-field
@@ -71,7 +71,7 @@
           :placeholder="name"
           type="number"
           hide-details="auto"
-          :disabled="!!data.computed"
+          :disabled="!!data.computed || disabled"
           :prepend-inner-icon="data.prependInnerIcon"
           v-if="data.rows <= 1 && data.type === 'number'"
         ></v-text-field>
@@ -84,7 +84,7 @@
           v-model="currentRow[Object.keys(columns).indexOf(name)]"
           :placeholder="name"
           hide-details="auto"
-          :disabled="!!data.computed"
+          :disabled="!!data.computed || disabled"
           :prepend-inner-icon="data.prependInnerIcon"
           v-if="data.rows <= 1 && data.type !== 'number'"
         ></v-text-field>
@@ -125,6 +125,7 @@ export default {
     columns: Object,
     computedColumns: Object,
     row: Array,
+    disabled: Boolean,
   },
 
   data() {

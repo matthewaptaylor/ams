@@ -54,6 +54,7 @@
                 :currentRole="role"
                 :photoURL="infoByUID[uid].photoURL"
                 :activityRoles="activityRoles"
+                :disabled="viewer"
                 @updateObject="updateObject"
               />
 
@@ -63,12 +64,14 @@
                 :email="email"
                 :currentRole="role"
                 :activityRoles="activityRoles"
+                :disabled="viewer"
                 @updateObject="updateObject"
               />
 
               <ActivityPeopleAdd
                 :activityRoles="activityRoles"
                 @updateObject="updateObject"
+                v-if="!viewer"
               />
             </v-list>
           </v-col>
@@ -85,6 +88,10 @@ import ActivityPeopleAdd from "../../../components/app/ActivityPeopleAdd.vue";
 
 export default {
   components: { Alert, ActivityPeoplePerson, ActivityPeopleAdd },
+
+  props: {
+    viewer: Boolean,
+  },
 
   data() {
     return {

@@ -19,7 +19,7 @@
           </v-col>
 
           <v-col cols="12">
-            <AutosaveTable name="plan" :columns="columns" />
+            <AutosaveTable name="plan" :columns="columns" :disabled="viewer" />
           </v-col>
         </v-row>
       </v-col>
@@ -33,6 +33,10 @@ import AutosaveTable from "../../../components/inputs/AutosaveTable.vue";
 export default {
   components: {
     AutosaveTable,
+  },
+
+  props: {
+    viewer: Boolean,
   },
 
   data() {

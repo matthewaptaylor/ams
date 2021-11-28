@@ -13,6 +13,7 @@
           v-model="currentValue"
           hide-details="auto"
           class="flex-grow-1 mt-0"
+          :disabled="disabled"
         >
           <template v-slot:label>
             <div class="d-flex" style="gap: 1rem">

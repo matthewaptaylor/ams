@@ -1,7 +1,6 @@
 ===============
       MVP
 ===============
-Better autosave search algorithm
 Make view only users work
 Run lighthouse
 Make universal dialog component
@@ -9,7 +8,6 @@ Deadline emails
 Test on other browsers
 Address security vulnerabilities
 Stop navigation away from page if something is still submitting
-Autosave table, if edit while saving, registers as being up to date
 
 ===============
   Minor Fixes

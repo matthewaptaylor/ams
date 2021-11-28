@@ -57,11 +57,14 @@
           :menu-props="{ bottom: true, offsetY: true }"
           :loading="roleLoading"
           hide-details="auto"
+          :disabled="disabled"
+          :flat="disabled"
+          :append-icon="disabled ? null : undefined"
           @change="updatePerson(false)"
         >
         </v-select>
 
-        <v-tooltip bottom>
+        <v-tooltip bottom v-if="!disabled">
           <template v-slot:activator="{ on, attrs }">
             <v-btn
               icon
@@ -134,6 +137,7 @@ export default {
     currentRole: String,
     photoURL: String,
     activityRoles: Array,
+    disabled: Boolean,
   },
 
   data() {

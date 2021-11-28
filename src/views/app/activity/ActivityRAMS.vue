@@ -22,7 +22,7 @@
         <v-btn
           color="primary"
           @click="$emit('showDialog', 'create')"
-          v-if="$vuetify.breakpoint.name !== 'xs'"
+          v-if="$vuetify.breakpoint.name !== 'xs' && !viewer"
         >
           <v-icon left dark>{{ plusIcon }}</v-icon>
           Add risk
@@ -34,7 +34,7 @@
           fixed
           bottom
           right
-          v-else
+          v-if="$vuetify.breakpoint.name === 'xs' && !viewer"
           @click="$emit('showDialog', 'create')"
         >
           <v-icon>{{ plusIcon }}</v-icon>
@@ -286,6 +286,10 @@ import ActivityRAMSRow from "../../../components/app/ActivityRAMSRow.vue";
 
 export default {
   components: { Alert, ActivityRAMSRow },
+
+  props: {
+    viewer: Boolean,
+  },
 
   data() {
     return {

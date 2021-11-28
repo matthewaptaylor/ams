@@ -54,7 +54,7 @@
 
         <v-row dense>
           <v-col cols="12">
-            <AutosaveTable name="route" :columns="columns" />
+            <AutosaveTable name="route" :columns="columns" :disabled="viewer" />
           </v-col>
         </v-row>
       </v-col>
@@ -68,7 +68,11 @@
 
         <v-row dense>
           <v-col cols="12">
-            <AutosaveTable name="emergencyRoute" :columns="columns" />
+            <AutosaveTable
+              name="emergencyRoute"
+              :columns="columns"
+              :disabled="viewer"
+            />
           </v-col>
         </v-row>
       </v-col>
@@ -82,6 +86,10 @@ import AutosaveTable from "../../../components/inputs/AutosaveTable.vue";
 export default {
   components: {
     AutosaveTable,
+  },
+
+  props: {
+    viewer: Boolean,
   },
 
   data() {

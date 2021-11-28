@@ -34,6 +34,7 @@
               :categories="categoryOptions"
               :value="category"
               :error="categoryError"
+              :disabled="viewer"
               @save="(v) => update(v, 'category', 'categoryError')"
             />
           </v-col>
@@ -56,6 +57,7 @@
                   type="number"
                   :value="numbers.keas ? numbers.keas.toString() : null"
                   :error="numbersKeasError"
+                  :disabled="viewer"
                   @save="(v) => update(v, 'numbers.keas', 'numbersKeasError')"
                 />
               </v-col>
@@ -66,6 +68,7 @@
                   type="number"
                   :value="numbers.cubs ? numbers.cubs.toString() : null"
                   :error="numbersCubsError"
+                  :disabled="viewer"
                   @save="(v) => update(v, 'numbers.cubs', 'numbersCubsError')"
                 />
               </v-col>
@@ -76,6 +79,7 @@
                   type="number"
                   :value="numbers.scouts ? numbers.scouts.toString() : null"
                   :error="numbersScoutsError"
+                  :disabled="viewer"
                   @save="
                     (v) => update(v, 'numbers.scouts', 'numbersScoutsError')
                   "
@@ -90,6 +94,7 @@
                     numbers.venturers ? numbers.venturers.toString() : null
                   "
                   :error="numbersVenturersError"
+                  :disabled="viewer"
                   @save="
                     (v) =>
                       update(v, 'numbers.venturers', 'numbersVenturersError')
@@ -103,6 +108,7 @@
                   type="number"
                   :value="numbers.rovers ? numbers.rovers.toString() : null"
                   :error="numbersRoversError"
+                  :disabled="viewer"
                   @save="
                     (v) => update(v, 'numbers.rovers', 'numbersRoversError')
                   "
@@ -115,6 +121,7 @@
                   type="number"
                   :value="numbers.leaders ? numbers.leaders.toString() : null"
                   :error="numbersLeadersError"
+                  :disabled="viewer"
                   @save="
                     (v) => update(v, 'numbers.leaders', 'numbersLeadersError')
                   "
@@ -127,6 +134,7 @@
                   type="number"
                   :value="numbers.others ? numbers.others.toString() : null"
                   :error="numbersOthersError"
+                  :disabled="viewer"
                   @save="
                     (v) => update(v, 'numbers.others', 'numbersOthersError')
                   "
@@ -347,6 +355,7 @@
               :disabled="defaultContactPersonLoading"
               :loading="defaultContactPersonLoading"
               @click="loadDefault('Contact Person')"
+              v-if="!viewer"
             >
               <v-icon left dark>{{ formatColorFillIcon }}</v-icon>
               Use my Default
@@ -385,7 +394,7 @@
                   type="text"
                   :value="contact.name"
                   :error="contactNameError"
-                  :disabled="defaultContactPersonLoading"
+                  :disabled="defaultContactPersonLoading || viewer"
                   @save="(v) => update(v, 'contact.name', 'contactNameError')"
                 />
               </v-col>
@@ -396,7 +405,7 @@
                   type="text"
                   :value="contact.home"
                   :error="contactHomeError"
-                  :disabled="defaultContactPersonLoading"
+                  :disabled="defaultContactPersonLoading || viewer"
                   @save="(v) => update(v, 'contact.home', 'contactHomeError')"
                 />
               </v-col>
@@ -407,7 +416,7 @@
                   type="text"
                   :value="contact.work"
                   :error="contactWorkError"
-                  :disabled="defaultContactPersonLoading"
+                  :disabled="defaultContactPersonLoading || viewer"
                   @save="(v) => update(v, 'contact.work', 'contactWorkError')"
                 />
               </v-col>
@@ -418,7 +427,7 @@
                   type="text"
                   :value="contact.cell"
                   :error="contactCellError"
-                  :disabled="defaultContactPersonLoading"
+                  :disabled="defaultContactPersonLoading || viewer"
                   @save="(v) => update(v, 'contact.cell', 'contactCellError')"
                 />
               </v-col>
@@ -429,7 +438,7 @@
                   type="textarea"
                   :value="contact.address"
                   :error="contactAddressError"
-                  :disabled="defaultContactPersonLoading"
+                  :disabled="defaultContactPersonLoading || viewer"
                   @save="
                     (v) => update(v, 'contact.address', 'contactAddressError')
                   "
@@ -450,6 +459,7 @@
                   :value="contact.time"
                   :icon="clockIcon"
                   :error="contactTimeError"
+                  :disabled="viewer"
                   @save="(v) => update(v, 'contact.time', 'contactTimeError')"
                 />
               </v-col>
@@ -461,6 +471,7 @@
                   :value="contact.date"
                   :icon="calendarIcon"
                   :error="contactDateError"
+                  :disabled="viewer"
                   @save="(v) => update(v, 'contact.date', 'contactDateError')"
                 />
               </v-col>
@@ -491,6 +502,7 @@
                 :image="
                   key == 'sectionLeader' ? sectionLeaderImage : groupLeaderImage
                 "
+                :disabled="viewer"
                 @changeSignature="
                   () => $emit('showDialog', `${key.toLowerCase()}signature`)
                 "
@@ -634,6 +646,7 @@ export default {
     contact: Object,
     signatures: Object,
     activityLeaderUID: String,
+    viewer: Boolean,
   },
 
   async mounted() {

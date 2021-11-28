@@ -17,6 +17,7 @@
               required
               :value="activityName"
               :error="nameError"
+              :disabled="viewer"
               @save="(v) => update(v, 'name', 'nameError')"
             />
           </v-col>
@@ -29,6 +30,7 @@
               labelRight="an AIF"
               :value="requiresAIF"
               :error="requiresAIFError"
+              :disabled="viewer"
               @save="(v) => update(v, 'requiresAIF', 'requiresAIFError')"
             />
           </v-col>
@@ -41,6 +43,7 @@
               labelRight="a RAMS form"
               :value="requiresRAMS"
               :error="requiresRAMSError"
+              :disabled="viewer"
               @save="(v) => update(v, 'requiresRAMS', 'requiresRAMSError')"
             />
           </v-col>
@@ -51,6 +54,7 @@
               type="text"
               :value="description"
               :error="descriptionError"
+              :disabled="viewer"
               @save="(v) => update(v, 'description', 'descriptionError')"
             />
           </v-col>
@@ -61,6 +65,7 @@
               type="text"
               :value="location"
               :error="locationError"
+              :disabled="viewer"
               @save="(v) => update(v, 'location', 'locationError')"
             />
           </v-col>
@@ -72,6 +77,7 @@
               :comboboxItems="[].concat(...Object.values(scoutGroups))"
               :value="scoutGroup"
               :error="scoutGroupError"
+              :disabled="viewer"
               @save="(v) => update(v, 'scoutGroup', 'scoutGroupError')"
             />
           </v-col>
@@ -84,6 +90,7 @@
               :comboboxItems="Object.keys(scoutGroups)"
               :value="scoutZoneRegion"
               :error="scoutZoneRegionError"
+              :disabled="viewer"
               @save="
                 (v) => update(v, 'scoutZoneRegion', 'scoutZoneRegionError')
               "
@@ -97,6 +104,7 @@
               :value="startDate"
               :icon="calendarIcon"
               :error="startDateError"
+              :disabled="viewer"
               @save="(v) => update(v, 'startDate', 'startDateError')"
             />
           </v-col>
@@ -108,6 +116,7 @@
               :value="startTime"
               :icon="clockIcon"
               :error="startTimeError"
+              :disabled="viewer"
               @save="(v) => update(v, 'startTime', 'startTimeError')"
             />
           </v-col>
@@ -119,6 +128,7 @@
               :value="endDate"
               :icon="calendarIcon"
               :error="endDateError"
+              :disabled="viewer"
               @save="(v) => update(v, 'endDate', 'endDateError')"
             />
           </v-col>
@@ -130,6 +140,7 @@
               :value="endTime"
               :icon="clockIcon"
               :error="endTimeError"
+              :disabled="viewer"
               @save="(v) => update(v, 'endTime', 'endTimeError')"
             />
           </v-col>
@@ -159,6 +170,7 @@ export default {
     startTime: String,
     endDate: String,
     endTime: String,
+    viewer: Boolean,
   },
 
   methods: {

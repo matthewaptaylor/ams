@@ -19,17 +19,18 @@
       </v-col>
 
       <v-col cols="12" sm="6" lg="8" class="d-flex flex-column">
-        <p class="flex-grow-1" v-if="signature">
+        <p class="flex-grow-1 mb-0" v-if="signature">
           Signed by {{ signature.name }} ({{ signature.email }}) on
           {{ signature.date }}.
         </p>
 
-        <p class="flex-grow-1" v-else>Not yet signed.</p>
+        <p class="flex-grow-1 mb-0" v-else>Not yet signed.</p>
 
         <v-btn
           color="primary"
           outlined
-          :disabled="disabled"
+          v-if="!disabled"
+          class="mt-4"
           @click="$emit('changeSignature')"
         >
           {{ signature ? "Change signature" : "Add signature" }}

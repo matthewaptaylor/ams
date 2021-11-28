@@ -2,7 +2,11 @@
   <v-simple-table fixed-header style="overflow: auto">
     <thead>
       <tr>
-        <th class="px-1" style="min-width: 44px; max-width: 44px"></th>
+        <th
+          class="px-1"
+          style="min-width: 44px; max-width: 44px"
+          v-if="!disabled"
+        ></th>
 
         <th
           v-for="(data, name) in {
@@ -18,7 +22,7 @@
       </tr>
     </thead>
 
-    <tbody>
+    <tbody v-if="!disabled">
       <tr class="hideHover">
         <td :colspan="columnNum + 1" class="pa-1" v-if="!loading">
           <div class="d-flex align-center" style="gap: 0.5rem" v-if="!error">
@@ -64,7 +68,7 @@
 
     <tbody v-if="loading">
       <tr class="hideHover" v-for="i in 2" :key="i">
-        <td></td>
+        <td v-if="!disabled"></td>
 
         <td class="px-1" v-for="i in columnNum" :key="i">
           <v-skeleton-loader type="custom" height="38px" width="100%" />
@@ -81,6 +85,7 @@
         @remove="() => remove(index)"
         v-for="index in Object.keys(rows ? rows : {}).sort()"
         :key="index"
+        :disabled="disabled"
       />
     </tbody>
   </v-simple-table>
@@ -110,6 +115,7 @@ export default {
     name: String,
     columns: Object,
     computedColumns: Object,
+    disabled: Boolean,
   },
 
   data() {
