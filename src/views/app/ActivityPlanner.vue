@@ -41,9 +41,20 @@
             class="mb-2"
           />
 
+          <v-text-field
+            v-model="search"
+            label="Search"
+            :append-icon="closeCircleIcon"
+            @click:append="search = ''"
+            hide-details="auto"
+            autofocus
+            outlined
+            dense
+          ></v-text-field>
+
           <v-list two-line>
             <div
-              v-for="(category, categoryIndex) in activityCategories"
+              v-for="(category, categoryIndex) in filteredActivities"
               :key="category.categoryIndex"
             >
               <v-divider v-if="categoryIndex !== 0" />
@@ -99,6 +110,7 @@
 <style scoped></style>
 <script>
 import {
+  mdiCloseCircle,
   mdiChevronRight,
   mdiAccountSupervisor,
   mdiEye,
@@ -117,9 +129,12 @@ export default {
   data() {
     return {
       // Icons
+      closeCircleIcon: mdiCloseCircle,
       plusIcon: mdiPlus,
       chevronRightIcon: mdiChevronRight,
       mapSearchIcon: mdiMapSearch,
+
+      search: null,
 
       // Nav
       breadcrumbItems: [
@@ -133,23 +148,38 @@ export default {
       loading: null,
       error: null,
 
-      activityCategories: [
-        {
-          header: "Activities you're running",
-          icon: mdiAccountSupervisor,
-          activities: [],
-        },
-        {
-          header: "Other activities",
-          icon: mdiEye,
-          activities: [],
-        },
-      ],
+      runningActivities: [],
+      otherActivities: [],
     };
   },
 
   mounted() {
     this.load();
+  },
+
+  computed: {
+    filteredActivities() {
+      return [
+        {
+          header: "Activities you're running",
+          icon: mdiAccountSupervisor,
+          activities: this.search
+            ? this.runningActivities.filter((activity) =>
+                activity.name.toLowerCase().includes(this.search)
+              )
+            : this.runningActivities,
+        },
+        {
+          header: "Other activities",
+          icon: mdiEye,
+          activities: this.search
+            ? this.otherActivities.filter((activity) =>
+                activity.name.toLowerCase().includes(this.search)
+              )
+            : this.otherActivities,
+        },
+      ];
+    },
   },
 
   methods: {
@@ -172,10 +202,10 @@ export default {
             const activityCategory = ["Activity Leader", "Assisting"].includes(
               activity.role
             )
-              ? 0
-              : 1;
+              ? "runningActivities"
+              : "otherActivities";
 
-            this.activityCategories[activityCategory].activities.push(activity);
+            this[activityCategory].push(activity);
           });
         })
         .catch((error) => {

@@ -1,7 +1,6 @@
 ===============
       MVP
 ===============
-Make view only users work
 Run lighthouse
 Make universal dialog component
 Deadline emails
@@ -37,7 +36,6 @@ Chunk vendors to only load needed views initially
 Pull to refresh
 Implement reload page/get data from server again (refresh icon button that appears in sidebar item? What about desktop nav?)
 Organise activities by date
-Search for activities
 If redirected to login, redirect to correct page after login. Do the same with reauthentication, so we can enable email link reauth?
 Implement webpage html title changing
 transition on v-if for autosave
