@@ -64,6 +64,7 @@
                   :rules="[(v) => !!v || 'Category is required']"
                   required
                   v-if="!loadLoading"
+                  :menu-props="{ bottom: true, offsetY: true }"
                 ></v-select>
 
                 <v-skeleton-loader
@@ -168,6 +169,7 @@
               "
               :rules="[(v) => !!v || 'Liklihood is required']"
               required
+              :menu-props="{ bottom: true, offsetY: true }"
               v-if="!loadLoading"
             ></v-select>
 
@@ -193,6 +195,7 @@
               class="mb-2"
               :rules="[(v) => !!v || 'Consequence is required']"
               required
+              :menu-props="{ bottom: true, offsetY: true }"
               v-if="!loadLoading"
             ></v-select>
 

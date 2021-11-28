@@ -191,10 +191,13 @@ export default {
           // Success
           this.loading = false;
 
+          const now = new Date();
+          now.setHours(now.getHours() + 12);
+
           this.$emit("update", `signatures.${this.role}`, {
             name: this.$currentUser.displayName,
             email: this.$currentUser.email,
-            date: new Date().toISOString().slice(0, 10),
+            date: now.toISOString().slice(0, 10),
             uid: this.$currentUser.uid,
             signature: encodedData,
           });

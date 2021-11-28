@@ -40,10 +40,8 @@ Implement webpage html title changing
 transition on v-if for autosave
 Use email link for reauthentication
 Test all functions, vulnerabilities, make sure dates are valid, etc
-All dropdowns/menu appear below select input field
 Skeleton loaders for autosave don't line up, look at AccountProfile
 Combobox autosave enter key
-Can still go on AIF or RAMS page if disabled
 
 ===============
  Nice Features
