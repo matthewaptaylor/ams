@@ -8,13 +8,15 @@
         v-if="loading"
       />
 
-      <v-form @submit.prevent="save" v-else>
+      <v-form @submit.prevent="save" v-model="valid" v-else>
         <component
           :is="
             type == 'combobox'
               ? vCombobox
               : type == 'textarea'
               ? vTextarea
+              : type == 'autocomplete'
+              ? VAutocomplete
               : vTextField
           "
           :label="label"
@@ -43,10 +45,16 @@
           v-on:keyup.space="
             showPickerDialog = type === 'date' || type === 'time'
           "
+          :multiple="chips"
+          :chips="chips"
+          :small-chips="chips"
           style="width: 100%"
         >
           <template v-slot:append-outer>
-            <div v-if="showButton || showSuccess" class="mt-n1 mb-n2 ms-n2">
+            <div
+              v-if="(showButton || showSuccess) && valid"
+              class="mt-n1 mb-n2 ms-n2"
+            >
               <v-tooltip bottom>
                 <template v-slot:activator="{ on }">
                   <div v-on="on">
@@ -124,7 +132,7 @@
 import { mdiContentSave, mdiCheckCircle } from "@mdi/js";
 import Alert from "../Alert.vue";
 import PickerDialog from "./PickerDialog.vue";
-import { VTextField, VCombobox, VTextarea } from "vuetify/lib";
+import { VTextField, VCombobox, VAutocomplete, VTextarea } from "vuetify/lib";
 
 export default {
   components: { Alert, PickerDialog, VTextField },
@@ -138,7 +146,10 @@ export default {
       // Components
       vTextField: VTextField,
       vCombobox: VCombobox,
+      VAutocomplete: VAutocomplete,
       vTextarea: VTextarea,
+
+      valid: null,
 
       // Track the current inputted value
       currentValue: this.value,
@@ -159,7 +170,7 @@ export default {
   props: {
     label: String, // Label to show to the user
     type: String, // input type, e.g. "text"
-    value: String, // The value saved on the server
+    value: [String, Array], // The value saved on the server
     comboboxItems: Array, // Autocomplete items
     autocomplete: String, // The field's autocomplete attribute
     rules: Array, // Input validation rules
@@ -168,6 +179,7 @@ export default {
     error: Object, // An error to display to the user relating to the field
     loading: Boolean, // Whether to display a skeleton loader
     disabled: Boolean, // Whether to display a skeleton loader
+    chips: Boolean,
   },
 
   watch: {

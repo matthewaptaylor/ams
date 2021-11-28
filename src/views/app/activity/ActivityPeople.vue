@@ -77,6 +77,56 @@
           </v-col>
         </v-row>
       </v-col>
+
+      <v-col cols="12">
+        <v-row dense>
+          <v-col cols="12">
+            <h2 class="text-h5">Paperwork Reminders</h2>
+          </v-col>
+        </v-row>
+
+        <v-row dense>
+          <v-col cols="12" xl="6">
+            <v-row dense>
+              <v-col cols="12">
+                <p class="mb-0">
+                  This setting allows you to set automatic reminders about this
+                  activity's paperwork via email.
+                </p>
+              </v-col>
+
+              <v-col cols="12">
+                <AutosaveText
+                  label="Emails"
+                  type="autocomplete"
+                  :comboboxItems="allEmails"
+                  :rules="[
+                    (v) =>
+                      v.every((item) => /.+@.+/.test(item)) ||
+                      'All emails must be valid.',
+                  ]"
+                  :value="remindEmails"
+                  :error="remindEmailsError"
+                  :disabled="viewer"
+                  chips
+                  @save="(v) => update(v, 'remindEmails', 'remindEmailsError')"
+                />
+              </v-col>
+
+              <v-col cols="12">
+                <AutosaveCheckbox
+                  label="Days Before Activity"
+                  :options="['7', '14', '21', '28']"
+                  :value="remindTimes"
+                  :error="remindTimesError"
+                  :disabled="viewer"
+                  @save="(v) => update(v, 'remindTimes', 'remindTimesError')"
+                />
+              </v-col>
+            </v-row>
+          </v-col>
+        </v-row>
+      </v-col>
     </v-row>
   </v-container>
 </template>
@@ -85,11 +135,21 @@
 import Alert from "../../../components/Alert.vue";
 import ActivityPeoplePerson from "../../../components/app/ActivityPeoplePerson.vue";
 import ActivityPeopleAdd from "../../../components/app/ActivityPeopleAdd.vue";
+import AutosaveText from "../../../components/inputs/AutosaveText.vue";
+import AutosaveCheckbox from "../../../components/inputs/AutosaveCheckbox.vue";
 
 export default {
-  components: { Alert, ActivityPeoplePerson, ActivityPeopleAdd },
+  components: {
+    Alert,
+    ActivityPeoplePerson,
+    ActivityPeopleAdd,
+    AutosaveText,
+    AutosaveCheckbox,
+  },
 
   props: {
+    remindEmails: Array,
+    remindTimes: Array,
     viewer: Boolean,
   },
 
@@ -105,11 +165,28 @@ export default {
       peopleByEmail: null, // People without accounts
 
       activityRoles: ["Activity Leader", "Assisting", "Editor", "Viewer"],
+
+      // Errors
+      remindEmailsError: null,
+      remindTimesError: null,
     };
   },
 
   mounted() {
     this.load();
+  },
+
+  computed: {
+    allEmails() {
+      return [
+        ...Object.keys(this.peopleByEmail ? this.peopleByEmail : {}).map(
+          (email) => email.replace(/&period;/g, ".")
+        ),
+        ...Object.keys(this.peopleByUID ? this.peopleByUID : {}).map(
+          (uid) => this.infoByUID[uid].email
+        ),
+      ];
+    },
   },
 
   methods: {
@@ -138,6 +215,26 @@ export default {
             error.message === "internal"
               ? "An error occurred when connecting to the server."
               : error.message;
+        });
+    },
+
+    // Update activity overview
+    update(v, fieldName, errorName) {
+      // Display activities
+      this[errorName] = null;
+
+      this.$functions
+        .httpsCallable("activityOverviewSet")({
+          id: this.$route.params.activityId,
+          [fieldName]: v,
+        })
+        .then(() => {
+          // Success
+          this.$emit("update", fieldName, v);
+        })
+        .catch((error) => {
+          // Error
+          this[errorName] = { message: error.message };
         });
     },
 

@@ -41,6 +41,8 @@
       :contact="contact"
       :signatures="signatures"
       :activityLeaderUID="activityLeaderUID"
+      :remindEmails="remindEmails"
+      :remindTimes="remindTimes"
       :viewer="role === 'Viewer'"
       @update="update"
       v-else
@@ -93,6 +95,8 @@ export default {
       contact: {},
       signatures: {},
       activityLeaderUID: null,
+      remindEmails: [],
+      remindTimes: [],
 
       // User data
       role: null,
@@ -197,6 +201,8 @@ export default {
           this.signatures = data.data.signatures;
           this.role = data.data.role;
           this.activityLeaderUID = data.data.activityLeaderUID;
+          this.remindEmails = data.data.remindEmails;
+          this.remindTimes = data.data.remindTimes;
         })
         .catch((error) => {
           // Error
