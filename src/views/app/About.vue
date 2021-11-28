@@ -22,6 +22,10 @@
 
           <p class="mb-2">I hope that you find AMS as useful as we have.</p>
 
+          <p class="mb-2">
+            Thank you to Beach Haven Scout Group for their advice on RAMS forms.
+          </p>
+
           <v-btn
             dark
             color="black"

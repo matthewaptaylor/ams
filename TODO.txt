@@ -1,15 +1,11 @@
 ===============
       MVP
 ===============
-Budgets
 Better autosave search algorithm
 Make view only users work
 Run lighthouse
 Make universal dialog component
 Deadline emails
-Run through caniuse/polyfills
-Prevent abuse with App Check firebase
-Convert firestore/everything else to production mode
 Test on other browsers
 Address security vulnerabilities
 Stop navigation away from page if something is still submitting

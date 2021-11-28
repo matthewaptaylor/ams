@@ -283,7 +283,16 @@ export default {
       acceptable: null,
 
       // Risk definitions
-      categories: ["People", "Environment", "Equipment"],
+      categories: [
+        "Behaviour",
+        "Environment",
+        "Equipment",
+        "Fire",
+        "People",
+        "Sickness/Medical",
+        "Theft",
+        "Water",
+      ],
 
       likelihoods: {
         "Almost certain": {
