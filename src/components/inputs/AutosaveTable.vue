@@ -43,8 +43,8 @@
             <p v-if="allSaved" class="mb-0">Up to date</p>
 
             <p v-else class="mb-0">
-              Last saved {{ timeSinceSaved }} second{{
-                timeSinceSaved === 1 ? null : "s"
+              Last saved {{ secondsSinceSaved }} second{{
+                secondsSinceSaved === 1 ? null : "s"
               }}
               ago
             </p>
@@ -125,12 +125,11 @@ export default {
       // Save functionality
       saveError: null,
       saveLoading: false,
-      autosaveTimeout: null,
-
       allSaved: true,
-      savedInterval: null,
-      timeSinceSaved: null,
-      lastSaved: null,
+      saveInterval: null,
+      secondsSinceSaved: 0,
+      lastSaveTime: null,
+      lastChangeTime: null,
 
       // Data
       columnNum:
@@ -147,25 +146,6 @@ export default {
   },
 
   watch: {
-    allSaved(v) {
-      if (!v && !this.savedInterval) {
-        // Track time since last saved
-        this.lastSaved = new Date().getTime();
-        this.timeSinceSaved = 0;
-
-        this.savedInterval = setInterval(() => {
-          if (this.allSaved) {
-            clearInterval(this.savedInterval);
-            this.savedInterval = null;
-          } else {
-            this.timeSinceSaved = Math.floor(
-              (new Date().getTime() - this.lastSaved) / 1000
-            );
-          }
-        }, 1000);
-      }
-    },
-
     rows: {
       deep: true,
 
@@ -173,26 +153,38 @@ export default {
         this.$emit("savedRows", v);
       },
     },
+
+    allSaved(v) {
+      if (v) {
+        // Everything saved
+        clearInterval(this.saveInterval);
+      } else {
+        // No longer up to date
+        this.secondsSinceSaved = 0;
+        this.lastSaveTime = new Date().getTime();
+
+        this.saveInterval = setInterval(() => {
+          // Check if save is needed every second
+          const now = new Date().getTime();
+          this.secondsSinceSaved = Math.floor((now - this.lastSaveTime) / 1000);
+
+          if (
+            now >= this.lastSaveTime + 15000 ||
+            now >= this.lastChangeTime + 3000
+          ) {
+            // Haven't typed in 3 seconds, or haven't saved in 15
+            this.save();
+          }
+        }, 1000);
+      }
+    },
   },
 
   beforeDestroy() {
-    clearInterval(this.savedInterval);
+    clearInterval(this.saveInterval);
   },
 
   methods: {
-    setAutosave() {
-      // Set to autosave in 20 seconds
-      if (
-        !this.autosaveTimeout &&
-        (Object.keys(this.rowChanges).length ||
-          Object.keys(this.removedRows).length)
-      ) {
-        this.autosaveTimeout = setTimeout(() => {
-          this.save();
-        }, 20000);
-      }
-    },
-
     newRow() {
       const rowEntries = Object.entries(this.rows ? this.rows : {});
       const lastRow = rowEntries[rowEntries.length - 1];
@@ -231,11 +223,11 @@ export default {
       }
 
       // Track row changes
+      this.lastChangeTime = new Date().getTime();
       this.allSaved = !(
         Object.keys(this.rowChanges).length ||
         Object.keys(this.removedRows).length
       );
-      this.setAutosave();
     },
 
     remove(index) {
@@ -283,13 +275,9 @@ export default {
     },
 
     save() {
-      clearTimeout(this.autosaveTimeout);
-      this.autosaveTimeout = null;
-
       if (
-        !this.saveLoading &&
-        (Object.keys(this.rowChanges).length ||
-          Object.keys(this.removedRows).length)
+        Object.keys(this.rowChanges).length ||
+        Object.keys(this.removedRows).length
       ) {
         const startTime = new Date().getTime();
         this.saveLoading = true;
@@ -306,7 +294,7 @@ export default {
           .then(() => {
             // Success
             this.saveLoading = false;
-            this.lastSaved = startTime;
+            this.lastSaveTime = startTime;
 
             this.rows = JSON.parse(
               JSON.stringify(
@@ -325,8 +313,6 @@ export default {
                 ? "An error occurred when connecting to the server."
                 : error.message;
           });
-      } else if (this.saveLoading) {
-        this.setAutosave();
       }
     },
   },
