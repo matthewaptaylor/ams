@@ -108,6 +108,7 @@
                   :value="remindEmails"
                   :error="remindEmailsError"
                   :disabled="viewer"
+                  :loading="loading"
                   chips
                   @save="(v) => update(v, 'remindEmails', 'remindEmailsError')"
                 />

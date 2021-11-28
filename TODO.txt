@@ -4,7 +4,7 @@
 Run lighthouse
 Address security vulnerabilities
 Test on other browsers
-Deadline emails
+Test deadline emails
 Stop navigation away from page if something is still submitting
 
 ===============
@@ -48,7 +48,6 @@ Can still go on AIF or RAMS page if disabled
 ===============
  Nice Features
 ===============
-v-autocomplete for searching emails to change activity leader
 Dark mode
 Swipe between views on mobile e.g. swipe left to get from overview to plan
 Toggle sidebar size

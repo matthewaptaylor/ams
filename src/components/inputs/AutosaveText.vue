@@ -47,7 +47,6 @@
           "
           :multiple="chips"
           :chips="chips"
-          :small-chips="chips"
           style="width: 100%"
         >
           <template v-slot:append-outer>
