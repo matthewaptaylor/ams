@@ -1,6 +1,6 @@
 <template>
   <v-sheet elevation="2">
-    <v-chip-group mandatory color="primary">
+    <v-chip-group mandatory :show-arrows="!mobile" color="primary">
       <template v-if="loading">
         <v-skeleton-loader
           style="margin: 4px 8px 4px 0"
@@ -30,6 +30,12 @@ export default {
   props: {
     items: Array,
     loading: Boolean,
+  },
+
+  data() {
+    return {
+      mobile: navigator.userAgentData.mobile,
+    };
   },
 };
 </script>

@@ -23,11 +23,11 @@ Make sure database rules are set correctly and are secure
 Use v-avatar instead of the module that generates avatars
 When checking if error == "internal", should it be error == "INTERNAL"?
 What happens to a user's activities if they delete their account? PoepleByUid moved to peoplebyemail is a bad idea
-Signature server time zone wrong with new Date()
 
 ===============
    Better UX
 ===============
+Offline mode
 Sticky/always visible sidebar when scrolling on desktop
 Delete activities
 Preload fonts and images

@@ -33,7 +33,7 @@
         v-if="!$vuetify.breakpoint.mobile && emailVerified"
       />
 
-      <div class="d-flex align-start" style="gap: 1rem">
+      <div class="d-flex align-start" style="gap: 1rem; position: relative">
         <NavDesktop
           :title="title"
           :subtitle="subtitle"
@@ -46,10 +46,8 @@
           elevation="2"
           rounded
           class="flex-grow-1"
+          style="overflow: hidden"
           :style="{
-            'max-width': $vuetify.breakpoint.mobile
-              ? '100%'
-              : 'calc(100% - 15rem)',
             'min-height': $vuetify.breakpoint.mobile
               ? `calc(100vh - ${
                   72 + (navItems ? 40 : 0) + (emailVerified ? 0 : 88)
