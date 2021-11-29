@@ -15,6 +15,13 @@
         </v-btn>
 
         <v-toolbar-title>{{ title }}</v-toolbar-title>
+
+        <v-spacer />
+
+        <v-btn outlined @click="signOut" v-if="!emailVerified">
+          <v-icon left dark>{{ logoutIcon }}</v-icon>
+          Sign Out
+        </v-btn>
       </v-toolbar>
 
       <NavMobile :items="navItems" v-if="navItems" :loading="loading" />
@@ -63,7 +70,8 @@
 </template>
 
 <script>
-import { mdiArrowLeft } from "@mdi/js";
+import { mdiArrowLeft, mdiLogout } from "@mdi/js";
+import firebase from "firebase/app";
 import Alert from "../Alert.vue";
 import Breadcrumbs from "./Breadcrumbs.vue";
 import NavMobile from "./NavMobile.vue";
@@ -74,6 +82,7 @@ export default {
     return {
       // Icons
       arrowLeftIcon: mdiArrowLeft,
+      logoutIcon: mdiLogout,
 
       // EMail verified alert
       emailVerified: this.$currentUser.emailVerified,
@@ -105,6 +114,10 @@ export default {
   },
 
   methods: {
+    signOut() {
+      firebase.auth().signOut();
+    },
+
     updateVerified() {
       // Update the user verified variable
       this.emailVerified = this.$currentUser.emailVerified;

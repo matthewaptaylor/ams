@@ -5,7 +5,6 @@ Run lighthouse
 Address security vulnerabilities
 Test on other browsers
 Test deadline emails
-If not verified on mobile and trapped on account page, no sign out button
 
 ===============
   Minor Fixes
