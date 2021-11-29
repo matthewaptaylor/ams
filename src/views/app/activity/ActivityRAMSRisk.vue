@@ -443,6 +443,10 @@ export default {
       this.loading = true;
       this.error = null;
 
+      // Record fact that we're saving in case of user navigation
+      const randomId = Math.random().toString(36);
+      this.$updateSaveProcess("start", randomId);
+
       this.$functions
         .httpsCallable("activityRAMSUpdate")({
           id: this.$route.params.activityId,
@@ -453,6 +457,8 @@ export default {
           // Success
           this.loading = false;
 
+          this.$updateSaveProcess("end", randomId);
+
           this.$emit("updateObject", "risks", {
             [data.data.id]: this.formData,
           });
@@ -462,6 +468,8 @@ export default {
         .catch((error) => {
           // Error
           this.loading = false;
+
+          this.$updateSaveProcess("end", randomId);
 
           this.error =
             error.message === "internal"

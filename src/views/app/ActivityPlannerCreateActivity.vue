@@ -311,6 +311,10 @@ export default {
       this.loading = true;
       this.error = null;
 
+      // Record fact that we're saving in case of user navigation
+      const randomId = Math.random().toString(36);
+      this.$updateSaveProcess("start", randomId);
+
       if (!this.error) {
         // Safe to continue
         this.$functions
@@ -323,6 +327,7 @@ export default {
           .then((data) => {
             // Success
             this.loading = false;
+            this.$updateSaveProcess("end", randomId);
 
             // Redirect to page
 
@@ -334,6 +339,7 @@ export default {
           .catch((error) => {
             // Error
             this.loading = false;
+            this.$updateSaveProcess("end", randomId);
 
             this.error =
               error.message === "internal"

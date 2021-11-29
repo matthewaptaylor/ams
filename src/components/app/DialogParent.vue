@@ -113,13 +113,15 @@ export default {
 
     exitDialog() {
       // Exit the dialog
-      if (this.useBackToExit) {
-        this.$router.go(-1);
-      } else {
-        // Using back functionality won't go to the dialog's parent
-        this.useBackToExit = true;
+      if (this.dialog) {
+        if (this.useBackToExit) {
+          this.$router.go(-1);
+        } else {
+          // Using back functionality won't go to the dialog's parent
+          this.useBackToExit = true;
 
-        this.$router.replace({ name: this.currentRoute.name });
+          this.$router.replace({ name: this.currentRoute.name });
+        }
       }
     },
   },

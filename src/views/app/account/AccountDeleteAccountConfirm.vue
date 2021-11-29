@@ -104,15 +104,21 @@ export default {
     deleteAccount() {
       this.loading = true;
 
+      // Record fact that we're saving in case of user navigation
+      const randomId = Math.random().toString(36);
+      this.$updateSaveProcess("start", randomId);
+
       this.$currentUser
         .delete()
         .then(() => {
           // User deleted
           this.loading = false;
+          this.$updateSaveProcess("end", randomId);
         })
         .catch((error) => {
           // An error occurred
           this.loading = false;
+          this.$updateSaveProcess("end", randomId);
 
           if (error.code === "auth/requires-recent-login") {
             // User needs to reauthenticate

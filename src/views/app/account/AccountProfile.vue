@@ -261,6 +261,10 @@ export default {
       // Display activities
       this[errorName] = null;
 
+      // Record fact that we're saving in case of user navigation
+      const randomId = Math.random().toString(36);
+      this.$updateSaveProcess("start", randomId);
+
       this.$functions
         .httpsCallable("userUpdate")({
           [fieldName]: v,
@@ -268,6 +272,7 @@ export default {
         .then(() => {
           // Success
           const fieldPath = fieldName.split("."); // e.g. if fieldName is activityLeader.name, split into ["activityLeader", "name"]
+          this.$updateSaveProcess("end", randomId);
 
           if (fieldPath.length == 2) {
             this[fieldPath[0]] = { ...this[fieldPath[0]], [fieldPath[1]]: v };
@@ -278,10 +283,15 @@ export default {
         .catch((error) => {
           // Error
           this[errorName] = { message: error.message };
+          this.$updateSaveProcess("end", randomId);
         });
     },
 
     saveDisplayName(newDisplayName) {
+      // Record fact that we're saving in case of user navigation
+      const randomId = Math.random().toString(36);
+      this.$updateSaveProcess("start", randomId);
+
       this.$currentUser
         .updateProfile({
           displayName: newDisplayName,
@@ -289,11 +299,13 @@ export default {
         .then(() => {
           this.displayName = newDisplayName;
           this.displayNameError = null;
+          this.$updateSaveProcess("end", randomId);
 
           this.$updateUser(); // Update the global user object to match
         })
         .catch((error) => {
           this.displayNameError = error;
+          this.$updateSaveProcess("end", randomId);
         });
     },
   },

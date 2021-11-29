@@ -133,11 +133,16 @@ export default {
       this.error = null;
       this.errorLink = null;
 
+      // Record fact that we're saving in case of user navigation
+      const randomId = Math.random().toString(36);
+      this.$updateSaveProcess("start", randomId);
+
       this.$currentUser
         .updatePassword(this.password)
         .then(() => {
           // Update successful
           this.loading = false;
+          this.$updateSaveProcess("end", randomId);
 
           // Reset password fields
           this.password = "";
@@ -149,6 +154,7 @@ export default {
         .catch((error) => {
           // An error ocurred
           this.loading = false;
+          this.$updateSaveProcess("end", randomId);
 
           if (error.code === "auth/requires-recent-login") {
             // User needs to reauthenticate

@@ -127,6 +127,10 @@ export default {
       this.removeLoading = true;
       this.removeError = null;
 
+      // Record fact that we're saving in case of user navigation
+      const randomId = Math.random().toString(36);
+      this.$updateSaveProcess("start", randomId);
+
       this.$functions
         .httpsCallable("activityRAMSDelete")({
           id: this.activityId,
@@ -135,12 +139,14 @@ export default {
         .then(() => {
           // Success
           this.removeLoading = false;
+          this.$updateSaveProcess("end", randomId);
 
           this.$emit("updateObject", "risks", { [this.riskId]: undefined }); // Remove risk
         })
         .catch((error) => {
           // Error
           this.loading = false;
+          this.$updateSaveProcess("end", randomId);
 
           this.removeError =
             error.message === "internal"

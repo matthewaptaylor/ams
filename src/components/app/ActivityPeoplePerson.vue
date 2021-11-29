@@ -169,6 +169,10 @@ export default {
       this.error = null;
       this[remove ? "removeLoading" : "roleLoading"] = true;
 
+      // Record fact that we're saving in case of user navigation
+      const randomId = Math.random().toString(36);
+      this.$updateSaveProcess("start", randomId);
+
       this.$functions
         .httpsCallable("activityPeopleUpdate")({
           id: this.$route.params.activityId,
@@ -179,6 +183,7 @@ export default {
           // Success
           this[remove ? "removeLoading" : "roleLoading"] = false;
           this.showRemove = false;
+          this.$updateSaveProcess("end", randomId);
 
           // Update list of people
           if ("peopleByUID" in data.data) {
@@ -195,6 +200,7 @@ export default {
           // Error
           this[remove ? "removeLoading" : "roleLoading"] = false;
           this.showRemove = false;
+          this.$updateSaveProcess("end", randomId);
 
           // Reset role
           this.role = this.currentRole;

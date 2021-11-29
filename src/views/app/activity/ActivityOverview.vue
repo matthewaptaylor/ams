@@ -178,6 +178,10 @@ export default {
       // Display activities
       this[errorName] = null;
 
+      // Record fact that we're saving in case of user navigation
+      const randomId = Math.random().toString(36);
+      this.$updateSaveProcess("start", randomId);
+
       this.$functions
         .httpsCallable("activityOverviewSet")({
           id: this.$route.params.activityId,
@@ -186,10 +190,12 @@ export default {
         .then(() => {
           // Success
           this.$emit("update", fieldName, v);
+          this.$updateSaveProcess("end", randomId);
         })
         .catch((error) => {
           // Error
           this[errorName] = { message: error.message };
+          this.$updateSaveProcess("end", randomId);
         });
     },
   },

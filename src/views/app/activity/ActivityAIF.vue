@@ -744,6 +744,10 @@ export default {
         // Fill fields
         let params;
 
+        // Record fact that we're saving in case of user navigation
+        const randomId = Math.random().toString(36);
+        this.$updateSaveProcess("start", randomId);
+
         if (person === "Activity Leader") {
           // Activity leader
 
@@ -785,6 +789,7 @@ export default {
           .then(() => {
             // Success
             this[loadingVar] = false;
+            this.$updateSaveProcess("end", randomId);
 
             // Update fields
             Object.entries(params).forEach(([fieldName, v]) => {
@@ -794,6 +799,8 @@ export default {
           .catch((error) => {
             // Error
             this[loadingVar] = false;
+
+            this.$updateSaveProcess("end", randomId);
 
             this[errorVar] =
               error.message === "internal"
@@ -807,6 +814,10 @@ export default {
       // Display activities
       this[errorName] = null;
 
+      // Record fact that we're saving in case of user navigation
+      const randomId = Math.random().toString(36);
+      this.$updateSaveProcess("start", randomId);
+
       this.$functions
         .httpsCallable("activityOverviewSet")({
           id: this.$route.params.activityId,
@@ -815,10 +826,14 @@ export default {
         .then(() => {
           // Success
           this.$emit("update", fieldName, v);
+
+          this.$updateSaveProcess("end", randomId);
         })
         .catch((error) => {
           // Error
           this[errorName] = { message: error.message };
+
+          this.$updateSaveProcess("end", randomId);
         });
     },
 

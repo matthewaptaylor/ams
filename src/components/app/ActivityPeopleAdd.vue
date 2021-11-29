@@ -95,6 +95,10 @@ export default {
       this.error = null;
       this.loading = true;
 
+      // Record fact that we're saving in case of user navigation
+      const randomId = Math.random().toString(36);
+      this.$updateSaveProcess("start", randomId);
+
       this.$functions
         .httpsCallable("activityPeopleUpdate")({
           id: this.$route.params.activityId,
@@ -104,6 +108,7 @@ export default {
         .then((data) => {
           // Success
           this.loading = false;
+          this.$updateSaveProcess("end", randomId);
 
           // Reset
           this.email = "";
@@ -127,6 +132,7 @@ export default {
         .catch((error) => {
           // Error
           this.loading = false;
+          this.$updateSaveProcess("end", randomId);
 
           this.error =
             error.message === "internal"

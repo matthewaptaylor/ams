@@ -9,6 +9,35 @@
       </transition>
     </v-main>
 
+    <v-dialog v-model="unsavedDialog" persistent max-width="35rem">
+      <v-sheet elevation="2" :rounded="!$vuetify.breakpoint.mobile">
+        <v-toolbar dark color="error">
+          <v-toolbar-title class="pl-md-0">
+            Confirm Navigation
+          </v-toolbar-title>
+        </v-toolbar>
+
+        <div class="pa-4">
+          <p>
+            You are still saving changes. Are you sure you want to navigate
+            away?
+          </p>
+
+          <div
+            class="d-flex justify-space-between flex-wrap mt-4"
+            style="gap: 0.5rem 1rem"
+          >
+            <v-btn plain @click="unsavedDialog = false"> Stay here </v-btn>
+
+            <v-btn color="error" @click="navigateAway">
+              <v-icon left dark>{{ arrowRightIcon }}</v-icon>
+              Leave
+            </v-btn>
+          </div>
+        </div>
+      </v-sheet>
+    </v-dialog>
+
     <v-snackbar
       v-model="showAppPrompt"
       :left="!$vuetify.breakpoint.mobile"
@@ -123,7 +152,7 @@
 </style>
 
 <script>
-import { mdiClose } from "@mdi/js";
+import { mdiArrowRight, mdiClose } from "@mdi/js";
 import AppBar from "../../components/app/AppBar.vue";
 
 export default {
@@ -132,9 +161,14 @@ export default {
   data() {
     return {
       // Icons
+      arrowRightIcon: mdiArrowRight,
       closeIcon: mdiClose,
 
       transitionName: null, // Custom route transitions
+
+      // Unsaved warning dialog
+      unsavedDialog: false,
+      storeNavigate: null, // Store the navigate action to be called when dialog is closed
 
       // App snackbar
       showAppPrompt: false,
@@ -166,7 +200,38 @@ export default {
     document.removeEventListener("appPromptChanged", this.updateShowAppPrompt);
   },
 
+  beforeRouteUpdate(to, from, next) {
+    // Stop navigation and show dialog if there are unsaved changes
+    if (this.$route.path !== to.path) {
+      this.unsavedDialog = false;
+      this.storeNavigate = null;
+
+      // Count number of things being saved
+      const currentlySaving = this.$saveProcesses.length > 0;
+
+      if (
+        currentlySaving &&
+        !(from.meta.default && from.meta.default === to.meta.default)
+      ) {
+        // Currently saving and not going between dialog and parent
+        this.unsavedDialog = true;
+        this.storeNavigate = to.fullPath;
+      } else {
+        next();
+      }
+    }
+  },
+
   methods: {
+    navigateAway() {
+      // Navigate away from the current page, even though something isn't saved
+      this.$updateSaveProcess("clear");
+      this.unsavedDialog = false;
+
+      this.$router.push(this.storeNavigate);
+      this.storeNavigate = null;
+    },
+
     async closeAppSnackbar() {
       this.showAppPrompt = false;
     },

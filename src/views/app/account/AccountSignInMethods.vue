@@ -202,17 +202,23 @@ export default {
       this.verifyEmailSuccess = null;
       this.verifyEmailError = null;
 
+      // Record fact that we're saving in case of user navigation
+      const randomId = Math.random().toString(36);
+      this.$updateSaveProcess("start", randomId);
+
       this.$currentUser
         .sendEmailVerification()
         .then(() => {
           // Email verification sent
           this.verifyEmailLoading = false;
+          this.$updateSaveProcess("end", randomId);
 
           this.verifyEmailSuccess = "A verification email has been sent.";
         })
         .catch((error) => {
           // An error ocurred
           this.verifyEmailLoading = false;
+          this.$updateSaveProcess("end", randomId);
 
           this.verifyEmailError = error.message;
         });
@@ -220,15 +226,23 @@ export default {
 
     saveEmail(newEmail) {
       // Save a new email address to firebase auth
+
+      // Record fact that we're saving in case of user navigation
+      const randomId = Math.random().toString(36);
+      this.$updateSaveProcess("start", randomId);
+
       this.$currentUser
         .updateEmail(newEmail)
         .then(() => {
           this.email = newEmail;
           this.emailError = null;
+          this.$updateSaveProcess("end", randomId);
 
           this.$updateUser(); // Update the global user object to match
         })
         .catch((error) => {
+          this.$updateSaveProcess("end", randomId);
+
           if (error.code === "auth/requires-recent-login") {
             this.emailError = {
               message:
@@ -248,10 +262,15 @@ export default {
       this.googleError = null;
       this.linkGoogleLoading = true;
 
+      // Record fact that we're saving in case of user navigation
+      const randomId = Math.random().toString(36);
+      this.$updateSaveProcess("start", randomId);
+
       this.$currentUser
         .linkWithPopup(new firebase.auth.GoogleAuthProvider())
         .then(() => {
           // Accounts successfully linked
+          this.$updateSaveProcess("end", randomId);
 
           this.linkGoogleLoading = false;
 
@@ -260,6 +279,7 @@ export default {
         })
         .catch((error) => {
           // Error in unlinking
+          this.$updateSaveProcess("end", randomId);
 
           this.googleError = error.message;
           this.linkGoogleLoading = false;
@@ -280,12 +300,17 @@ export default {
       } else {
         // Allow user to unlink account
 
+        // Record fact that we're saving in case of user navigation
+        const randomId = Math.random().toString(36);
+        this.$updateSaveProcess("start", randomId);
+
         this.unlinkGoogleLoading = true;
 
         this.$currentUser
           .unlink("google.com")
           .then(() => {
             // Accounts successfully unlinked
+            this.$updateSaveProcess("end", randomId);
 
             this.unlinkGoogleLoading = false;
 
@@ -294,6 +319,7 @@ export default {
           })
           .catch((error) => {
             // Error in unlinking
+            this.$updateSaveProcess("end", randomId);
 
             this.googleError = error.message;
             this.unlinkGoogleLoading = false;

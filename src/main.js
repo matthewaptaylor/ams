@@ -48,6 +48,25 @@ firebase.auth().onAuthStateChanged((user) => {
       document.dispatchEvent(new CustomEvent("appPromptChanged"));
     };
 
+    // Track if anything is being saved
+    Vue.prototype.$saveProcesses = []; // Store a random number for every save process
+    Vue.prototype.$updateSaveProcess = (operation, randomId) => {
+      if (operation === "start") {
+        // Add if saving
+        Vue.prototype.$saveProcesses.push(randomId);
+      } else if (operation === "end") {
+        // Remove if done
+        Vue.prototype.$saveProcesses.splice(
+          Vue.prototype.$saveProcesses.indexOf(randomId),
+          1
+        );
+      } else if (operation === "clear") {
+        // Clear all
+        Vue.prototype.$saveProcesses = [];
+      }
+      console.log(Vue.prototype.$saveProcesses);
+    };
+
     Vue.prototype.$updateUser = () => {
       // Store user status in global variable
       Vue.prototype.$currentUser = firebase.auth().currentUser;

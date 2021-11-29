@@ -181,6 +181,10 @@ export default {
         )
       );
 
+      // Record fact that we're saving in case of user navigation
+      const randomId = Math.random().toString(36);
+      this.$updateSaveProcess("start", randomId);
+
       this.$functions
         .httpsCallable("activitySignatureSet")({
           id: this.$route.params.activityId,
@@ -190,6 +194,7 @@ export default {
         .then(() => {
           // Success
           this.loading = false;
+          this.$updateSaveProcess("end", randomId);
 
           const now = new Date();
           now.setHours(now.getHours() + 12);
@@ -207,6 +212,7 @@ export default {
         .catch((error) => {
           // Error
           this.loading = false;
+          this.$updateSaveProcess("end", randomId);
 
           this.error =
             error.message === "internal"

@@ -132,6 +132,7 @@ export default {
       saveError: null,
       saveLoading: false,
       allSaved: true,
+      unsavedRandomId: null, // Store random id to signal to app that page is unsaved
       saveInterval: null,
       secondsSinceSaved: 0,
       lastSaveTime: null,
@@ -164,10 +165,16 @@ export default {
       if (v) {
         // Everything saved
         clearInterval(this.saveInterval);
+
+        this.$updateSaveProcess("end", this.unsavedRandomId);
       } else {
         // No longer up to date
         this.secondsSinceSaved = 0;
         this.lastSaveTime = new Date().getTime();
+
+        // Record fact that we're saving in case of user navigation
+        this.unsavedRandomId = Math.random().toString(36);
+        this.$updateSaveProcess("start", this.unsavedRandomId);
 
         this.saveInterval = setInterval(() => {
           // Check if save is needed every second

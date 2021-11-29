@@ -5,7 +5,7 @@ Run lighthouse
 Address security vulnerabilities
 Test on other browsers
 Test deadline emails
-Stop navigation away from page if something is still submitting
+If not verified on mobile and trapped on account page, no sign out button
 
 ===============
   Minor Fixes
@@ -28,12 +28,10 @@ What happens to a user's activities if they delete their account? PoepleByUid mo
    Better UX
 ===============
 Offline mode
-Sticky/always visible sidebar when scrolling on desktop
 Delete activities
 Preload fonts and images
 Chunk vendors to only load needed views initially
-Pull to refresh
-Implement reload page/get data from server again (refresh icon button that appears in sidebar item? What about desktop nav?)
+Pull to refresh/Implement reload page/get data from server again (refresh icon button that appears in sidebar item? What about desktop nav?)
 Organise activities by date
 If redirected to login, redirect to correct page after login. Do the same with reauthentication, so we can enable email link reauth?
 Implement webpage html title changing
