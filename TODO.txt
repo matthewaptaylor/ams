@@ -17,7 +17,6 @@ Press enter to open dialog when tabbed onto date picker, or even when focused
 Implement ma of 100 users because firebase.auth.getusers has max of 100?
 Stop context menu appearing on installed app on long tap
 XSS vulnerabilities in date stored in firestore and other firebase auth things like displayname
-Click sign out button if not connected to server
 Make sure database rules are set correctly and are secure
 Use v-avatar instead of the module that generates avatars
 When checking if error == "internal", should it be error == "INTERNAL"?
@@ -45,4 +44,3 @@ Combobox autosave enter key
 ===============
 Dark mode
 Swipe between views on mobile e.g. swipe left to get from overview to plan
-Toggle sidebar size
