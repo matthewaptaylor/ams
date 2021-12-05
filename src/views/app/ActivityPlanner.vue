@@ -165,7 +165,7 @@ export default {
           icon: mdiAccountSupervisor,
           activities: this.search
             ? this.runningActivities.filter((activity) =>
-                activity.name.toLowerCase().includes(this.search)
+                activity.name.toLowerCase().includes(this.search.toLowerCase())
               )
             : this.runningActivities,
         },
@@ -174,7 +174,7 @@ export default {
           icon: mdiEye,
           activities: this.search
             ? this.otherActivities.filter((activity) =>
-                activity.name.toLowerCase().includes(this.search)
+                activity.name.toLowerCase().includes(this.search.toLowerCase())
               )
             : this.otherActivities,
         },
