@@ -2,6 +2,33 @@
   <v-app id="app">
     <router-view></router-view>
 
+    <v-alert
+      type="error"
+      style="
+        position: fixed;
+        left: 1rem;
+        bottom: 1rem;
+        width: calc(100% - 2rem);
+      "
+    >
+      <div style="display: flex">
+        <div style="margin-right: 1rem; font-size: 1rem; flex-grow: 1">
+          As of Sunday 23 July, 2023, Mahi Tahi must be used for all activity
+          planning and risk management in Scouts Aotearoa. AIF, RAMS, and this
+          site, AMS, is dead. Goodbye.
+        </div>
+
+        <v-btn
+          href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+          depressed
+          color="primary"
+          style="margin: -0.5rem; align-self: center"
+        >
+          More Info
+        </v-btn>
+      </div>
+    </v-alert>
+
     <v-snackbar
       v-model="updateExists"
       :left="!$vuetify.breakpoint.mobile"
